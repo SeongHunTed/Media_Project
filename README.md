@@ -9,3 +9,7 @@
 <li> refactor : 기능의 변화가 아닌 코드 리팩터링 ex) 변수 이름 변경
 <li> test : 테스트 코드 추가/수정
 <li> release : 버전 릴리즈
+
+
+Branch : main -> develope
+	develope -> backend / fronted
