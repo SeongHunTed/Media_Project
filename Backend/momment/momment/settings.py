@@ -25,12 +25,26 @@ SECRET_KEY = 'django-insecure-@d$m=n4rm6ao9i4$4i+g$09jk3^(+=&&2_pa4fuhl(*58+0zgv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = '*'
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts',
+    
+    'rest_framework',
+    'rest_framework.authtoken',
+    'django_extensions',
+    
+    'corsheaders',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
+    'dj_rest_auth',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +53,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+SITE_ID = 1
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:8081',
+    'http://127.0.0.1:8000',
+)
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -123,3 +149,14 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'accounts.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.IsAuthenticated',
+    ]
+}
