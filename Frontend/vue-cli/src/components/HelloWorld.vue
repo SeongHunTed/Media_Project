@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>{{ 'hello ' + user }}</h1>
+    <h1>{{ 'hello ' + returnUsername }}</h1>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -27,12 +27,14 @@
 </template>
 
 <script>
-import getUsername from 'vuex'
+// import getUsername from 'vuex'
 
 export default {
   name: 'HelloWorld',
   computed: {
-    user: getUsername
+    returnUsername() {
+      return this.$store.getters.getUsername
+    }
   }
 }
 </script>
