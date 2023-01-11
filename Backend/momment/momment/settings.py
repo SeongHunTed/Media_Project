@@ -44,6 +44,8 @@ def get_secret(setting, secrets=secrets):
         error_msg = "Set the {} environment variable".format(setting)
         raise ImproperlyConfigured(error_msg)
 
+KAKAO_REST_API_KEY = get_secret("KAKAO_KEY")
+CLIENT_KEY = get_secret("CLIENT_KEY")
 SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -51,10 +53,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = '*'
 
+TIME_ZONE = 'Asia/Seoul'
+
 
 # Application definition
 
 INSTALLED_APPS = [
+
+    # local app
     'accounts',
     
     'rest_framework',
@@ -69,6 +75,7 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     'dj_rest_auth',
 
+    # built in django app
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -177,10 +184,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.IsAuthenticated',
-    ]
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'rest_framework.authentication.TokenAuthentication',
+    # ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     # 'rest_framework.permissions.IsAuthenticated',
+    # ]
 }
