@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
-class Manager(BaseUserManager):
+
+class Account(BaseUserManager):
     
     def create_user(self, email, name, birth, digit, address, password=None):
         if not email:
@@ -47,10 +48,10 @@ class User(AbstractBaseUser):
     create_at = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
     last_login  = models.DateTimeField(verbose_name='last login', auto_now=True)
 
-    object = Manager()
+    object = Account()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name', 'digit', 'address']
+    REQUIRED_FIELDS = ['name', 'digit', 'address', 'birth']
 
     def __str__(self):
         return self.email

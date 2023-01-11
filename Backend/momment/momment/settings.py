@@ -183,11 +183,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
 
+# 로그인 토큰 발급
 REST_FRAMEWORK = {
-    # 'DEFAULT_AUTHENTICATION_CLASSES': [
-    #     'rest_framework.authentication.TokenAuthentication',
-    # ],
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     # 'rest_framework.permissions.IsAuthenticated',
-    # ]
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.IsAuthenticated',
+    ]
 }
+
+# # 로그인 비밀번호 검증
+# 없어도 잘 돌아간다.
+# PASSWORD_HASHERS = [
+#     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+#     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+#     'django.contrib.auth.hashers.Argon2PasswordHasher',
+# ]
