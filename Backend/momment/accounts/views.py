@@ -1,18 +1,20 @@
-from django.shortcuts import render
-from django.conf import settings
-from django.shortcuts import redirect
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
+# 커스텀 로그인
 from django.http import HttpResponse, JsonResponse
-
 from django.views.decorators.csrf import csrf_exempt
-from accounts.models import User, Manager
+from accounts.models import User, Account
 import requests, json, re
-from django.contrib.auth import authenticate
-
+from django.contrib.auth.hashers import check_password
 from rest_framework import status
 from json.decoder import JSONDecodeError
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
+
+
+# 카카오 로그인
+from rest_framework.views import APIView
+from django.conf import settings
+from django.shortcuts import redirect
+from rest_framework.response import Response
 
 # Create your views here.
 
@@ -43,8 +45,10 @@ def signup(request):
         if not re.match(regex_password, password):
             return JsonResponse({'message' : 'INVALID_PASSWORD'}, status = 400)
 
-        User.object.create_user(email=email, password=password, name=name, digit=digit, birth=birth, address=address)
-        return JsonResponse({'message' : 'SUCCESS'}, status=201)
+        user = User.object.create_user(email=email, password=password, name=name, digit=digit, birth=birth, address=address)
+
+        token = Token.objects.create(user=user)
+        return JsonResponse({'message' : 'SUCCESS', 'token' : token.key}, status=200)
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
@@ -57,9 +61,14 @@ def login(request):
         email = data['email']
         password = data['password']
 
-        User.object.filter(email=email).
+        user = User.object.filter(email=email)
+
+        if not check_password(password, user.get().password):
+            return JsonResponse({'message' : 'WRONG_PASSWORD'})
         
-        return JsonResponse({'message' : 'LOGIN_SUCCESS'})
+        token = Token.objects.get(user=user.get())
+        
+        return JsonResponse({'message' : 'LOGIN_SUCCESS', 'token' : token.key}, status=200)
     except:
         return JsonResponse({'message' : 'LOGIN_FAILED'})
 
