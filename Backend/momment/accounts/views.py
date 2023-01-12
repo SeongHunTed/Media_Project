@@ -69,8 +69,10 @@ def login(request):
             return JsonResponse({'message' : 'WRONG_PASSWORD'})
         
         token = Token.objects.get(user=user.get())
+
+        is_seller = user.get().is_staff
         
-        return JsonResponse({'message' : 'LOGIN_SUCCESS', 'token' : token.key}, status=200)
+        return JsonResponse({'message' : 'LOGIN_SUCCESS', 'token' : token.key, 'is_seller' : is_seller}, status=200)
     except:
         return JsonResponse({'message' : 'LOGIN_FAILED'})
 
