@@ -8,22 +8,24 @@ from rest_framework import status
 from json.decoder import JSONDecodeError
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
+from django.contrib import auth
+from rest_framework.decorators import api_view
+
 
 
 # 카카오 로그인
-from rest_framework.views import APIView
+from rest_framework.views import APIView, View
 from django.conf import settings
 from django.shortcuts import redirect
 from rest_framework.response import Response
 
-# Create your views here.
 
 BASE_URL = "http://127.0.0.1:8000/" 
-KAKAO_CALLBACK_URI = "http://127.0.0.1:8000/accounts/kakao/callback"
+KAKAO_CALLBACK_URI = "http://127.0.0.1:8000/accounts/kakao/callback/"
 kakao_token_uri = "https://kauth.kakao.com/oauth/token"
 kakao_profile_uri = "https://kapi.kakao.com/v2/user/me"
 
-@csrf_exempt
+@api_view(['POST'])
 def signup(request):
     try:
         data = json.loads(request.body)
@@ -53,7 +55,7 @@ def signup(request):
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
-@csrf_exempt
+@api_view(['POST'])
 def login(request):
     try:
         data = json.loads(request.body)
@@ -72,21 +74,25 @@ def login(request):
     except:
         return JsonResponse({'message' : 'LOGIN_FAILED'})
 
+@api_view(['POST'])
+def logout(request):
+    auth.logout(request)
+    return redirect(BASE_URL)
 
-def kakao_login(request):
-    print("hi")
-    rest_api_key = getattr(settings, 'KAKAO_REST_API_KEY')
-    return redirect(
-        f"https://kauth.kakao.com/oauth/authorize?client_id={rest_api_key}&redirect_uri={KAKAO_CALLBACK_URI}&response_type=code"
-    )
 
-class KakaoCallBackView(APIView):
+class KakaoView(View):
+    def get(self, request):
+        rest_api_key = getattr(settings, 'KAKAO_REST_API_KEY')
+        print("working")
+        return redirect(
+        f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={rest_api_key}&redirect_uri={KAKAO_CALLBACK_URI}")
+
+class KakaoCallBackView(View):
     
     def get(self, request):
-        data = request.query_params.copy()
-
+        code = request.GET['code']
+        
         # access_token 발급 요청
-        code = data.get('code')
         if not code:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -96,7 +102,7 @@ class KakaoCallBackView(APIView):
             "grant_type"        :"authorization_code",
             "client_id"         :rest_api_key,
             "redirection_uri"   :KAKAO_CALLBACK_URI,
-            "client_key"        :client_key,
+            "client_secret"        :client_key,
             "code"              :request.GET["code"]
         }
 
@@ -128,9 +134,14 @@ class KakaoCallBackView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         user_email = kakao_account.get('email')
 
+        print(user_email)
         '''
-        # 회원가입 및 로그인 처리 알고리즘 추가필요
+        # 회원가입 및 로그인 처리 알고리즘 
         '''
+
+        print(user_info_json)
+
+
 
         # 테스트 값 확인용
         res = {
@@ -140,5 +151,5 @@ class KakaoCallBackView(APIView):
         }
         response = Response(status=status.HTTP_200_OK)
         response.data = res
-        print(res)
+        
         return redirect(BASE_URL)
