@@ -75,7 +75,46 @@ def update(request):
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
+@api_view(['POST', 'PUT'])
+def delete_detail(request):
+    try:
+        data = json.loads(request.body)
+        user_email = data['user_email'] # 차후에 jwt 인증방식으로 변경
+        cake_name = data['cake_name']
+        option = data['option']
+        detail = data['detail']
 
+        user = User.objects.get(email=user_email)
+        store = Store.objects.get(user=user)
+        cake = Cake.objects.get(name=cake_name, store=store)
+
+        if option == 'cake_size':
+            CakeSize.objects.filter(cake=cake, size=detail).delete()
+        elif option == 'cake_flavor':
+            CakeFlavor.objects.filter(cake=cake, flavor=detail).delete()
+        elif option == 'cake_color':
+            CakeColor.objects.filter(cake=cake, color=detail).delete()
+        elif option == 'cake_design':
+            CakeDesign.objects.filter(cake=cake, design=detail).delete()
+        elif option == 'cake_sidedeco':
+            CakeSideDeco.objects.filter(cake=cake, side_deco=detail).delete()
+        elif option == 'cake_deco':
+            CakeDeco.objects.filter(cake=cake, deco=detail).delete()
+        elif option == 'cake_lettering':
+            CakeLettering.objects.filter(cake=cake, lettering=detail).delete()
+        elif option == 'cake_font':
+            CakeFont.objects.filter(cake=cake, font=detail).delete()
+        elif option == 'cake_picture':
+            CakePicture.objects.filter(cake=cake, picture=detail).delete()
+        elif option == 'cake_package':
+            CakePackage.objects.filter(cake=cake, package=detail).delete()
+        elif option == 'cake_candle':
+            CakeCandle.objects.filter(cake=cake, candle=detail).delete()
+
+        return JsonResponse({'message' : 'SUCCESS'}, status=200)
+
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
 
 
