@@ -40,3 +40,18 @@ def update(request):
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
+
+@api_view(['POST', 'PUT'])
+def delete(request):
+    try:
+        data = json.loads(request.body)
+
+        user_email = data['user_email']
+        user = User.objects.get(email=user_email)
+
+        user.delete()
+
+        return JsonResponse({'message' : "SUCCESS"}, status=200)
+
+    except:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
