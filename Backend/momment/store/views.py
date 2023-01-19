@@ -21,9 +21,9 @@ def update(request):
         store_address   = data['store_address']
         user_email      = data['user_email']
 
-        print(user_email)
         # user email을 이용하여 user_id 값 가져오기
-        user = User.object.get(email=user_email)
+        print(user_email)
+        user = User.objects.get(email=user_email)
 
         if Store.objects.filter(user=user).exists():
             Store.objects.update(store_name=store_name, store_intro=store_intro, store_opentime=store_opentime,

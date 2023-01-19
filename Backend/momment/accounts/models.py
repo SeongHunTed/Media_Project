@@ -39,7 +39,7 @@ class User(AbstractBaseUser):
     email = models.EmailField(verbose_name='ID', max_length=60, unique=True, null=False, blank=False)
     name = models.CharField(max_length=20, null=False, blank=False)
     digit = models.CharField(max_length=11)
-    birth = models.DateField(verbose_name="생년월일", null=True)
+    birth = models.DateField(verbose_name="생년월일", null=True, blank=True)
     address = models.CharField(max_length=80)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -48,7 +48,7 @@ class User(AbstractBaseUser):
     create_at = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
     last_login  = models.DateTimeField(verbose_name='last login', auto_now=True)
 
-    object = Account()
+    objects = Account()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name', 'digit', 'address', 'birth']
