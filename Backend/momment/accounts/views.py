@@ -37,7 +37,7 @@ def signup(request):
         birth       = data['birth']
         address     = data['address']
 
-        if User.object.filter(email=email).exists():
+        if User.objects.filter(email=email).exists():
             return JsonResponse({'message' : 'ALREADY_EXIST'}, status = 400)
 
         regex_email    = '^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9_-]+\.[a-zA-Z0-9-.]+$'
@@ -47,7 +47,7 @@ def signup(request):
         if not re.match(regex_password, password):
             return JsonResponse({'message' : 'INVALID_PASSWORD'}, status = 400)
 
-        user = User.object.create_user(email=email, password=password, name=name, digit=digit, birth=birth, address=address)
+        user = User.objects.create_user(email=email, password=password, name=name, digit=digit, birth=birth, address=address)
 
         token = Token.objects.create(user=user)
         return JsonResponse({'message' : 'SUCCESS', 'token' : token.key}, status=200)
@@ -63,14 +63,16 @@ def login(request):
         email = data['email']
         password = data['password']
 
-        user = User.object.filter(email=email)
+        user = User.objects.filter(email=email)
 
         if not check_password(password, user.get().password):
             return JsonResponse({'message' : 'WRONG_PASSWORD'})
         
         token = Token.objects.get(user=user.get())
+
+        is_seller = user.get().is_staff
         
-        return JsonResponse({'message' : 'LOGIN_SUCCESS', 'token' : token.key}, status=200)
+        return JsonResponse({'message' : 'LOGIN_SUCCESS', 'token' : token.key, 'is_seller' : is_seller}, status=200)
     except:
         return JsonResponse({'message' : 'LOGIN_FAILED'})
 

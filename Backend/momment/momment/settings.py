@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     # local app
     'accounts',
     'store',
+    'cake',
     
     'rest_framework',
     'rest_framework.authtoken',
