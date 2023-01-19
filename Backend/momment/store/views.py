@@ -48,8 +48,9 @@ def delete(request):
 
         user_email = data['user_email']
         user = User.objects.get(email=user_email)
-
-        user.delete()
+        store = Store.objects.get(user=user)
+        
+        store.delete()
 
         return JsonResponse({'message' : "SUCCESS"}, status=200)
 
