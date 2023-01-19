@@ -72,10 +72,53 @@ def update(request):
 
         return JsonResponse({'message' : 'SUCCESS'}, status=200)
 
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
+
+
+
+
+@api_view(['POST', 'PUT'])
+def delete_option(request):
+    try:
+        data = json.loads(request.body)
+        user_email = data['user_email'] # 차후에 jwt 인증방식으로 변경
+        cake_name = data['cake_name']
+        option = data['option']
+        
+        user = User.objects.get(email=user_email)
+        store = Store.objects.get(user=user)
+        cake = Cake.objects.get(name=cake_name, store=store)
+
+        if option == 'cake_size':
+            CakeSize.objects.filter(cake=cake).delete()
+        elif option == 'cake_flavor':
+            CakeFlavor.objects.filter(cake=cake).delete()
+        elif option == 'cake_color':
+            CakeColor.objects.filter(cake=cake).delete()
+        elif option == 'cake_design':
+            CakeDesign.objects.filter(cake=cake).delete()
+        elif option == 'cake_sidedeco':
+            CakeSideDeco.objects.filter(cake=cake).delete()
+        elif option == 'cake_deco':
+            CakeDeco.objects.filter(cake=cake).delete()
+        elif option == 'cake_lettering':
+            CakeLettering.objects.filter(cake=cake).delete()
+        elif option == 'cake_font':
+            CakeFont.objects.filter(cake=cake).delete()
+        elif option == 'cake_picture':
+            CakePicture.objects.filter(cake=cake).delete()
+        elif option == 'cake_package':
+            CakePackage.objects.filter(cake=cake).delete()
+        elif option == 'cake_candle':
+            CakeCandle.objects.filter(cake=cake).delete()
+
+        return JsonResponse({'message' : 'SUCCESS'}, status=200)
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+
 
 @api_view(['POST', 'PUT'])
 def delete_all(request):
@@ -89,7 +132,6 @@ def delete_all(request):
         store = Store.objects.get(user=user)
 
         cake = Cake.objects.get(name=cake_name, store=store)
-
         cake.delete()
 
         return JsonResponse({'message' : 'SUCCESS'}, status=200)
