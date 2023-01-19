@@ -47,7 +47,6 @@ def update(request):
                 elif basic_option == 'cake_design':
                     CakeDesign.objects.update_or_create(design=option, price=price, cake=cake)
         
-        print("Hello")
 
         for addtional_option in addtional_options:
             options = data['cake_additional_option'][addtional_option].keys()
@@ -73,6 +72,27 @@ def update(request):
 
         return JsonResponse({'message' : 'SUCCESS'}, status=200)
 
+
+
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+
+@api_view(['POST', 'PUT'])
+def delete_all(request):
+    try:
+        data = json.loads(request.body)
+        
+        user_email = data['user_email'] # 차후에 jwt 인증방식으로 변경
+        cake_name = data['cake_name']
+
+        user = User.objects.get(email=user_email)
+        store = Store.objects.get(user=user)
+
+        cake = Cake.objects.get(name=cake_name, store=store)
+
+        cake.delete()
+
+        return JsonResponse({'message' : 'SUCCESS'}, status=200)
 
 
     except KeyError:
