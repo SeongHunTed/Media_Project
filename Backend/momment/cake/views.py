@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from accounts.models import User
 from cake.models import *
-
+from .serializers import *
 import json
+from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse, JsonResponse
 from rest_framework import status
 from rest_framework.response import Response
@@ -47,7 +48,6 @@ def update(request):
                 elif basic_option == 'cake_design':
                     CakeDesign.objects.update_or_create(design=option, price=price, cake=cake)
         
-
         for addtional_option in addtional_options:
             options = data['cake_additional_option'][addtional_option].keys()
             for option_key in options:
@@ -69,7 +69,6 @@ def update(request):
                 elif addtional_option == 'cake_candle':
                     CakeCandle.objects.update_or_create(candle=option, price=price, cake=cake)
             
-
         return JsonResponse({'message' : 'SUCCESS'}, status=200)
 
     except KeyError:
@@ -115,7 +114,6 @@ def delete_detail(request):
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
-
 
 
 @api_view(['POST', 'PUT'])
@@ -175,6 +173,66 @@ def delete_all(request):
 
         return JsonResponse({'message' : 'SUCCESS'}, status=200)
 
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+
+
+# 상품 상세 페이지용 - Option 제공
+@api_view(['GET'])
+def detail_page(request):
+    try:
+
+        price = Price.objects.all()
+        locate = Location.objects.all()
+        flavor = Flavor.objects.all()
+
+        price_serializer = PriceSeiralizer(price, many=True).data
+        locate_serializer = LocateSeiralizer(locate, many=True).data
+        flavor_serializer = FlavorSeiralizer(flavor, many=True).data
+
+
+        prices = []
+        for price in price_serializer:
+            prices.append(price['price_range'])
+
+        locates = []
+        for locate in locate_serializer:
+            locates.append(locate['locate'])
+
+        flavors = []
+        for flavor in flavor_serializer:
+            flavors.append(flavor['flavor'])
+
+        content = {
+            "price_range" : prices,
+            "locate" : locates,
+            "flavor" : flavors
+        }
+
+        return JsonResponse(content, safe=False, status=status.HTTP_201_CREATED)
+
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+
+@api_view(['POST', 'PUT'])
+def detail_update(request):
+    try:
+        data = json.loads(request.body)
+
+        user_email = data['user_email']
+        locate = data['locate']
+        flavor = data['flavor']
+        price = data['price']
+        info = data['info']
+        cake_name = data['cake_name']
+
+        user = User.objects.get(email=user_email)
+        store = Store.objects.get(user=user)
+        cake = Cake.objects.get(name=cake_name, store=store)
+
+        CakeInfo.objects.update_or_create(locate=locate, flavor=flavor, price=price, info=info, cake=cake)
+
+        return JsonResponse({'message' : 'SUCCESS'}, status=200)
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)

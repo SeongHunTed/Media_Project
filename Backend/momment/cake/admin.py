@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import *
+from .models import Cake, Price, Location, Flavor
  
 class CakeAdmin(admin.ModelAdmin):
     # 관리자 화면에 보여질 칼럼 지정
@@ -12,4 +12,40 @@ class CakeAdmin(admin.ModelAdmin):
     fieldsets = ()
     ordering = ()
  
+class CakePriceOption(admin.ModelAdmin):
+
+    list_display = ['price_range']
+    search_fields = ()
+    readonly_fields = ()
+ 
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
+    ordering = ()
+
+class CakeLocationOption(admin.ModelAdmin):
+
+    list_display = ['locate']
+    search_fields = ()
+    readonly_fields = ()
+ 
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
+    ordering = ()
+
+class CakeFlavorOption(admin.ModelAdmin):
+
+    list_display = ['flavor']
+    search_fields = ()
+    readonly_fields = ()
+ 
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
+    ordering = ()
+
 admin.site.register(Cake, CakeAdmin)
+admin.site.register(Price, CakePriceOption)
+admin.site.register(Location, CakeLocationOption)
+admin.site.register(Flavor, CakeFlavorOption)
