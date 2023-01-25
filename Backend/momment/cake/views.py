@@ -181,7 +181,6 @@ def delete_all(request):
 @api_view(['GET'])
 def detail_page(request):
     try:
-
         price = Price.objects.all()
         locate = Location.objects.all()
         flavor = Flavor.objects.all()
@@ -239,6 +238,20 @@ def detail_update(request):
             CakeInfo.objects.create(locate=locate, flavor=flavor, price_range=price, info=info, cake=cake)
 
         return JsonResponse({'message' : 'SUCCESS'}, status=200)
+
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+
+@api_view(['GET'])
+def cake_show(request, page):
+    try:
+        # 차후 인기 있는 케이크를 보여줄 때 order_by 메소드 이용
+        # 6개씩 보여주는 로직
+        cakes = Cake.objects.all()[:page*6]
+
+        cake = CakeSerializer(cakes, many=True)
+
+        return Response(cake.data, status=status.HTTP_201_CREATED)
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)

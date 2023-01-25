@@ -2,12 +2,11 @@ from rest_framework import serializers
 from .models import *
 from store.models import Store
 
-# class CakeSerializer(serializers.ModelSerializer):
+class CakeSerializer(serializers.ModelSerializer):
 
-#     class Meta:
-#         model = Cake, Store
-#         store_name = Store.objects.get(id)
-#         fields = ['Cake.name', 'Cake.price']
+    class Meta:
+        model = Cake
+        fields = '__all__'
 
 class PriceSeiralizer(serializers.ModelSerializer):
 
