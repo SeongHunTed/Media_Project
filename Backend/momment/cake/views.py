@@ -229,8 +229,14 @@ def detail_update(request):
         user = User.objects.get(email=user_email)
         store = Store.objects.get(user=user)
         cake = Cake.objects.get(name=cake_name, store=store)
+        locate = Location.objects.get(locate=locate)
+        price = Price.objects.get(price_range=price)
+        flavor = Flavor.objects.get(flavor=flavor)
 
-        CakeInfo.objects.update_or_create(locate=locate, flavor=flavor, price=price, info=info, cake=cake)
+        if CakeInfo.objects.filter(cake=cake).exists():
+            CakeInfo.objects.update(locate=locate, flavor=flavor, price_range=price, info=info, cake=cake)
+        else:
+            CakeInfo.objects.create(locate=locate, flavor=flavor, price_range=price, info=info, cake=cake)
 
         return JsonResponse({'message' : 'SUCCESS'}, status=200)
 
