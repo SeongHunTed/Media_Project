@@ -14,10 +14,6 @@
 
 - Django 3.2.13
 
-### Crawling
-
-- Selenium (4.5.0)
-
 ## Reule
 ### Commit Type
 
