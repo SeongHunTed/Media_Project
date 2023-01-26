@@ -8,6 +8,23 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
+@api_view(['GET'])
+def show(request):
+    try:
+        
+        data = json.loads(request.body)
+        user_email = data['user_email']
+
+        user = User.objects.get(email=user_email)
+        store = Store.objects.get(user=user)
+
+        serializer = StoreSerializer(store)
+
+        return JsonResponse(serializer.data, status=200)
+
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+
 @api_view(['POST', 'PUT'])
 def update(request):
     try:

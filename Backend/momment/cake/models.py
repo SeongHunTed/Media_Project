@@ -5,62 +5,62 @@ from store.models import Store
 class Cake(models.Model):
     name = models.CharField(max_length=40)
     price = models.IntegerField()
-    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='cake')
 
 class CakeSize(models.Model):
     size = models.CharField(max_length=40)
     price = models.IntegerField()
-    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='size')
 
 class CakeFlavor(models.Model):
     flavor = models.CharField(max_length=40)
     price = models.IntegerField()
-    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='flavor')
 
 class CakeColor(models.Model):
     color = models.CharField(max_length=40)
     price = models.IntegerField()
-    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='color')
 
 class CakeDesign(models.Model):
     design = models.CharField(max_length=40)
     price = models.IntegerField()
-    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='design')
 
 class CakeSideDeco(models.Model):
     side_deco = models.CharField(max_length=40)
     price = models.IntegerField()
-    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='side_deco')
 
 class CakeDeco(models.Model):
     deco = models.CharField(max_length=40)
     price = models.IntegerField()
-    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='deco')
 
 class CakeLettering(models.Model):
     lettering = models.CharField(max_length=40)
     price = models.IntegerField()
-    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='lettering')
 
 class CakeFont(models.Model):
     font = models.CharField(max_length=40)
     price = models.IntegerField()
-    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='font')
 
 class CakePicture(models.Model):
     picture = models.CharField(max_length=40)
     price = models.IntegerField()
-    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='picture')
 
 class CakePackage(models.Model):
     package = models.CharField(max_length=40)
     price = models.IntegerField()
-    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='package')
 
 class CakeCandle(models.Model):
     candle = models.CharField(max_length=40)
     price = models.IntegerField()
-    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='candle')
 
 
 

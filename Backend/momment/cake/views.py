@@ -9,6 +9,24 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
+@api_view(['GET'])
+def show(request):
+    try:
+        data = json.loads(request.body)
+        user_email = data['user_email']
+
+        user = User.objects.get(email=user_email)
+        store = Store.objects.get(user=user)
+        cakes = Cake.objects.filter(store=store)
+
+        cake_size = CakeSerializer(cakes, many=True)
+
+        return Response(cake_size.data,status=200)
+
+
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+
 @api_view(['POST', 'PUT'])
 def update(request):
     try:
@@ -115,7 +133,6 @@ def delete_detail(request):
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
-
 @api_view(['POST', 'PUT'])
 def delete_option(request):
     try:
@@ -156,7 +173,6 @@ def delete_option(request):
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
-
 @api_view(['POST', 'PUT'])
 def delete_all(request):
     try:
@@ -175,7 +191,6 @@ def delete_all(request):
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
-
 
 # 상품 상세 페이지용 - Option 제공
 @api_view(['GET'])
@@ -242,14 +257,15 @@ def detail_update(request):
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
+# 메인 페이지에 넘겨줄 처음 케이크 6개
 @api_view(['GET'])
 def cake_show(request, page):
     try:
         # 차후 인기 있는 케이크를 보여줄 때 order_by 메소드 이용
         # 6개씩 보여주는 로직
-        cakes = Cake.objects.all()[:page*6]
-
-        cake = CakeSerializer(cakes, many=True)
+        # cakes = Cake.objects.all()[:page*6]
+        store = Store.objects.all()[:page*6]
+        cake = StoreCakeSerializer(store, many=True)
 
         return Response(cake.data, status=status.HTTP_201_CREATED)
 
