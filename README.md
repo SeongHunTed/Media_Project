@@ -1,18 +1,18 @@
-# LLATROF
+# Momment
 
 ## Environment
 
 ### Language
 
-- Python 3.10.6
+- Python 3.9.12
 
 ### FE
 
-- Vue (2.7.14)
+- React
 
 ### BE
 
-- Django (4.1.2)
+- Django 3.2.13
 
 ### Crawling
 
