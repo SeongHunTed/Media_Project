@@ -62,8 +62,8 @@ INSTALLED_APPS = [
 
     # local app
     'accounts',
-    'store',
-    'cake',
+    'stores',
+    'cakes',
     
     'rest_framework',
     'rest_framework.authtoken',
@@ -71,11 +71,6 @@ INSTALLED_APPS = [
     
     'corsheaders',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'dj_rest_auth.registration',
-    'dj_rest_auth',
 
     # built in django app
     'django.contrib.admin',

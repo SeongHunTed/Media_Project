@@ -50,7 +50,7 @@ def signup(request):
         user = User.objects.create_user(email=email, password=password, name=name, digit=digit, birth=birth, address=address)
 
         token = Token.objects.create(user=user)
-        return JsonResponse({'message' : 'SUCCESS', 'token' : token.key}, status=200)
+        return JsonResponse({'message' : 'SUCCESS', 'token' : token.key}, status=201)
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
@@ -80,7 +80,6 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect(BASE_URL)
-
 
 class KakaoView(View):
     def get(self, request):
