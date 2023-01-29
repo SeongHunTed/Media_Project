@@ -4,7 +4,6 @@ from stores.models import Store
 from stores.serializers import StoreSerializer
 
 
-
 class PriceSeiralizer(serializers.ModelSerializer):
 
     class Meta:

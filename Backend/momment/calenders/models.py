@@ -2,10 +2,13 @@ from django.db import models
 from stores.models import Store
 
 class Calender(models.Model):
+    class Meta:
+        unique_together = (('date', 'store'),)
     date = models.DateField()
     deadline = models.IntegerField()
-    closed = models.BooleanField()
-    max_order = models.IntegerField()
+    closed = models.BooleanField(null=True, blank=True)
+    max_order = models.IntegerField(null=True, blank=True)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='calender')
 
 class Group(models.Model):
     class Meta:

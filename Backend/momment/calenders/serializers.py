@@ -8,3 +8,9 @@ class DaySerializer(serializers.ModelSerializer):
     class Meta:
         model = Day
         exclude = ('id', 'store',)
+
+class CalenderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Calender
+        exclude = ('id',)
