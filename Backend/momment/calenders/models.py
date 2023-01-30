@@ -11,14 +11,15 @@ class Calender(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='calender')
 
 class Group(models.Model):
-    class Meta:
-        unique_together = (('calender', 'store'),)
+    # class Meta:
+    #     unique_together = (('calender', 'store'),)
     calender = models.ForeignKey(Calender, related_name='group', on_delete=models.CASCADE)
-    store = models.ForeignKey(Store, related_name='group', on_delete=models.CASCADE)
+    # store = models.ForeignKey(Store, related_name='group', on_delete=models.CASCADE)
+    group_max_order = models.IntegerField()
 
 class Time(models.Model):
-    pickup_time = models.TimeField(primary_key=True)
-    time_max_order = models.IntegerField()
+    pickup_time = models.TimeField()
+    time_max_order = models.IntegerField(null=True, blank=True)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='time')
 
 class Day(models.Model):

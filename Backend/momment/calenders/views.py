@@ -79,6 +79,8 @@ def calender(request):
             deadline = Day.objects.get(store=store, day=day).deadline # 해당 날의 deadline도 가져와서
 
             if Calender.objects.filter(store=store, date=target_date).exists():
+
+                # 캘린더 테이블 수정
                 cal_instance = Calender.objects.get(store=store, date=target_date)
                 cal_instance.deadline = deadline
                 cal_instance.closed = closed
@@ -87,6 +89,40 @@ def calender(request):
 
             else:
                 Calender.objects.create(store=store, date=target_date, deadline=deadline, closed=closed, max_order=max_order)
+
+            # 캘린더 테이블 수정 후 그룹 테이블
+            # 그룹의 개수를 모르니 반복문 사용
+            groups = data['group'].keys()
+            for group in groups:
+                group_max_order = data['group'][group]['group_max_order']
+
+                calender = Calender.objects.get(store=store, date=target_date)
+                
+                if Group.objects.filter(calender=calender).exists():
+                    group_instance = Group.objects.get(calender=calender)
+                    group_instance.group_max_order = group_max_order
+                    group_instance.save()
+
+                else:
+                    Group.objects.create(calender=calender, group_max_order=group_max_order)
+
+                times = data['group'][group]['times']
+                
+                for time in times:
+                    group = Group.objects.get(calender=calender)
+
+                    if not Time.objects.filter(group=group, pickup_time=time).exists():
+                        Time.objects.create(pickup_time=time, group=group)
+                    
+            
+            # 그룹 테이블 수정 후 Time 테이블
+            # 1/29일 여기까지
+            # 차후에 타임테이블 생성하는거 진행하면 될듯
+            # 문제점 : 타임테이블 primary key 조금 아쉬운듯
+            # 계속 계속 데이터가 쌓일 것 같음
+
+            # 1/31일 여기까지
+            # 근데 수정 어떻게 할건지?
 
             return JsonResponse({'message' : 'SUCCESS'}, status=status.HTTP_201_CREATED)
             
