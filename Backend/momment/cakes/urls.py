@@ -7,5 +7,6 @@ urlpatterns = [
     path('delete-detail', views.delete_detail),
     path('delete-option', views.delete_option),
     path('detail', views.detail),
-    path('main/<int:page>', views.main)
+    path('main/<int:page>', views.main),
+    path('order', views.order)
 ]
