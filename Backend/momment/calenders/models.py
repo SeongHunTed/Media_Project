@@ -16,10 +16,13 @@ class Group(models.Model):
     calender = models.ForeignKey(Calender, related_name='group', on_delete=models.CASCADE)
     # store = models.ForeignKey(Store, related_name='group', on_delete=models.CASCADE)
     group_max_order = models.IntegerField()
+    group_ordered = models.IntegerField(default=0)
+    group_num = models.IntegerField()
 
 class Time(models.Model):
     pickup_time = models.TimeField()
     time_max_order = models.IntegerField(null=True, blank=True)
+    time_ordered = models.IntegerField(default=0)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='time')
 
 class Day(models.Model):

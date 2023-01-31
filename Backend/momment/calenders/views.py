@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from accounts.models import User
 from stores.models import Store
+from cakes.models import Cake
 from .serializers import *
 from .models import *
 import json, datetime
@@ -42,6 +43,7 @@ def day(request):
                 days = Day.objects.filter(store=store)                
                 serializer = DaySerializer(days, many=True)
             else:
+                pass
                 # 최초 등록하는 경우
                 # cake, store 뭔가 다 논리를 적용시키지 않은듯
                 # GET 관련 이 논리 로직 다 적용해야할듯
@@ -94,26 +96,25 @@ def calender(request):
             # 그룹의 개수를 모르니 반복문 사용
             groups = data['group'].keys()
             for group in groups:
+                group_num = group
                 group_max_order = data['group'][group]['group_max_order']
 
                 calender = Calender.objects.get(store=store, date=target_date)
                 
-                if Group.objects.filter(calender=calender).exists():
-                    group_instance = Group.objects.get(calender=calender)
+                if Group.objects.filter(calender=calender, group_num = group_num).exists():
+                    group_instance = Group.objects.get(calender=calender, group_num=group_num)
                     group_instance.group_max_order = group_max_order
                     group_instance.save()
 
                 else:
-                    Group.objects.create(calender=calender, group_max_order=group_max_order)
+                    Group.objects.create(calender=calender, group_max_order=group_max_order, group_num=group_num)
 
                 times = data['group'][group]['times']
-                
                 for time in times:
-                    group = Group.objects.get(calender=calender)
+                    group = Group.objects.get(calender=calender, group_num=group_num)
 
                     if not Time.objects.filter(group=group, pickup_time=time).exists():
                         Time.objects.create(pickup_time=time, group=group)
-                    
             
             # 그룹 테이블 수정 후 Time 테이블
             # 1/29일 여기까지
@@ -130,6 +131,9 @@ def calender(request):
         elif request.method == 'GET':
             today = datetime.date.today()
             this_month_last_day = cal.monthrange(today.year, today.month)[1]
+
+            # 해당 부분은 판매자가 주문관리 페이지에 들어감과 동시에 DB를 만들 것 인가에 대한 고민이 조금 더 필요한 부분임
+
             # next_month_last_day = cal.monthrange(today.year, today.month+1)[1]
 
             # week_day = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일']
@@ -158,6 +162,30 @@ def calender(request):
             serializer = CalenderSerializer(calenders, many=True)
 
             return Response(serializer.data, status=status.HTTP_200_OK) 
+
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+
+
+@api_view(['GET'])
+def order(request):
+    try:
+        data = json.loads(request.body)
+        user_email = data['user_email']
+        store_name = data['store_name']
+        cake_name = data['cake_name']
+        date = data['date']
+
+        store = Store.objects.get(store_name=store_name)
+        calender = Calender.objects.get(date=date, store=store)
+        cake = Cake.objects.get(name=cake_name)
+        # print(calender)
+        # group = Group.objects.get(calender=29)
+
+        serializer = CalenderOrderSerializer(calender)
+        # print(serializer.data)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
