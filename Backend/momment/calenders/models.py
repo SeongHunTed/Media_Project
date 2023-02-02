@@ -21,7 +21,7 @@ class Group(models.Model):
 
 class Time(models.Model):
     pickup_time = models.TimeField()
-    time_max_order = models.IntegerField(null=True, blank=True)
+    time_max_order = models.IntegerField(null=True, blank=True, default=1)
     time_ordered = models.IntegerField(default=0)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='time')
 
