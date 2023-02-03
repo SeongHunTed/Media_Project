@@ -266,3 +266,23 @@ def main(request, page):
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+
+# 소비자가 주문시 보는 옵션 제공
+@api_view(['GET'])
+def order(request):
+    try:
+        data = json.loads(request.body)
+        user_email = data['user_email']
+        store_name = data['store_name']
+        cake_name = data['cake_name']
+
+        store = Store.objects.get(store_name=store_name)
+        cake = Cake.objects.get(store=store, name=cake_name)
+
+        cake = CakeSerializer(cake)
+
+        return Response(cake.data, status=200)
+
+
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)

@@ -64,6 +64,8 @@ INSTALLED_APPS = [
     'accounts',
     'stores',
     'cakes',
+    'calenders',
+    'orders',
     
     'rest_framework',
     'rest_framework.authtoken',
