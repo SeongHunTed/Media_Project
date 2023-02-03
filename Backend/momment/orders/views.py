@@ -172,3 +172,54 @@ def order(request):
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
+@api_view(['GET', 'POST', 'DELETE', 'PUT'])
+def review(request):
+    try:
+        if request.method == 'POST' or request.method == 'PUT':
+
+            data = json.loads(request.body)
+
+            user_email = data['user_email']
+            order_id = data['order_id']
+            review_contents = data['review_contents']
+            image = data['image']
+            pay_status = data['pay_status']
+
+            if pay_status != '구매확정':
+                return JsonResponse({'message' : 'NOT_ALLOWED'}, status=400)
+
+            user = User.objects.get(email=user_email)
+            order = Order.objects.get(id=order_id)
+            cake = order.cake
+
+            if Review.objects.filter(order=order).exists():
+                review = Review.objects.get(order=order)
+                review.review = review_contents
+                review.image = image
+                review.save()
+
+            else:
+                Review.objects.create(order=order, cake=cake, user=user, review=review_contents, image=image)
+            
+            return JsonResponse({'message' : 'SUCCESS'}, status=201)
+
+        if request.method == 'GET':
+            
+            data = json.loads(request.body)
+
+            # store_name = data['store_name']
+            cake_name = data['cake_name']
+
+            # store = Store.objects.get(store_name=store_name)
+            cake = Cake.objects.get(name=cake_name)
+            if Review.objects.filter(cake=cake).exists():
+                reviews = Review.objects.filter(cake=cake)
+                serializer = ReviewSerializer(reviews, many=True)
+                
+                return Response(serializer.data, status=200)
+            
+            else:
+                return JsonResponse({'message' : 'NO_REVIEW_EXIST'}, status=200)
+
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)

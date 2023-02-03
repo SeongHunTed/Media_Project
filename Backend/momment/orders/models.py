@@ -18,3 +18,10 @@ class Order(models.Model):
     pickup_date = models.DateField()
     pickup_time = models.TimeField(null=True, blank=True)
     ordered_at = models.DateField(auto_created=True)
+
+class Review(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.TextField()
+    image = models.TextField(null=True, blank=True)
