@@ -13,3 +13,9 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ('review', 'image', 'user')
+
+class CartSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Cart
+        fields = '__all__'
