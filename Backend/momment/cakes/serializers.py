@@ -122,3 +122,11 @@ class StoreCakeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Store
         fields = ['store_name', 'id', 'cake']
+
+class CakeSearchSerializer(serializers.ModelSerializer):
+
+    store_name = serializers.CharField(source='store.store_name')
+
+    class Meta:
+        model = Cake
+        fields = ['name', 'price', 'store_name']

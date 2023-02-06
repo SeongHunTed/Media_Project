@@ -8,5 +8,6 @@ urlpatterns = [
     path('delete-option', views.delete_option),
     path('detail', views.detail),
     path('main/<int:page>', views.main),
-    path('order', views.order)
+    path('order', views.order),
+    path('search/<int:page>', views.search)
 ]

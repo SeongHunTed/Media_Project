@@ -25,32 +25,47 @@ KAKAO_CALLBACK_URI = "http://127.0.0.1:8000/accounts/kakao/callback/"
 kakao_token_uri = "https://kauth.kakao.com/oauth/token"
 kakao_profile_uri = "https://kapi.kakao.com/v2/user/me"
 
-@api_view(['POST'])
+@api_view(['POST', 'PUT'])
 def signup(request):
     try:
         data = json.loads(request.body)
 
-        email       = data['email']
-        password    = data['password']
-        name        = data['name']
-        digit       = data['digit']
-        birth       = data['birth']
-        address     = data['address']
+        email = data['email']
+        name = data['name']
+        digit = data['digit']
+        birth = data['birth']
+        address = data['address']
 
-        if User.objects.filter(email=email).exists():
-            return JsonResponse({'message' : 'ALREADY_EXIST'}, status = 400)
+        if request.method == 'POST':
 
-        regex_email    = '^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9_-]+\.[a-zA-Z0-9-.]+$'
-        regex_password = '\S{8,25}'
-        if not re.match(regex_email, email):
-            return JsonResponse({'message' : 'INVALID_EMAIL'}, status = 400)
-        if not re.match(regex_password, password):
-            return JsonResponse({'message' : 'INVALID_PASSWORD'}, status = 400)
+            password = data['password']
 
-        user = User.objects.create_user(email=email, password=password, name=name, digit=digit, birth=birth, address=address)
+            if User.objects.filter(email=email).exists():
+                return JsonResponse({'message' : 'ALREADY_EXIST'}, status = 400)
 
-        token = Token.objects.create(user=user)
-        return JsonResponse({'message' : 'SUCCESS', 'token' : token.key}, status=201)
+            regex_email    = '^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9_-]+\.[a-zA-Z0-9-.]+$'
+            regex_password = '\S{8,25}'
+            if not re.match(regex_email, email):
+                return JsonResponse({'message' : 'INVALID_EMAIL'}, status = 400)
+            if not re.match(regex_password, password):
+                return JsonResponse({'message' : 'INVALID_PASSWORD'}, status = 400)
+
+            user = User.objects.create_user(email=email, password=password, name=name, digit=digit, birth=birth, address=address)
+
+            token = Token.objects.create(user=user)
+            return JsonResponse({'message' : 'SUCCESS', 'token' : token.key}, status=201)
+        
+        elif request.method == 'PUT':
+
+            user = User.objects.get(email=email)
+            user.name = name
+            user.digit = digit
+            user.birth = birth
+            user.address = address
+            user.save()
+
+            return JsonResponse({'message' : 'SUCCESS'}, status=201)
+
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
