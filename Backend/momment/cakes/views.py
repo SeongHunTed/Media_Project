@@ -2,6 +2,7 @@ from django.shortcuts import render
 from accounts.models import User
 from cakes.models import *
 from .serializers import *
+from stores.serializers import StoreSerializer
 import json
 from rest_framework.renderers import JSONRenderer
 from django.http import JsonResponse
@@ -282,6 +283,35 @@ def order(request):
         cake = CakeSerializer(cake)
 
         return Response(cake.data, status=200)
+
+
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+
+@api_view(['GET'])
+def search(request, page):
+    try:
+        data = json.loads(request.body)
+
+        keyword = data['keyword']
+
+        stores = {}
+        cakes = {}
+
+        if Store.objects.filter(store_name__contains=keyword).exists():
+            stores = Store.objects.filter(store_name__contains=keyword)[4*(page-1):page*4]
+            stores = StoreSerializer(stores, many=True).data
+
+        if Cake.objects.filter(name__contains=keyword).exists():
+            cakes = Cake.objects.filter(name__contains=keyword)[4*(page-1):page*4]
+            cakes = CakeSearchSerializer(cakes, many=True).data
+
+        response_data = {
+            'store' : stores,
+            'cake' : cakes
+        }
+
+        return Response(response_data, status=200)
 
 
     except KeyError:

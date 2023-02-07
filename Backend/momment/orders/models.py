@@ -18,3 +18,19 @@ class Order(models.Model):
     pickup_date = models.DateField()
     pickup_time = models.TimeField(null=True, blank=True)
     ordered_at = models.DateField(auto_created=True)
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    option = models.TextField()
+    price = models.IntegerField()
+    pickup_date = models.DateField()
+    pickup_time = models.TimeField(null=True, blank=True)
+
+class Review(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.TextField()
+    image = models.TextField(null=True, blank=True)
