@@ -9,5 +9,6 @@ urlpatterns = [
     path('detail', views.detail),
     path('main/<int:page>', views.main),
     path('order', views.order),
-    path('search/<int:page>', views.search)
+    path('search/<int:page>', views.search),
+    path('filter/<int:page>', views.filter)
 ]

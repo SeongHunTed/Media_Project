@@ -62,9 +62,6 @@ class CakeCandle(models.Model):
     price = models.IntegerField()
     cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='candle')
 
-
-
-
 # 상품 상세 페이지용
 class Location(models.Model):
     locate = models.CharField(max_length=24, primary_key=True)

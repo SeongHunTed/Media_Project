@@ -10,7 +10,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-
+# 판매자에게 모든 케이크 보여줌
 @api_view(['GET'])
 def show(request):
     try:
@@ -24,7 +24,6 @@ def show(request):
         cake_size = CakeSerializer(cakes, many=True)
 
         return Response(cake_size.data,status=200)
-
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
@@ -42,12 +41,8 @@ def cake(request):
 
             user = User.objects.get(email=user_email)
             store = Store.objects.get(user=user)
-
-            # if CakeName.objects.filter(name=cake_name).exists():
-            #     CakeName.objects.update(name=cake_name, store=store)
             
             cake = Cake.objects.update_or_create(name=cake_name, price=cake_price, store=store)[0]
-            # cake = CakeName.objects.get(name=cake_name, store=store)
             basic_options = data['cake_basic_option'].keys()
             addtional_options = data['cake_additional_option'].keys()
             
@@ -243,12 +238,17 @@ def detail(request):
             flavor = Flavor.objects.get(flavor=flavor)
 
             if CakeInfo.objects.filter(cake=cake).exists():
-                CakeInfo.objects.update(locate=locate, flavor=flavor, price_range=price, info=info, cake=cake)
+                cake_info = CakeInfo.objects.get(cake=cake)
+                cake_info.locate = locate
+                cake_info.flavor = flavor
+                cake_info.info = info
+                cake_info.price_range = price
+                cake_info.save()
             else:
                 CakeInfo.objects.create(locate=locate, flavor=flavor, price_range=price, info=info, cake=cake)
 
             return JsonResponse({'message' : 'SUCCESS'}, status=status.HTTP_201_CREATED)
-
+            
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
@@ -260,7 +260,7 @@ def main(request, page):
         # 차후 인기 있는 케이크를 보여줄 때 order_by 메소드 이용
         # 6개씩 보여주는 로직
         # cakes = Cake.objects.all()[:page*6]
-        store = Store.objects.all()[:page*6]
+        store = Store.objects.all()[(page-1)*6:page*6]
         cake = StoreCakeSerializer(store, many=True)
 
         return Response(cake.data, status=status.HTTP_201_CREATED)
@@ -273,7 +273,6 @@ def main(request, page):
 def order(request):
     try:
         data = json.loads(request.body)
-        user_email = data['user_email']
         store_name = data['store_name']
         cake_name = data['cake_name']
 
@@ -284,15 +283,14 @@ def order(request):
 
         return Response(cake.data, status=200)
 
-
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
+# 검색기능
 @api_view(['GET'])
 def search(request, page):
     try:
         data = json.loads(request.body)
-
         keyword = data['keyword']
 
         stores = {}
@@ -313,6 +311,32 @@ def search(request, page):
 
         return Response(response_data, status=200)
 
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+
+# 필터 검색 기능
+@api_view(['GET'])
+def filter(request, page):
+    try:
+        data = json.loads(request.body)
+
+        price = data['price']
+        locate = data['locate']
+        flavor = data['flavor']
+
+        # related name 때ㅜㄴ에 오류발생하는듯
+        
+        locate_filter = CakeInfo.objects.filter(locate=locate)
+        price_filter = CakeInfo.objects.filter(price_range=price)
+        flavor_filter = CakeInfo.objects.filter(flavor=flavor)
+
+        cakes = locate_filter.union(price_filter, all=False)
+        cakes = cakes.union(flavor_filter, all=False)
+
+        cake = cakes[(page-1)*12:page*12]
+        serializer = CakeSearchSerializer(cake, many=True)
+
+        return Response(serializer.data)
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)

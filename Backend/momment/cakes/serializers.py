@@ -112,7 +112,7 @@ class CakeOnlySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cake
-        fields = ('name', 'price', 'id')
+        fields = ('name', 'price',)
 
 # 메인 페이지에 케이크 보내줄 때 스토어 정보는 어떻게 보낼 것인가?
 class StoreCakeSerializer(serializers.ModelSerializer):
@@ -125,8 +125,10 @@ class StoreCakeSerializer(serializers.ModelSerializer):
 
 class CakeSearchSerializer(serializers.ModelSerializer):
 
-    store_name = serializers.CharField(source='store.store_name')
+    store_name = serializers.CharField(source='cake.store.store_name')
+    cake_name = serializers.CharField(source='cake.name')
+    cake_price = serializers.CharField(source='cake.price')
 
     class Meta:
-        model = Cake
-        fields = ['name', 'price', 'store_name']
+        model = CakeInfo
+        fields = ['cake_name', 'cake_price', 'store_name']
