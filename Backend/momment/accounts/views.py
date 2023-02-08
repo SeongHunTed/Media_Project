@@ -10,7 +10,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from django.contrib import auth
 from rest_framework.decorators import api_view
-
+from .serializers import *
 
 
 # 카카오 로그인
@@ -31,12 +31,12 @@ def signup(request):
         data = json.loads(request.body)
 
         email = data['email']
-        name = data['name']
-        digit = data['digit']
-        birth = data['birth']
-        address = data['address']
-
         if request.method == 'POST':
+
+            name = data['name']
+            digit = data['digit']
+            birth = data['birth']
+            address = data['address']
 
             password = data['password']
 
@@ -56,16 +56,13 @@ def signup(request):
             return JsonResponse({'message' : 'SUCCESS', 'token' : token.key}, status=201)
         
         elif request.method == 'PUT':
-
+            
             user = User.objects.get(email=email)
-            user.name = name
-            user.digit = digit
-            user.birth = birth
-            user.address = address
-            user.save()
+            serializer = UserSerializer(user, data=data)
+            if serializer.is_valid():
+                serializer.save()
 
-            return JsonResponse({'message' : 'SUCCESS'}, status=201)
-
+            return Response(serializer.data)
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
@@ -74,11 +71,9 @@ def signup(request):
 def login(request):
     try:
         data = json.loads(request.body)
-
         email = data['email']
         password = data['password']
-
-        user = User.objects.filter(email=email)
+        user = User.objects.get(email=email)
 
         if not check_password(password, user.get().password):
             return JsonResponse({'message' : 'WRONG_PASSWORD'})
