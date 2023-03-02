@@ -71,16 +71,16 @@ def signup(request):
 def login(request):
     try:
         data = json.loads(request.body)
+        print(data)
         email = data['email']
         password = data['password']
         user = User.objects.get(email=email)
 
-        if not check_password(password, user.get().password):
+        if not check_password(password, user.password):
             return JsonResponse({'message' : 'WRONG_PASSWORD'})
         
-        token = Token.objects.get(user=user.get())
-
-        is_seller = user.get().is_staff
+        token = Token.objects.get(user=user)
+        is_seller = user.is_staff
         
         return JsonResponse({'message' : 'LOGIN_SUCCESS', 'token' : token.key, 'is_seller' : is_seller}, status=200)
     except:
