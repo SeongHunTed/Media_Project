@@ -1,0 +1,6 @@
+framework module Pods_MomentTests {
+  umbrella header "Pods-MomentTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
