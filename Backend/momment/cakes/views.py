@@ -5,7 +5,7 @@ from .serializers import *
 from stores.serializers import StoreSerializer
 import json
 from rest_framework.renderers import JSONRenderer
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -27,6 +27,33 @@ def show(request):
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+    
+@api_view(['POST', 'PUT', 'DELETE'])
+def cake_image(request):
+    try:
+        data = request.data
+        user_email = data['user_email']
+        cake_name = data['cake_name']
+        
+        user = User.objects.get(email=user_email)
+        store = Store.objects.get(user=user)
+        cake = Cake.objects.get(name=cake_name, store=store)
+
+        if request.method == 'POST' or request.method == 'PUT':
+            images = request.FILES.getlist('images')
+
+            for image in images:
+                CakeImage.objects.update_or_create(cake=cake, image=image)
+            
+            return Response(status=status.HTTP_201_CREATED)
+        
+        else:
+            cake.delete()
+
+            return Response(status=status.HTTP_200_OK)
+
+    except KeyError:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 # 케이크 생성, 수정, 삭제
 @api_view(['POST', 'PUT', 'DELETE'])
@@ -261,9 +288,9 @@ def main(request, page):
         # 6개씩 보여주는 로직
         # cakes = Cake.objects.all()[:page*6]
         store = Store.objects.all()[(page-1)*6:page*6]
-        cake = StoreCakeSerializer(store, many=True)
+        cake = StoreCakeSerializer(store, many=True, context={'request' : request})
 
-        return Response(cake.data, status=status.HTTP_201_CREATED)
+        return Response(cake.data, status=status.HTTP_200_OK)
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)

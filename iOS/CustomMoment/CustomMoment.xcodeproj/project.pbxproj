@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		785BFE0029BA236500CBDB0C /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785BFDFF29BA236500CBDB0C /* LoginModel.swift */; };
+		786509B829C193A000B7C7F3 /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786509B729C193A000B7C7F3 /* MainCollectionViewCell.swift */; };
 		78EBE59C29B600CB00E3B065 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE59B29B600CB00E3B065 /* AppDelegate.swift */; };
 		78EBE59E29B600CB00E3B065 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE59D29B600CB00E3B065 /* SceneDelegate.swift */; };
 		78EBE5A529B600CE00E3B065 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78EBE5A429B600CE00E3B065 /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		785BFDFF29BA236500CBDB0C /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
+		786509B729C193A000B7C7F3 /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
 		78EBE59829B600CB00E3B065 /* CustomMoment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomMoment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78EBE59B29B600CB00E3B065 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		78EBE59D29B600CB00E3B065 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				78EBE5CB29B613E400E3B065 /* HomeViewController.swift */,
+				786509B729C193A000B7C7F3 /* MainCollectionViewCell.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				786509B829C193A000B7C7F3 /* MainCollectionViewCell.swift in Sources */,
 				78EBE5CE29B620B900E3B065 /* LoginViewController.swift in Sources */,
 				78EBE59C29B600CB00E3B065 /* AppDelegate.swift in Sources */,
 				785BFE0029BA236500CBDB0C /* LoginModel.swift in Sources */,

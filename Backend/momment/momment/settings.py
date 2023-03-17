@@ -55,6 +55,8 @@ ALLOWED_HOSTS = '*'
 
 TIME_ZONE = 'Asia/Seoul'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Application definition
 
