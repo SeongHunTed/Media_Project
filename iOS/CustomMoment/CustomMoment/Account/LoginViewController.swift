@@ -174,7 +174,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         loginModel.login(email: email, password: password)
         
-        print(loginModel.getToken()!)
+//        print(loginModel.getToken())
         
         killKeyboardObserver()
         self.dismiss(animated: true)

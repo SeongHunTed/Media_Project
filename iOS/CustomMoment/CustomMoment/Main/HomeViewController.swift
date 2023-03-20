@@ -7,11 +7,32 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: UINavigationController {
 
-    let loginButton = UIButton(type: .system)
+    let vcIdentifier = "HomeVC"
     
-    let images = ["mainFirstImage", "mainSecondImage", "mainThirdImage", "mainFourthImage"]
+    let bannerImages = ["mainFirstImage", "mainSecondImage", "mainThirdImage", "mainFourthImage"]
+    let cakeImages = ["cake1", "cake2", "cake3", "cake4", "cake5", "cake6", "cake7", "cake8", "cake9"]
+    
+    private lazy var dataSource: [MySection] = [
+        .banner([
+            .init(image: self.bannerImages[0]),
+            .init(image: self.bannerImages[1]),
+            .init(image: self.bannerImages[2]),
+            .init(image: self.bannerImages[3]),
+        ]),
+        .cake([
+            .init(image: self.cakeImages[0]),
+            .init(image: self.cakeImages[1]),
+            .init(image: self.cakeImages[2]),
+            .init(image: self.cakeImages[3]),
+            .init(image: self.cakeImages[4]),
+            .init(image: self.cakeImages[5]),
+            .init(image: self.cakeImages[6]),
+            .init(image: self.cakeImages[7]),
+            .init(image: self.cakeImages[8]),
+        ])
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,28 +45,41 @@ class HomeViewController: UIViewController {
     
     // MARK: - Components
     
+    
+    // 상단 네비게이터
+    private lazy var navBar: UINavigationBar = {
+        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.15))
+        navBar.addSubview(logo)
+        navBar.addSubview(loginButton)
+        self.view.addSubview(navBar)
+        return navBar
+    }()
+    
+    // 컬렉션뷰 생성
     private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: getLayout())
         collectionView.isScrollEnabled = true
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = true
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: -2, left: 0, bottom: 0, right: 4)
-        collectionView.backgroundColor = .clear
         collectionView.clipsToBounds = true
         collectionView.backgroundColor = .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: MainCollectionViewCell.self))
+        collectionView.register(BannerCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: BannerCollectionViewCell.self))
+        collectionView.register(MainCakeCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: MainCakeCollectionViewCell.self))
+        self.view.addSubview(collectionView)
         return collectionView
     }()
     
+    // 컬렉션뷰를 위한 델리게이트 생성
     func setUpDelegate() {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
     }
 
+    // 컬렉션뷰 - 배너 : 레이아웃
     func bannerLayout() {
-        self.view.addSubview(collectionView)
-        collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
+        collectionView.topAnchor.constraint(equalTo: self.navBar.bottomAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
@@ -53,26 +87,40 @@ class HomeViewController: UIViewController {
     
     // MARK: - Logo Layout
     
-    private let logo: UIImageView = {
+    private lazy var logo: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "logo"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(homeButtonTapped))
+        imageView.addGestureRecognizer(tapGesture)
+        imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     func imageLayout() {
-        self.view.addSubview(logo)
+        
         logo.topAnchor.constraint(
-            equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
+            equalTo: self.navBar.safeAreaLayoutGuide.topAnchor, constant: 1).isActive = true
         logo.centerXAnchor.constraint(
-            equalTo: self.view.centerXAnchor).isActive = true
+            equalTo: self.navBar.centerXAnchor).isActive = true
         logo.widthAnchor.constraint(
-            equalTo: self.view.widthAnchor, multiplier: 0.3).isActive = true
+            equalTo: self.navBar.widthAnchor, multiplier: 0.3).isActive = true
         logo.heightAnchor.constraint(
-            equalTo: self.view.heightAnchor, multiplier: 0.05).isActive = true
+            equalTo: self.navBar.heightAnchor, multiplier: 0.25).isActive = true
         logo.contentMode = .scaleAspectFit
     }
     
+    @objc func homeButtonTapped() {
+        print("HomeVC :     Logo Tapped()")
+        
+        if self.vcIdentifier != "HomeVC" {
+            let homeVC = HomeViewController()
+            self.present(homeVC, animated: true)
+        }
+    }
+    
     // MARK: - Login Part
+    
+    let loginButton = UIButton(type: .system)
     
     func setUpLoginButton() {
         self.view.addSubview(loginButton)
@@ -90,7 +138,7 @@ class HomeViewController: UIViewController {
         loginButton.setTitle("로그인", for: .normal)
         loginButton.setTitleColor(.blue, for: .normal)
         loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        loginButton.backgroundColor = .white
+        loginButton.backgroundColor = .clear
         loginButton.layer.cornerRadius = 4
         
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
@@ -110,86 +158,170 @@ class HomeViewController: UIViewController {
     
 }
 
-// 콜렉션뷰 델리겟 - 액션과 관련된 것들
+//  MARK: - CollectionView Compositional Layout
+
+extension HomeViewController {
+    
+    private func getLayout() -> UICollectionViewLayout {
+        return UICollectionViewCompositionalLayout { sectionIndex, layoutenvironment -> NSCollectionLayoutSection? in
+            switch self.dataSource[sectionIndex] {
+            case.banner:
+                return self.bannerCompositionalLayout()
+            case.cake:
+                return self.cakeCompositionalLayout()
+            }
+        }
+    }
+    
+    // banner compositional layout
+    private func bannerCompositionalLayout() -> NSCollectionLayoutSection {
+        
+        // item size - absolute : 고정값, estimated : 추측, fraction : 퍼센트
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        
+        // making item with above size
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        
+        // group size
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5))
+        
+        // making group
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        
+        section.orthogonalScrollingBehavior = .paging
+        
+        return section
+    }
+    
+    private func cakeCompositionalLayout() -> NSCollectionLayoutSection {
+        
+        collectionView.register(MyHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
+//        collectionView.register(MyHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
+        
+        // item size - absolute : 고정값, estimated : 추측, fraction : 퍼센트
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.333), heightDimension: .fractionalWidth(0.4))
+        
+        // making item with above size
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10)
+        
+        // group size
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.4))
+        
+        // making group
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item, item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        
+        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100.0))
+        
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+//        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
+        
+        section.orthogonalScrollingBehavior = .continuous
+//        section.boundarySupplementaryItems = [header, footer]
+        section.boundarySupplementaryItems = [header]
+        
+        return section
+    }
+}
+
+// 섹션분리
+enum MySection {
+    struct BannerImage {
+        let image: String
+    }
+    struct CakeImage {
+        let image: String
+    }
+    
+    case banner([BannerImage])
+    case cake([CakeImage])
+}
+
+// MARK: - 콜렉션뷰 델리겟 - 액션과 관련된 것들
 extension HomeViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("item at \(indexPath.section)/\(indexPath.item) tapped")
+        
+        if indexPath.section == 1 {
+            cakeTapped()
+        }
+    }
+    
+    @objc func cakeTapped() {
+        print("HomeVC :     Collection Cell Tapped")
+        
+        let cakeVC = CakeViewController()
+        
+        self.present(cakeVC, animated: true)
+    }
     
 }
 
 extension HomeViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return self.dataSource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
+        switch self.dataSource[section] {
+        case let .banner(items):
+            return items.count
+        case let .cake(items):
+            return items.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell: MainCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: MainCollectionViewCell.self), for: indexPath) as? MainCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-        // 향후에 여러가지 설정 이미지 넣어야함
         
-        cell.bannerImage.image = UIImage(named: images[indexPath.row])
-        
-        return cell
-    }
-    
-}
+        switch self.dataSource[indexPath.section] {
+        case let .banner(items):
+            guard let cell: BannerCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: BannerCollectionViewCell.self), for: indexPath) as? BannerCollectionViewCell else {
+                return UICollectionViewCell()
+            }
 
-//  MARK: - CollectionView Compositional Layout
-
-extension HomeViewController {
-    
-//    private func getLayout() -> UICollectionViewLayout {
-//        return UICollectionViewCompositionalLayout { sectionIndex, layoutenvironment -> NSCollectionLayoutSection? inputView
-//            switch self.
-//            
-//        }
-//    }
-    
-    // Compositional layout
-    fileprivate func createCompositionalLayout() -> UICollectionViewLayout {
-        
-        // Compositional layout create
-        let layout = UICollectionViewCompositionalLayout {
-            // input : tuple("key" : "value", "key" : "value") -> return NSCollectionLayoutSection
-            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            cell.bannerLayout()
+            cell.cellImage.image = UIImage(named: items[indexPath.item].image)
+            return cell
             
-            // item size - absolute : 고정값, estimated : 추측, fraction : 퍼센트
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        case let .cake(items):
+            guard let cell: MainCakeCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: MainCakeCollectionViewCell.self), for: indexPath) as? MainCakeCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            collectionView.showsHorizontalScrollIndicator = true
+            collectionView.showsVerticalScrollIndicator = false
+            cell.cellImage.image = UIImage(named: items[indexPath.item].image)
+            cell.cakeLayout()
+            cell.layer.shadowColor = UIColor.black.cgColor
+            cell.layer.shadowOpacity = 0.2
+            cell.layer.shadowRadius = 10
+            cell.layer.shadowOffset = CGSize(width: 0, height: 10)
+            cell.layer.masksToBounds = false
             
-            // making item with above size
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-            
-            // group size
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5))
-            
-            // making group
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-            
-            // making section
-            let section = NSCollectionLayoutSection(group: group)
-             section.orthogonalScrollingBehavior = .groupPaging
-            
-            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
-            return section
+            return cell
         }
         
-        return layout
-    }
-}
-
-enum MySection {
-    struct BannerImage {
-        let image: UIImage
-    }
-    struct CakeImage {
-        let image: UIImage
     }
     
-    case banner([BannerImage])
-    case cake([CakeImage])
+    // dataSource Header, Footer
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderFooterView
+            header.prepare(text: "오늘의 추천 케이크")
+            return header
+        case UICollectionView.elementKindSectionFooter:
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyHeaderFooterView
+            footer.prepare(text: "푸터 타이틀")
+            return footer
+        default:
+            return UICollectionReusableView()
+        }
+    }
 }
