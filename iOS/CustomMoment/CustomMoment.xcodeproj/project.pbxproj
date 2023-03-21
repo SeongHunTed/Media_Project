@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		785BFE0029BA236500CBDB0C /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785BFDFF29BA236500CBDB0C /* LoginModel.swift */; };
-		785CC9B129C43DEF0034BD30 /* MyHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CC9B029C43DEF0034BD30 /* MyHeaderFooterView.swift */; };
+		785CC9B129C43DEF0034BD30 /* MyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CC9B029C43DEF0034BD30 /* MyHeaderView.swift */; };
 		7862AB3C29C81BFC00E501C9 /* CakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB3B29C81BFC00E501C9 /* CakeViewController.swift */; };
 		7862AB3F29C824D400E501C9 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB3E29C824D400E501C9 /* UIViewExtension.swift */; };
 		7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */; };
@@ -44,7 +44,7 @@
 
 /* Begin PBXFileReference section */
 		785BFDFF29BA236500CBDB0C /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
-		785CC9B029C43DEF0034BD30 /* MyHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHeaderFooterView.swift; sourceTree = "<group>"; };
+		785CC9B029C43DEF0034BD30 /* MyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHeaderView.swift; sourceTree = "<group>"; };
 		7862AB3B29C81BFC00E501C9 /* CakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CakeViewController.swift; sourceTree = "<group>"; };
 		7862AB3E29C824D400E501C9 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				78EBE5CB29B613E400E3B065 /* HomeViewController.swift */,
-				785CC9B029C43DEF0034BD30 /* MyHeaderFooterView.swift */,
+				785CC9B029C43DEF0034BD30 /* MyHeaderView.swift */,
 				786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */,
 				7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */,
 			);
@@ -317,7 +317,7 @@
 				78EBE59C29B600CB00E3B065 /* AppDelegate.swift in Sources */,
 				785BFE0029BA236500CBDB0C /* LoginModel.swift in Sources */,
 				7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */,
-				785CC9B129C43DEF0034BD30 /* MyHeaderFooterView.swift in Sources */,
+				785CC9B129C43DEF0034BD30 /* MyHeaderView.swift in Sources */,
 				78EBE59E29B600CB00E3B065 /* SceneDelegate.swift in Sources */,
 				78EBE5CC29B613E400E3B065 /* HomeViewController.swift in Sources */,
 				78EBE5D029B7012F00E3B065 /* SignUpViewController.swift in Sources */,

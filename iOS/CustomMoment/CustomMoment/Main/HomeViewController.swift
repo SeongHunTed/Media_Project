@@ -176,6 +176,8 @@ extension HomeViewController {
     // banner compositional layout
     private func bannerCompositionalLayout() -> NSCollectionLayoutSection {
         
+        collectionView.register(MyFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
+        
         // item size - absolute : 고정값, estimated : 추측, fraction : 퍼센트
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
@@ -190,7 +192,9 @@ extension HomeViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
+        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50)), elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
         
+        section.boundarySupplementaryItems = [footer]
         section.orthogonalScrollingBehavior = .paging
         
         return section
@@ -198,8 +202,7 @@ extension HomeViewController {
     
     private func cakeCompositionalLayout() -> NSCollectionLayoutSection {
         
-        collectionView.register(MyHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
-//        collectionView.register(MyHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
+        collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
         
         // item size - absolute : 고정값, estimated : 추측, fraction : 퍼센트
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.333), heightDimension: .fractionalWidth(0.4))
@@ -278,6 +281,10 @@ extension HomeViewController: UICollectionViewDataSource {
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+            return collectionView.bounds.size
+    }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         switch self.dataSource[indexPath.section] {
@@ -288,6 +295,7 @@ extension HomeViewController: UICollectionViewDataSource {
 
             cell.bannerLayout()
             cell.cellImage.image = UIImage(named: items[indexPath.item].image)
+
             return cell
             
         case let .cake(items):
@@ -298,6 +306,8 @@ extension HomeViewController: UICollectionViewDataSource {
             collectionView.showsVerticalScrollIndicator = false
             cell.cellImage.image = UIImage(named: items[indexPath.item].image)
             cell.cakeLayout()
+            
+            // cell design
             cell.layer.shadowColor = UIColor.black.cgColor
             cell.layer.shadowOpacity = 0.2
             cell.layer.shadowRadius = 10
@@ -313,12 +323,12 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderFooterView
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderView
             header.prepare(text: "오늘의 추천 케이크")
             return header
         case UICollectionView.elementKindSectionFooter:
-            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyHeaderFooterView
-            footer.prepare(text: "푸터 타이틀")
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyFooterView
+            footer.prepare()
             return footer
         default:
             return UICollectionReusableView()
