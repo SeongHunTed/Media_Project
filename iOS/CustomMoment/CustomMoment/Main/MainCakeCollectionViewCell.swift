@@ -17,12 +17,12 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    let stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let stackView = UIStackView()
         return stackView
     }()
     
-    let storeLabel: UILabel = {
+    private let storeLabel: UILabel = {
         let label = UILabel()
         label.text = "유니아 케이크"
         label.font = .systemFont(ofSize: 10)
@@ -33,7 +33,7 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    let cakeLabel: UILabel = {
+    private let cakeLabel: UILabel = {
         let label = UILabel()
         label.text = "체커보드케이크"
         label.font = .systemFont(ofSize: 15)
@@ -45,7 +45,7 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    let priceLabel: UILabel = {
+    private let priceLabel: UILabel = {
         let label = UILabel()
         label.text = "28,000원 ~"
         label.font = .boldSystemFont(ofSize: 18)
@@ -56,7 +56,7 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    let reviewLabel: UILabel = {
+    private let reviewLabel: UILabel = {
         let label = UILabel()
         label.text = "리뷰 0"
         label.font = .systemFont(ofSize: 10)
@@ -84,7 +84,7 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         self.prepare()
     }
     
-    func prepare() {
+    private func prepare() {
         // 아마도 케이크 정보를 받는 text 들을 초기화 해주어야할 것 같음
         print("Main-CakeCell :      prepareForReuse(), prepare() called")
     }

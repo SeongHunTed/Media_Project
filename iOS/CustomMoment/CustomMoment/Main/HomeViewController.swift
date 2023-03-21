@@ -72,13 +72,13 @@ class HomeViewController: UINavigationController {
     }()
     
     // 컬렉션뷰를 위한 델리게이트 생성
-    func setUpDelegate() {
+    private func setUpDelegate() {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
     }
 
     // 컬렉션뷰 - 배너 : 레이아웃
-    func bannerLayout() {
+    private func bannerLayout() {
         collectionView.topAnchor.constraint(equalTo: self.navBar.bottomAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
