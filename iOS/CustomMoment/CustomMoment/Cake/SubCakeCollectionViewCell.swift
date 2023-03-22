@@ -40,10 +40,10 @@ class SubCakeCollectionViewCell: UICollectionViewCell {
         self.contentView.addSubview(cellImage)
         cellImage.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
         cellImage.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
-        cellImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 20).isActive = true
-        cellImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -20).isActive = true
-        cellImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20).isActive = true
-        cellImage.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -20).isActive = true
+        cellImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 25).isActive = true
+//        cellImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -25).isActive = true
+        cellImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 25).isActive = true
+        cellImage.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -25).isActive = true
         cellImage.contentMode = .scaleAspectFill
         
     }

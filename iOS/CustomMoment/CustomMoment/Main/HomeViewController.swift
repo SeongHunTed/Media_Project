@@ -5,14 +5,22 @@
 //  Created by Hoon on 2023/03/06.
 //
 
+
+//RGB    234    84    80
+//HSL    0.00    0.79    0.62
+//HSV    2°    66°    92°
+//CMYK    0.00    0.64    0.66   0.08
+//XYZ    38.55    24.4123
+
 import UIKit
 
 class HomeViewController: UINavigationController {
 
     let vcIdentifier = "HomeVC"
     
-    let bannerImages = ["mainFirstImage", "mainSecondImage", "mainThirdImage", "mainFourthImage"]
-    let cakeImages = ["cake1", "cake2", "cake3", "cake4", "cake5", "cake6", "cake7", "cake8", "cake9"]
+    private var curPage = 0
+    private let bannerImages = ["mainFirstImage", "mainSecondImage", "mainThirdImage", "mainFourthImage"]
+    private let cakeImages = ["cake1", "cake2", "cake3", "cake4", "cake5", "cake6", "cake7", "cake8", "cake9"]
     
     private lazy var dataSource: [MySection] = [
         .banner([
@@ -39,6 +47,7 @@ class HomeViewController: UINavigationController {
         view.backgroundColor = .white
         setUpDelegate()
         bannerLayout()
+        bannerTimer()
         imageLayout()
         setUpLoginButton()
     }
@@ -96,6 +105,7 @@ class HomeViewController: UINavigationController {
         return imageView
     }()
     
+    // 로고 터치 처리
     func imageLayout() {
         
         logo.topAnchor.constraint(
@@ -122,6 +132,7 @@ class HomeViewController: UINavigationController {
     
     let loginButton = UIButton(type: .system)
     
+    // 로그인버튼 생성
     func setUpLoginButton() {
         self.view.addSubview(loginButton)
         
@@ -144,6 +155,7 @@ class HomeViewController: UINavigationController {
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
     }
     
+    // 로그인버튼 처리
     @objc func loginButtonTapped(sender: UIButton) {
         print("HomeVC :    Login Button Tapped")
         
@@ -162,6 +174,7 @@ class HomeViewController: UINavigationController {
 
 extension HomeViewController {
     
+    // CollectionView Layout 생성
     private func getLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, layoutenvironment -> NSCollectionLayoutSection? in
             switch self.dataSource[sectionIndex] {
@@ -200,6 +213,25 @@ extension HomeViewController {
         return section
     }
     
+    // Banner Timer action()
+    private func bannerTimer() {
+        let _ : Timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { (Timer) in
+            self.bannerMove()
+        }
+    }
+    
+    // Banner move action
+    private func bannerMove() {
+        if curPage == collectionView.numberOfItems(inSection: 0) {
+            collectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .right, animated: true)
+            curPage = 0
+            return
+        }
+        curPage += 1
+        collectionView.scrollToItem(at: NSIndexPath(item: curPage, section: 0) as IndexPath, at: .right, animated: true)
+    }
+    
+    // Cake Compositional Layout
     private func cakeCompositionalLayout() -> NSCollectionLayoutSection {
         
         collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
@@ -219,7 +251,7 @@ extension HomeViewController {
         
         let section = NSCollectionLayoutSection(group: group)
         
-        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100.0))
+        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50.0))
         
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
 //        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)

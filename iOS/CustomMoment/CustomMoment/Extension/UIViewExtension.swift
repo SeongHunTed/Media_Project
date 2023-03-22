@@ -15,3 +15,12 @@ extension UIView {
         self.removeConstraints(self.constraints)
     }
 }
+
+extension UICollectionViewDelegate {
+    func currentItem(_ collectioView: UICollectionView, _ indexPath: IndexPath) -> Int {
+        if indexPath.section == 0 {
+            return indexPath.item
+        }
+        return 0
+    }
+}
