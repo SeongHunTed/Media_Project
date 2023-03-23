@@ -9,6 +9,7 @@ import UIKit
 
 class CakeViewController: UIViewController {
     
+    // MARK: - Variables
     let vcIdentifier = "CakeVC"
     
     let cakeImages = ["cake1", "cake2", "cake3", "cake4"]
@@ -85,7 +86,6 @@ class CakeViewController: UIViewController {
         button.setTitle("구매 후기", for: .normal)
         button.titleLabel?.text = "구매 후기"
         button.setTitleColor(.systemRed, for: .normal)
-        button.setTitleColor(.blue, for: .selected)
         button.tintColor = .white
         button.layer.borderColor = UIColor.systemRed.cgColor
         button.layer.borderWidth = 2
@@ -94,6 +94,7 @@ class CakeViewController: UIViewController {
         return button
     }()
     
+    // 상품정보 스크롤뷰
     private let infoView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.isScrollEnabled = true
@@ -101,6 +102,7 @@ class CakeViewController: UIViewController {
         return scrollView
     }()
     
+    // 상품 정보
     private let infoLabel: UILabel = {
         let textField = UILabel()
         textField.text = "케이크에 대한 설명이 들어갈 부분입니다만 일단을 졸라길게 한번 써보겠습니다. 이게 넘어가는지 확인해야죠"
@@ -110,7 +112,33 @@ class CakeViewController: UIViewController {
         return textField
     }()
     
+    // 주문 버튼 View
+    private let orderView: UIView = {
+        let view = UIView()
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowColor = UIColor.lightGray.cgColor
+        view.layer.shadowRadius = 10
+        view.layer.shadowOffset = CGSize(width: 0, height: -10)
+        view.layer.masksToBounds = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
+    // 주문버튼
+    private let orderButton: UIButton = {
+        let button = UIButton()
+        button.configuration = .filled()
+        button.setTitle("주문 하기", for: .normal)
+        button.titleLabel?.textColor = .white
+        button.tintColor = .systemRed
+        button.layer.borderColor = UIColor.systemRed.cgColor
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 6
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    // MARK: - 하단 뷰 Layout
     private func belowConfigure() {
         self.view.addSubview(stackView)
         self.view.addSubview(orderView)
@@ -140,7 +168,6 @@ class CakeViewController: UIViewController {
         
         infoButton.topAnchor.constraint(
             equalTo: priceLabel.bottomAnchor, constant: 20).isActive = true
-//        infoButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         infoButton.leadingAnchor.constraint(
             equalTo: stackView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         
@@ -149,6 +176,8 @@ class CakeViewController: UIViewController {
         reviewButton.leadingAnchor.constraint(
             equalTo: infoButton.trailingAnchor).isActive = true
         
+        
+        // InfoView Layout
         infoView.widthAnchor.constraint(lessThanOrEqualTo: stackView.widthAnchor).isActive = true
         infoView.topAnchor.constraint(
             equalTo: infoButton.bottomAnchor, constant: 10).isActive = true
@@ -167,6 +196,7 @@ class CakeViewController: UIViewController {
         infoLabel.trailingAnchor.constraint(equalTo: infoView.trailingAnchor).isActive = true
         infoLabel.bottomAnchor.constraint(equalTo: infoView.bottomAnchor).isActive = true
         
+        // OrderView Layout
         orderView.addSubview(orderButton)
         
         orderView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -175,42 +205,59 @@ class CakeViewController: UIViewController {
         orderView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         orderView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.08).isActive = true
         
+        // OrderButton
         orderButton.leadingAnchor.constraint(equalTo: orderView.leadingAnchor).isActive = true
         orderButton.trailingAnchor.constraint(equalTo: orderView.trailingAnchor).isActive = true
         orderButton.centerXAnchor.constraint(equalTo: orderView.centerXAnchor).isActive = true
         orderButton.centerYAnchor.constraint(equalTo: orderView.centerYAnchor, constant: -10).isActive = true
         
+        // Button Tapped
+        infoButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
+        reviewButton.addTarget(self, action: #selector(reviewButtonTapped), for: .touchUpInside)
+        orderButton.addTarget(self, action: #selector(orderButtonTapped), for: .touchUpInside)
+
     }
     
-    private let orderView: UIView = {
-        let view = UIView()
-        view.layer.shadowOpacity = 0.5
-        view.layer.shadowColor = UIColor.lightGray.cgColor
-        view.layer.shadowRadius = 10
-        view.layer.shadowOffset = CGSize(width: 0, height: -10)
-        view.layer.masksToBounds = false
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    // MARK: - Buttons
     
-    private let orderButton: UIButton = {
-        let button = UIButton()
-        button.configuration = .filled()
-        button.setTitle("주문 하기", for: .normal)
-        button.titleLabel?.textColor = .white
-        button.tintColor = .systemRed
-        button.layer.borderColor = UIColor.systemRed.cgColor
-        button.layer.borderWidth = 2
-        button.layer.cornerRadius = 6
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    @objc func infoButtonTapped(_ sender: UIButton) {
+        print("CakeVC :     infoButtonTapped")
+        
+        if sender.tintColor == .white && reviewButton.tintColor == .systemRed {
+            sender.tintColor = .systemRed
+            sender.setTitleColor(.white, for: .normal)
+            reviewButton.tintColor = .white
+            reviewButton.setTitleColor(.systemRed, for: .normal)
+        } else if sender.tintColor == .systemRed && reviewButton.tintColor == .white {
+            print("nothing happened")
+        }
+    }
     
-    // collectionview layout
+    @objc func reviewButtonTapped(_ sender: UIButton) {
+        print("CakeVC :     reviewButtonTapped")
+        
+        if sender.tintColor == .white && infoButton.tintColor == .systemRed {
+            sender.tintColor = .systemRed
+            sender.setTitleColor(.white, for: .normal)
+            infoButton.tintColor = .white
+            infoButton.setTitleColor(.systemRed, for: .normal)
+        } else {
+            print("nothing")
+        }
+    }
+    
+    @objc func orderButtonTapped(_ sender: UIButton) {
+        print("CakeVC:      Order Button Tapped")
+        
+        let optionVC = OptionViewController()
+        
+        self.present(optionVC, animated: true)
+    }
+    
+    // MARK: - 상단 뷰 Layout - Compositional Layout
     private func configure() {
         self.view.addSubview(collectionView)
         collectionView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-//        collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         collectionView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.5).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
