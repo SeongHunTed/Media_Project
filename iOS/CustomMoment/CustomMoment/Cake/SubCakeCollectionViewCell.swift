@@ -33,7 +33,7 @@ class SubCakeCollectionViewCell: UICollectionViewCell {
     }
     
     private func prepare() {
-        print("Sub-CakeCell :       prepareForReuse(), prepare(0 called")
+
     }
     
     func configure() {

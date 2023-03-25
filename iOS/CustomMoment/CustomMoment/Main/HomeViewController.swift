@@ -213,24 +213,6 @@ extension HomeViewController {
         return section
     }
     
-    // Banner Timer action()
-    private func bannerTimer() {
-        let _ : Timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { (Timer) in
-            self.bannerMove()
-        }
-    }
-    
-    // Banner move action
-    private func bannerMove() {
-        if curPage == collectionView.numberOfItems(inSection: 0) {
-            collectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .right, animated: true)
-            curPage = 0
-            return
-        }
-        curPage += 1
-        collectionView.scrollToItem(at: NSIndexPath(item: curPage, section: 0) as IndexPath, at: .right, animated: true)
-    }
-    
     // Cake Compositional Layout
     private func cakeCompositionalLayout() -> NSCollectionLayoutSection {
         
@@ -261,6 +243,24 @@ extension HomeViewController {
         section.boundarySupplementaryItems = [header]
         
         return section
+    }
+    
+    // Banner Timer action()
+    private func bannerTimer() {
+        let _ : Timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { (Timer) in
+            self.bannerMove()
+        }
+    }
+    
+    // Banner move action
+    private func bannerMove() {
+        if curPage == collectionView.numberOfItems(inSection: 0) {
+            collectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .right, animated: true)
+            curPage = 0
+            return
+        }
+        curPage += 1
+        collectionView.scrollToItem(at: NSIndexPath(item: curPage, section: 0) as IndexPath, at: .right, animated: true)
     }
 }
 

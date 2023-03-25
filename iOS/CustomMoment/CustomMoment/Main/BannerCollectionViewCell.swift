@@ -36,7 +36,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
     }
     
     func prepare() {
-        print("Banner Cell :    prepareForReuse(), prepare() called")
+//        print("Banner Cell :    prepareForReuse(), prepare() called")
     }
     
     func bannerLayout() {

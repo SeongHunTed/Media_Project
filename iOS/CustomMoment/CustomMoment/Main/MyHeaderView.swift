@@ -58,21 +58,23 @@ class MyFooterView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.addSubview(bannerPageControl)
+        configure()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    private func configure() {
-//        NSLayoutConstraint.activate([
-//            bannerPageControl.topAnchor.constraint(equalTo: topAnchor),
-//            bannerPageControl.bottomAnchor.constraint(equalTo: bottomAnchor),
-//            bannerPageControl.leadingAnchor.constraint(equalTo: leadingAnchor),
-//            bannerPageControl.trailingAnchor.constraint(equalTo: trailingAnchor)
-//        ])
-//    }
+    private func configure() {
+        addSubview(bannerPageControl)
+        NSLayoutConstraint.activate([
+            bannerPageControl.topAnchor.constraint(equalTo: topAnchor),
+            bannerPageControl.bottomAnchor.constraint(equalTo: bottomAnchor),
+            bannerPageControl.leadingAnchor.constraint(equalTo: leadingAnchor),
+            bannerPageControl.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ])
+    }
+    
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -80,6 +82,6 @@ class MyFooterView: UICollectionReusableView {
     }
     
     func prepare() {
-        print("MyFooterView :       prepare() called")
+        
     }
 }
