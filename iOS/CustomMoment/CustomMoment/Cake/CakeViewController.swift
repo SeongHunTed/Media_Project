@@ -74,7 +74,7 @@ class CakeViewController: UIViewController {
         button.titleLabel?.textColor = .white
         button.tintColor = .systemRed
         button.layer.borderColor = UIColor.systemRed.cgColor
-        button.layer.borderWidth = 2
+        button.layer.borderWidth = 1
         button.layer.cornerRadius = 6
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -88,7 +88,7 @@ class CakeViewController: UIViewController {
         button.setTitleColor(.systemRed, for: .normal)
         button.tintColor = .white
         button.layer.borderColor = UIColor.systemRed.cgColor
-        button.layer.borderWidth = 2
+        button.layer.borderWidth = 1
         button.layer.cornerRadius = 6
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

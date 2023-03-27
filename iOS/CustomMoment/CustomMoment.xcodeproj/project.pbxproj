@@ -27,6 +27,8 @@
 		78EBE5CE29B620B900E3B065 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE5CD29B620B900E3B065 /* LoginViewController.swift */; };
 		78EBE5D029B7012F00E3B065 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE5CF29B7012F00E3B065 /* SignUpViewController.swift */; };
 		78FD435A29CCBCB6006ED4F8 /* OptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD435929CCBCB6006ED4F8 /* OptionViewController.swift */; };
+		78FD435C29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD435B29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift */; };
+		78FD435E29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD435D29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift */; };
 		BF915787BD7391E86CBE79E7 /* Pods_CustomMoment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82991A5AC183263865885DC6 /* Pods_CustomMoment.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +75,8 @@
 		78EBE5CD29B620B900E3B065 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		78EBE5CF29B7012F00E3B065 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		78FD435929CCBCB6006ED4F8 /* OptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionViewController.swift; sourceTree = "<group>"; };
+		78FD435B29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeButtonCollectionViewCell.swift; sourceTree = "<group>"; };
+		78FD435D29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionButtonCollectionViewCell.swift; sourceTree = "<group>"; };
 		82991A5AC183263865885DC6 /* Pods_CustomMoment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CustomMoment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EE6212CE56B56E1F8960AEA /* Pods_CustomMoment_CustomMomentUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CustomMoment_CustomMomentUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5EA5C4F534C5BB1A7A5F5D1 /* Pods_CustomMomentTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CustomMomentTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -207,6 +211,8 @@
 			isa = PBXGroup;
 			children = (
 				78FD435929CCBCB6006ED4F8 /* OptionViewController.swift */,
+				78FD435B29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift */,
+				78FD435D29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift */,
 			);
 			path = Option;
 			sourceTree = "<group>";
@@ -476,6 +482,7 @@
 				786509B829C193A000B7C7F3 /* BannerCollectionViewCell.swift in Sources */,
 				78EBE5CE29B620B900E3B065 /* LoginViewController.swift in Sources */,
 				7862AB3C29C81BFC00E501C9 /* CakeViewController.swift in Sources */,
+				78FD435E29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift in Sources */,
 				78EBE59C29B600CB00E3B065 /* AppDelegate.swift in Sources */,
 				785BFE0029BA236500CBDB0C /* LoginModel.swift in Sources */,
 				7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */,
@@ -485,6 +492,7 @@
 				78EBE5D029B7012F00E3B065 /* SignUpViewController.swift in Sources */,
 				78FD435A29CCBCB6006ED4F8 /* OptionViewController.swift in Sources */,
 				7858F8D929CA0EC200E20C92 /* SubCakeCollectionViewCell.swift in Sources */,
+				78FD435C29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
