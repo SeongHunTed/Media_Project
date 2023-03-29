@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CakeViewController: UIViewController {
+class MainCakeViewController: UIViewController {
     
     // MARK: - Variables
     let vcIdentifier = "CakeVC"
@@ -249,7 +249,7 @@ class CakeViewController: UIViewController {
     @objc func orderButtonTapped(_ sender: UIButton) {
         print("CakeVC:      Order Button Tapped")
         
-        let optionVC = OptionViewController()
+        let optionVC = MainOptionViewController()
         
         self.present(optionVC, animated: true)
     }
@@ -299,11 +299,11 @@ class CakeViewController: UIViewController {
 
 
 // MARK: extension
-extension CakeViewController: UICollectionViewDelegate {
+extension MainCakeViewController: UICollectionViewDelegate {
     
 }
 
-extension CakeViewController: UICollectionViewDataSource {
+extension MainCakeViewController: UICollectionViewDataSource {
     
     // 필수 구현 1 : 섹션의 아이템 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

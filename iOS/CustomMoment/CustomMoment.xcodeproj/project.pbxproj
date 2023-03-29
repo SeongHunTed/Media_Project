@@ -12,7 +12,7 @@
 		7858F8D929CA0EC200E20C92 /* SubCakeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7858F8D829CA0EC200E20C92 /* SubCakeCollectionViewCell.swift */; };
 		785BFE0029BA236500CBDB0C /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785BFDFF29BA236500CBDB0C /* LoginModel.swift */; };
 		785CC9B129C43DEF0034BD30 /* MyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CC9B029C43DEF0034BD30 /* MyHeaderView.swift */; };
-		7862AB3C29C81BFC00E501C9 /* CakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB3B29C81BFC00E501C9 /* CakeViewController.swift */; };
+		7862AB3C29C81BFC00E501C9 /* MainCakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB3B29C81BFC00E501C9 /* MainCakeViewController.swift */; };
 		7862AB3F29C824D400E501C9 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB3E29C824D400E501C9 /* UIViewExtension.swift */; };
 		7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */; };
 		786509B829C193A000B7C7F3 /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */; };
@@ -26,9 +26,13 @@
 		78EBE5CC29B613E400E3B065 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE5CB29B613E400E3B065 /* HomeViewController.swift */; };
 		78EBE5CE29B620B900E3B065 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE5CD29B620B900E3B065 /* LoginViewController.swift */; };
 		78EBE5D029B7012F00E3B065 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE5CF29B7012F00E3B065 /* SignUpViewController.swift */; };
-		78FD435A29CCBCB6006ED4F8 /* OptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD435929CCBCB6006ED4F8 /* OptionViewController.swift */; };
+		78FD435A29CCBCB6006ED4F8 /* MainOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD435929CCBCB6006ED4F8 /* MainOptionViewController.swift */; };
 		78FD435C29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD435B29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift */; };
 		78FD435E29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD435D29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift */; };
+		78FD436229D343B4006ED4F8 /* CakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD436129D343B4006ED4F8 /* CakeViewController.swift */; };
+		78FD436629D34435006ED4F8 /* StoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD436529D34435006ED4F8 /* StoreViewController.swift */; };
+		78FD436829D3444B006ED4F8 /* MyInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD436729D3444B006ED4F8 /* MyInfoViewController.swift */; };
+		78FD436A29D349DA006ED4F8 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD436929D349DA006ED4F8 /* TabBarViewController.swift */; };
 		BF915787BD7391E86CBE79E7 /* Pods_CustomMoment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82991A5AC183263865885DC6 /* Pods_CustomMoment.framework */; };
 /* End PBXBuildFile section */
 
@@ -56,7 +60,7 @@
 		7858F8D829CA0EC200E20C92 /* SubCakeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCakeCollectionViewCell.swift; sourceTree = "<group>"; };
 		785BFDFF29BA236500CBDB0C /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		785CC9B029C43DEF0034BD30 /* MyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHeaderView.swift; sourceTree = "<group>"; };
-		7862AB3B29C81BFC00E501C9 /* CakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CakeViewController.swift; sourceTree = "<group>"; };
+		7862AB3B29C81BFC00E501C9 /* MainCakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeViewController.swift; sourceTree = "<group>"; };
 		7862AB3E29C824D400E501C9 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeCollectionViewCell.swift; sourceTree = "<group>"; };
 		786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -74,9 +78,13 @@
 		78EBE5CB29B613E400E3B065 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		78EBE5CD29B620B900E3B065 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		78EBE5CF29B7012F00E3B065 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		78FD435929CCBCB6006ED4F8 /* OptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionViewController.swift; sourceTree = "<group>"; };
+		78FD435929CCBCB6006ED4F8 /* MainOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainOptionViewController.swift; sourceTree = "<group>"; };
 		78FD435B29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeButtonCollectionViewCell.swift; sourceTree = "<group>"; };
 		78FD435D29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionButtonCollectionViewCell.swift; sourceTree = "<group>"; };
+		78FD436129D343B4006ED4F8 /* CakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CakeViewController.swift; sourceTree = "<group>"; };
+		78FD436529D34435006ED4F8 /* StoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreViewController.swift; sourceTree = "<group>"; };
+		78FD436729D3444B006ED4F8 /* MyInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfoViewController.swift; sourceTree = "<group>"; };
+		78FD436929D349DA006ED4F8 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		82991A5AC183263865885DC6 /* Pods_CustomMoment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CustomMoment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EE6212CE56B56E1F8960AEA /* Pods_CustomMoment_CustomMomentUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CustomMoment_CustomMomentUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5EA5C4F534C5BB1A7A5F5D1 /* Pods_CustomMomentTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CustomMomentTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,6 +128,7 @@
 				785CC9B029C43DEF0034BD30 /* MyHeaderView.swift */,
 				786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */,
 				7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */,
+				78FD436929D349DA006ED4F8 /* TabBarViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -134,13 +143,13 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
-		7862AB3829C7DDC200E501C9 /* Cake */ = {
+		7862AB3829C7DDC200E501C9 /* MainCake */ = {
 			isa = PBXGroup;
 			children = (
-				7862AB3B29C81BFC00E501C9 /* CakeViewController.swift */,
+				7862AB3B29C81BFC00E501C9 /* MainCakeViewController.swift */,
 				7858F8D829CA0EC200E20C92 /* SubCakeCollectionViewCell.swift */,
 			);
-			path = Cake;
+			path = MainCake;
 			sourceTree = "<group>";
 		};
 		7862AB3D29C824A400E501C9 /* Extension */ = {
@@ -176,11 +185,11 @@
 		78EBE59A29B600CB00E3B065 /* CustomMoment */ = {
 			isa = PBXGroup;
 			children = (
+				78FD436429D3441E006ED4F8 /* MyInfoTab */,
+				78FD436329D34414006ED4F8 /* StoreTab */,
+				78FD436029D3439C006ED4F8 /* CakeTab */,
+				78FD435F29D34362006ED4F8 /* MainTab */,
 				7862AB3D29C824A400E501C9 /* Extension */,
-				78FD435829CCBC99006ED4F8 /* Option */,
-				7862AB3829C7DDC200E501C9 /* Cake */,
-				785BFDFE29BA1F0700CBDB0C /* Account */,
-				785BFDFD29BA1EF600CBDB0C /* Main */,
 				78EBE5A429B600CE00E3B065 /* Assets.xcassets */,
 				78EBE5A629B600CE00E3B065 /* LaunchScreen.storyboard */,
 				78EBE59D29B600CB00E3B065 /* SceneDelegate.swift */,
@@ -207,14 +216,49 @@
 			path = CustomMomentUITests;
 			sourceTree = "<group>";
 		};
-		78FD435829CCBC99006ED4F8 /* Option */ = {
+		78FD435829CCBC99006ED4F8 /* MainOption */ = {
 			isa = PBXGroup;
 			children = (
-				78FD435929CCBCB6006ED4F8 /* OptionViewController.swift */,
+				78FD435929CCBCB6006ED4F8 /* MainOptionViewController.swift */,
 				78FD435B29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift */,
 				78FD435D29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift */,
 			);
-			path = Option;
+			path = MainOption;
+			sourceTree = "<group>";
+		};
+		78FD435F29D34362006ED4F8 /* MainTab */ = {
+			isa = PBXGroup;
+			children = (
+				78FD435829CCBC99006ED4F8 /* MainOption */,
+				7862AB3829C7DDC200E501C9 /* MainCake */,
+				785BFDFE29BA1F0700CBDB0C /* Account */,
+				785BFDFD29BA1EF600CBDB0C /* Main */,
+			);
+			path = MainTab;
+			sourceTree = "<group>";
+		};
+		78FD436029D3439C006ED4F8 /* CakeTab */ = {
+			isa = PBXGroup;
+			children = (
+				78FD436129D343B4006ED4F8 /* CakeViewController.swift */,
+			);
+			path = CakeTab;
+			sourceTree = "<group>";
+		};
+		78FD436329D34414006ED4F8 /* StoreTab */ = {
+			isa = PBXGroup;
+			children = (
+				78FD436529D34435006ED4F8 /* StoreViewController.swift */,
+			);
+			path = StoreTab;
+			sourceTree = "<group>";
+		};
+		78FD436429D3441E006ED4F8 /* MyInfoTab */ = {
+			isa = PBXGroup;
+			children = (
+				78FD436729D3444B006ED4F8 /* MyInfoViewController.swift */,
+			);
+			path = MyInfoTab;
 			sourceTree = "<group>";
 		};
 		8A9EEF3753E5B5BA09C621F4 /* Frameworks */ = {
@@ -481,17 +525,21 @@
 				7862AB3F29C824D400E501C9 /* UIViewExtension.swift in Sources */,
 				786509B829C193A000B7C7F3 /* BannerCollectionViewCell.swift in Sources */,
 				78EBE5CE29B620B900E3B065 /* LoginViewController.swift in Sources */,
-				7862AB3C29C81BFC00E501C9 /* CakeViewController.swift in Sources */,
+				7862AB3C29C81BFC00E501C9 /* MainCakeViewController.swift in Sources */,
 				78FD435E29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift in Sources */,
+				78FD436629D34435006ED4F8 /* StoreViewController.swift in Sources */,
 				78EBE59C29B600CB00E3B065 /* AppDelegate.swift in Sources */,
+				78FD436229D343B4006ED4F8 /* CakeViewController.swift in Sources */,
+				78FD436A29D349DA006ED4F8 /* TabBarViewController.swift in Sources */,
 				785BFE0029BA236500CBDB0C /* LoginModel.swift in Sources */,
 				7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */,
 				785CC9B129C43DEF0034BD30 /* MyHeaderView.swift in Sources */,
 				78EBE59E29B600CB00E3B065 /* SceneDelegate.swift in Sources */,
 				78EBE5CC29B613E400E3B065 /* HomeViewController.swift in Sources */,
 				78EBE5D029B7012F00E3B065 /* SignUpViewController.swift in Sources */,
-				78FD435A29CCBCB6006ED4F8 /* OptionViewController.swift in Sources */,
+				78FD435A29CCBCB6006ED4F8 /* MainOptionViewController.swift in Sources */,
 				7858F8D929CA0EC200E20C92 /* SubCakeCollectionViewCell.swift in Sources */,
+				78FD436829D3444B006ED4F8 /* MyInfoViewController.swift in Sources */,
 				78FD435C29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

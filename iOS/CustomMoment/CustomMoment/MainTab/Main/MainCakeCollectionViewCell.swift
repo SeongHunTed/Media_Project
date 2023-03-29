@@ -19,6 +19,8 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
     
     private let stackView: UIStackView = {
         let stackView = UIStackView()
+        stackView.backgroundColor = .white
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -70,9 +72,9 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = .clear
-        self.contentView.layer.cornerRadius = 8
-        self.contentView.layer.borderWidth = 1
-        self.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
+//        self.contentView.layer.cornerRadius = 8
+//        self.contentView.layer.borderWidth = 1
+        
     }
     
     required init?(coder: NSCoder) {
@@ -98,25 +100,30 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         stackView.addSubview(cakeLabel)
         stackView.addSubview(priceLabel)
         
-        cellImage.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
-        cellImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -60).isActive = true
-        cellImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
-        cellImage.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
+        stackView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        
+        cellImage.topAnchor.constraint(equalTo: self.stackView.topAnchor).isActive = true
+        cellImage.bottomAnchor.constraint(equalTo: self.stackView.bottomAnchor, constant: -60).isActive = true
+        cellImage.leadingAnchor.constraint(equalTo: self.stackView.leadingAnchor).isActive = true
+        cellImage.trailingAnchor.constraint(equalTo: self.stackView.trailingAnchor).isActive = true
         
         storeLabel.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 2).isActive = true
-        storeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 3).isActive = true
-        storeLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -3).isActive = true
+        storeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 3).isActive = true
+        storeLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         
         reviewLabel.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 2).isActive = true
-        reviewLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -3).isActive = true
+        reviewLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -3).isActive = true
         
         cakeLabel.topAnchor.constraint(equalTo: storeLabel.bottomAnchor, constant: 2).isActive = true
-        cakeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 3).isActive = true
-        cakeLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -3).isActive = true
+        cakeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 3).isActive = true
+        cakeLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         
         priceLabel.topAnchor.constraint(equalTo: cakeLabel.bottomAnchor, constant: 5).isActive = true
-        priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 3).isActive = true
-        priceLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -3).isActive = true
+        priceLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 3).isActive = true
+        priceLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         
     }
     

@@ -9,7 +9,7 @@ import UIKit
 import FSCalendar
 import DropDown
 
-class OptionViewController: UIViewController {
+class MainOptionViewController: UIViewController {
     
     //MARK: - Variables
     lazy var today = calendar.today!
@@ -102,7 +102,7 @@ class OptionViewController: UIViewController {
 
 
 // MARK: - Calendar UI/Action SetUp
-extension OptionViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
+extension MainOptionViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
     
     //
     func setCalendarUI() {
@@ -136,7 +136,7 @@ extension OptionViewController: FSCalendarDelegate, FSCalendarDataSource, FSCale
 
 //MARK: - CollectioView SetUp, Action
 
-extension OptionViewController {
+extension MainOptionViewController {
 
     private func setCollectionView() {
         self.collectionView.dataSource = self
@@ -202,11 +202,11 @@ extension OptionViewController {
 }
 
 
-extension OptionViewController: UICollectionViewDelegate {
+extension MainOptionViewController: UICollectionViewDelegate {
     
 }
 
-extension OptionViewController: UICollectionViewDataSource {
+extension MainOptionViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return self.dataSource.count

@@ -14,7 +14,7 @@
 
 import UIKit
 
-class HomeViewController: UINavigationController {
+class HomeViewController: UIViewController {
 
     let vcIdentifier = "HomeVC"
     
@@ -46,23 +46,14 @@ class HomeViewController: UINavigationController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setUpDelegate()
+        imageLayout()
         bannerLayout()
         bannerTimer()
-        imageLayout()
         setUpLoginButton()
     }
     
     // MARK: - Components
-    
-    
-    // 상단 네비게이터
-    private lazy var navBar: UINavigationBar = {
-        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.15))
-        navBar.addSubview(logo)
-        navBar.addSubview(loginButton)
-        self.view.addSubview(navBar)
-        return navBar
-    }()
+
     
     // 컬렉션뷰 생성
     private lazy var collectionView: UICollectionView = {
@@ -88,7 +79,7 @@ class HomeViewController: UINavigationController {
 
     // 컬렉션뷰 - 배너 : 레이아웃
     private func bannerLayout() {
-        collectionView.topAnchor.constraint(equalTo: self.navBar.bottomAnchor).isActive = true
+        collectionView.topAnchor.constraint(equalTo: self.bottomBoarder.bottomAnchor, constant: 20).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
@@ -105,18 +96,25 @@ class HomeViewController: UINavigationController {
         return imageView
     }()
     
+    private lazy var bottomBoarder = UIImageView(frame: CGRect(x: 0, y: 96.6, width: self.view.frame.width, height: 0.5))
+    
     // 로고 터치 처리
     func imageLayout() {
+        self.view.addSubview(logo)
+        self.view.addSubview(bottomBoarder)
         
         logo.topAnchor.constraint(
-            equalTo: self.navBar.safeAreaLayoutGuide.topAnchor, constant: 1).isActive = true
+            equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 1).isActive = true
         logo.centerXAnchor.constraint(
-            equalTo: self.navBar.centerXAnchor).isActive = true
+            equalTo: self.view.centerXAnchor).isActive = true
         logo.widthAnchor.constraint(
-            equalTo: self.navBar.widthAnchor, multiplier: 0.3).isActive = true
+            equalTo: self.view.widthAnchor, multiplier: 0.2).isActive = true
         logo.heightAnchor.constraint(
-            equalTo: self.navBar.heightAnchor, multiplier: 0.25).isActive = true
+            equalTo: self.view.heightAnchor, multiplier: 0.045).isActive = true
         logo.contentMode = .scaleAspectFit
+        
+        bottomBoarder.backgroundColor = .black.withAlphaComponent(0.6)
+        bottomBoarder.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
     }
     
     @objc func homeButtonTapped() {
@@ -189,7 +187,7 @@ extension HomeViewController {
     // banner compositional layout
     private func bannerCompositionalLayout() -> NSCollectionLayoutSection {
         
-        collectionView.register(MyFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
+//        collectionView.register(MyFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
         
         // item size - absolute : 고정값, estimated : 추측, fraction : 퍼센트
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
@@ -205,9 +203,9 @@ extension HomeViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50)), elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
-        
-        section.boundarySupplementaryItems = [footer]
+//        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50)), elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
+//
+//        section.boundarySupplementaryItems = [footer]
         section.orthogonalScrollingBehavior = .paging
         
         return section
@@ -219,17 +217,17 @@ extension HomeViewController {
         collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
         
         // item size - absolute : 고정값, estimated : 추측, fraction : 퍼센트
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.333), heightDimension: .fractionalWidth(0.4))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .fractionalHeight(0.7))
         
         // making item with above size
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10)
         
         // group size
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.4))
+        let groupSize = NSCollectionLayoutSize(widthDimension: itemSize.widthDimension, heightDimension: .fractionalHeight(0.4))
         
         // making group
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item, item])
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
         
@@ -291,7 +289,7 @@ extension HomeViewController: UICollectionViewDelegate {
     @objc func cakeTapped() {
         print("HomeVC :     Collection Cell Tapped")
         
-        let cakeVC = CakeViewController()
+        let cakeVC = MainCakeViewController()
         
         self.present(cakeVC, animated: true)
     }
@@ -324,9 +322,10 @@ extension HomeViewController: UICollectionViewDataSource {
             guard let cell: BannerCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: BannerCollectionViewCell.self), for: indexPath) as? BannerCollectionViewCell else {
                 return UICollectionViewCell()
             }
-
             cell.bannerLayout()
             cell.cellImage.image = UIImage(named: items[indexPath.item].image)
+            cell.cellImage.contentMode = .scaleAspectFill
+            cell.cellImage.clipsToBounds = true
 
             return cell
             
@@ -340,11 +339,17 @@ extension HomeViewController: UICollectionViewDataSource {
             cell.cakeLayout()
             
             // cell design
-            cell.layer.shadowColor = UIColor.black.cgColor
-            cell.layer.shadowOpacity = 0.2
-            cell.layer.shadowRadius = 10
-            cell.layer.shadowOffset = CGSize(width: 0, height: 10)
-            cell.layer.masksToBounds = false
+            // scaleAspectFill 원본 비율 유지 + 여백없이
+            cell.cellImage.contentMode = .scaleAspectFill
+            cell.cellImage.clipsToBounds = true
+            cell.layer.cornerRadius = 8
+            cell.layer.borderWidth = 0.1
+            cell.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
+//            cell.layer.shadowColor = UIColor.black.cgColor
+//            cell.layer.shadowOpacity = 0.5
+//            cell.layer.shadowRadius = 0.3
+//            cell.layer.shadowOffset = CGSize(width: 1, height: 1)
+//            cell.layer.masksToBounds = false
             
             return cell
         }

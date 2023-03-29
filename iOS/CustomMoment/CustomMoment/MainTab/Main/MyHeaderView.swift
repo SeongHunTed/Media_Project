@@ -22,7 +22,7 @@ class MyHeaderView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .clear
+        self.backgroundColor = .white
         NSLayoutConstraint.activate([
 //            self.label.topAnchor.constraint(equalTo: self..bottomAnchor, constant: 10),
             self.label.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
