@@ -1,0 +1,139 @@
+{
+    "user_email" : "rubat0@gmail.com",
+    "cake_name" : "test cake",
+    "cake_price" : "10000",
+    "cake_basic_option" : {
+        "cake_size" : {
+            "1" : {
+                "option" : "도시락",
+                "price" : "1000"
+            },
+            "2" : {
+                "option" : "미니케이크 1호",
+                "price" : "2000"
+            },
+            "3" : {
+                "option" : "미니케이크 2호",
+                "price" : "3000"
+            }
+        },
+        "cake_flavor" : {
+            "1" : {
+                "option" : "바닐라",
+                "price" : "0"
+            },
+            "2" : {
+                "option" : "초코",
+                "price" : "1000"
+            }
+        },
+        "cake_color" : {
+            "1" : {
+                "option" : "기본",
+                "price" : "0"
+            },
+            "2" : {
+                "option" : "배경",
+                "price" : "1000"
+            },
+            "3" : {
+                "option" : "꽃",
+                "price" : "2000"
+            }
+        },
+        "cake_design" : {
+            "1" : {
+                "option" : "동물",
+                "price" : "1000"
+            },
+            "2" : {
+                "option" : "얼굴",
+                "price" : "2000"
+            },
+            "3" : {
+                "option" : "앞면",
+                "price" : "1000"
+            },
+            "4" : {
+                "option" : "뒷면",
+                "price" : "1000"
+            }
+        }
+    },
+    "cake_additional_option" : {
+        "cake_sidedeco" : {
+            "1" : {
+                "option" : "sidedeco",
+                "price" : "2000"
+            }
+        },
+        "cake_deco" : {
+            "1" : {
+                "option" : "악세시리",
+                "price" : "1000"
+            },
+            "2" : {
+                "option" : "리본",
+                "price" : "2000"
+            },
+            "3" : {
+                "option" : "티아라",
+                "price" : "3000"
+            },
+            "4" : {
+                "option" : "소주",
+                "price" : "5000"
+            }
+        },
+        "cake_lettering" : {
+            "1" : {
+                "option" : "케이크",
+                "price" : "1000"
+            },
+            "2" : {
+                "option" : "하판",
+                "price" : "1000"
+            },
+            "3" : {
+                "option" : "옆면",
+                "price" : "1000"
+            }
+        },
+        "cake_font" : {
+            "1" : {
+                "option" : "궁서체",
+                "price" : "0"
+            },
+            "2" : {
+                "option" : "바탕체",
+                "price" : "0"
+            }
+        },
+        "cake_picture" : {
+            "1" : {
+                "option" : "True",
+                "price" : "2000"
+            }
+        },
+        "cake_package" : {
+            "1" : {
+                "option" : "기본",
+                "price" : "0"
+            },
+            "2" : {
+                "option" : "스페셜",
+                "price" : "2000"
+            }
+        },
+        "cake_candle" : {
+            "1" : {
+                "option" : "숫자초",
+                "price" : "500"
+            },
+            "2" : {
+                "option" : "일반초",
+                "price" : "100"
+            }
+        }
+    }
+}

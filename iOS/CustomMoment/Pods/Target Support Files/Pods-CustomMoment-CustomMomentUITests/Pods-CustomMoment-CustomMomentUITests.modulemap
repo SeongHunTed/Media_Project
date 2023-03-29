@@ -1,0 +1,6 @@
+framework module Pods_CustomMoment_CustomMomentUITests {
+  umbrella header "Pods-CustomMoment-CustomMomentUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
