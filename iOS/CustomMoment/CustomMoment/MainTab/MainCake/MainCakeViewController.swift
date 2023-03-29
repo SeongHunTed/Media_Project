@@ -264,7 +264,7 @@ class MainCakeViewController: UIViewController {
     }
     
     private func getLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout { sectionIndex, layourenvironment -> NSCollectionLayoutSection? in
+        return UICollectionViewCompositionalLayout { sectionIndex, layoutenvironment -> NSCollectionLayoutSection? in
             return self.cakeBannerCompositionalLayout()
         }
     }

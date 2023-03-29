@@ -62,6 +62,5 @@ class OptionButtonCollectionViewCell: UICollectionViewCell {
     @objc func optionButtonTapped(_ sender: UIButton) {
         print("OptionVC :   Option Tapped")
         dropDown.show()
-        print(dropDown.dataSource)
     }
 }
