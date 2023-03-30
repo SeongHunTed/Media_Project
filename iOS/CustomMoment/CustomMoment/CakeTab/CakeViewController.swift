@@ -101,20 +101,18 @@ extension CakeViewController {
     
     private func cakeCollectionCompositionalLayout() -> NSCollectionLayoutSection {
         
-        let adjuster = (collectionView.bounds.width - collectionView.bounds.width * 0.45 * 2) / 2
+        collectionView.register(CakeStoreHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "CakeStoreHeaderView")
         
-        collectionView.register(CakeCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "CakeCollectionReusableView")
-        
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.45), heightDimension: .fractionalHeight(1.0))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
         
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.33))
 //
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
-        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(adjuster), top: .fixed(10), trailing: nil, bottom: .fixed(10))
+        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(2), top: nil, trailing: .fixed(2), bottom: .fixed(20))
         
         let section = NSCollectionLayoutSection(group: group)
 //        section.orthogonalScrollingBehavior = .continuous
@@ -159,5 +157,11 @@ extension CakeViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return cakeImages.count
+    }
+    
+    // dataSource Header, Footer
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CakeStoreHeaderView", for: indexPath) as! CakeStoreHeaderView
+        return header
     }
 }

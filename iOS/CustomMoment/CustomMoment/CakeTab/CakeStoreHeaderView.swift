@@ -8,7 +8,7 @@
 import UIKit
 import DropDown
 
-class CakeCollectionReusableView: UICollectionReusableView {
+class CakeStoreHeaderView: UICollectionReusableView {
     
     private let dropDownDataSource = ["인기순", "최신순", "높은가격순", "낮은가격순"]
     
@@ -57,8 +57,8 @@ class CakeCollectionReusableView: UICollectionReusableView {
             self!.filterButton.setTitle(item, for: .normal)
         }
         
-        filterButton.topAnchor.constraint(equalTo: self.bottomAnchor, constant: 20).isActive = true
-        filterButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        filterButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
+        filterButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
         filterButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.15).isActive = true
 
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
