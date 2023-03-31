@@ -6,6 +6,7 @@ target 'CustomMoment' do
   use_frameworks!
   pod 'FSCalendar'
   pod 'DropDown'
+  pod 'NMapsMap'
   # Pods for CustomMoment
 
   target 'CustomMomentTests' do

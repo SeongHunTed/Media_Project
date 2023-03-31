@@ -19,14 +19,17 @@ class MyHeaderView: UICollectionReusableView {
         return label
     }()
     
+    private lazy var bottomBoarder = UIImageView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0.5))
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.backgroundColor = .white
+        self.addSubview(bottomBoarder)
         NSLayoutConstraint.activate([
 //            self.label.topAnchor.constraint(equalTo: self..bottomAnchor, constant: 10),
             self.label.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
         ])
     }
     

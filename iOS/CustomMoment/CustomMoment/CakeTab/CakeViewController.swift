@@ -101,7 +101,7 @@ extension CakeViewController {
     
     private func cakeCollectionCompositionalLayout() -> NSCollectionLayoutSection {
         
-        collectionView.register(CakeStoreHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "CakeStoreHeaderView")
+        collectionView.register(CakeHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "CakeStoreHeaderView")
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
         
@@ -110,12 +110,11 @@ extension CakeViewController {
         
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.33))
-//
+
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
         group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(2), top: nil, trailing: .fixed(2), bottom: .fixed(20))
         
         let section = NSCollectionLayoutSection(group: group)
-//        section.orthogonalScrollingBehavior = .continuous
         
         let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.08))
         
@@ -177,7 +176,7 @@ extension CakeViewController: UICollectionViewDataSource {
     
     // dataSource Header, Footer
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CakeStoreHeaderView", for: indexPath) as! CakeStoreHeaderView
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CakeStoreHeaderView", for: indexPath) as! CakeHeaderView
         header.delegate = self
         return header
     }
@@ -192,7 +191,7 @@ extension CakeViewController: CalendarPopUpDelegate {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "M월 d일"
         let dateString = dateFormatter.string(from: data)
-        if let headerView = collectionView.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionHeader).first as? CakeStoreHeaderView {
+        if let headerView = collectionView.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionHeader).first as? CakeHeaderView {
             headerView.calendarButton.setTitle(dateString, for: .normal)
         }
     }
@@ -200,7 +199,7 @@ extension CakeViewController: CalendarPopUpDelegate {
     
 }
 
-extension CakeViewController: CakeStoreHeaderViewDelegate {
+extension CakeViewController: CakeHeaderViewDelegate {
     
     func showCalendarPopUp() {
         print("Hi")

@@ -98,7 +98,7 @@ extension StoreViewController {
     
     private func storeCollectionCompositionalLayout() -> NSCollectionLayoutSection {
         
-        collectionView.register(CakeStoreHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "CakeStoreHeaderView")
+        collectionView.register(StoreHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "StoreHeaderView")
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
@@ -134,8 +134,8 @@ extension StoreViewController: UICollectionViewDelegate {
     @objc func storeTapped() {
         print("StoreVC :        Collection Cell Tapped")
         
-//        let storeDetailVC = StoreDetailController()
-//        self.present(storeDetailVC, animated: true)
+        let storePopVC = StorePopUpViewController()
+        self.present(storePopVC, animated: true)
     }
     
 }
@@ -168,7 +168,7 @@ extension StoreViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CakeStoreHeaderView", for: indexPath) as! CakeStoreHeaderView
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "StoreHeaderView", for: indexPath) as! StoreHeaderView
         return header
     }
     
