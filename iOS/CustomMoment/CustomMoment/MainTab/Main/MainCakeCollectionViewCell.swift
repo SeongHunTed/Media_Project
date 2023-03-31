@@ -88,7 +88,7 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
     
     private func prepare() {
         // 아마도 케이크 정보를 받는 text 들을 초기화 해주어야할 것 같음
-        print("Main-CakeCell :      prepareForReuse(), prepare() called")
+//        print("Main-CakeCell :      prepareForReuse(), prepare() called")
     }
 
     func cakeLayout() {

@@ -18,6 +18,7 @@
 		7862AB3F29C824D400E501C9 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB3E29C824D400E501C9 /* UIViewExtension.swift */; };
 		7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */; };
 		786509B829C193A000B7C7F3 /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */; };
+		78DFB05529D70F22002DC963 /* StoreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB05429D70F22002DC963 /* StoreCollectionViewCell.swift */; };
 		78EBE59C29B600CB00E3B065 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE59B29B600CB00E3B065 /* AppDelegate.swift */; };
 		78EBE59E29B600CB00E3B065 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE59D29B600CB00E3B065 /* SceneDelegate.swift */; };
 		78EBE5A529B600CE00E3B065 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78EBE5A429B600CE00E3B065 /* Assets.xcassets */; };
@@ -68,6 +69,7 @@
 		7862AB3E29C824D400E501C9 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeCollectionViewCell.swift; sourceTree = "<group>"; };
 		786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
+		78DFB05429D70F22002DC963 /* StoreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCollectionViewCell.swift; sourceTree = "<group>"; };
 		78EBE59829B600CB00E3B065 /* CustomMoment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomMoment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78EBE59B29B600CB00E3B065 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		78EBE59D29B600CB00E3B065 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 			isa = PBXGroup;
 			children = (
 				78FD436529D34435006ED4F8 /* StoreViewController.swift */,
+				78DFB05429D70F22002DC963 /* StoreCollectionViewCell.swift */,
 			);
 			path = StoreTab;
 			sourceTree = "<group>";
@@ -544,6 +547,7 @@
 				785C487E29D5F06300F52CFD /* CalendarPopUpViewController.swift in Sources */,
 				78EBE59E29B600CB00E3B065 /* SceneDelegate.swift in Sources */,
 				78EBE5CC29B613E400E3B065 /* HomeViewController.swift in Sources */,
+				78DFB05529D70F22002DC963 /* StoreCollectionViewCell.swift in Sources */,
 				78EBE5D029B7012F00E3B065 /* SignUpViewController.swift in Sources */,
 				78FD435A29CCBCB6006ED4F8 /* MainOptionViewController.swift in Sources */,
 				7858F8D929CA0EC200E20C92 /* SubCakeCollectionViewCell.swift in Sources */,
