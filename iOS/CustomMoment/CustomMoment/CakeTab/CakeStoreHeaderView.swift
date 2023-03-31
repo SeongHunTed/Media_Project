@@ -7,15 +7,22 @@
 
 import UIKit
 import DropDown
+import FSCalendar
 
-class CakeStoreHeaderView: UICollectionReusableView {
+protocol CakeStoreHeaderViewDelegate: AnyObject {
+    func calendarButtonTapped()
+}
+
+public class CakeStoreHeaderView: UICollectionReusableView {
+    
+    weak var delegate: CakeStoreHeaderViewDelegate?
     
     private let dropDownDataSource = ["인기순", "최신순", "높은가격순", "낮은가격순"]
     
     let filterButton: UIButton = {
         let button = UIButton(type: .roundedRect)
         button.tintColor = .black
-        button.backgroundColor = .systemGray4
+        button.backgroundColor = .systemGray6
         button.titleLabel?.font = .boldSystemFont(ofSize: 15)
         button.layer.cornerRadius = 4
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -29,9 +36,23 @@ class CakeStoreHeaderView: UICollectionReusableView {
         return dropDown
     }()
     
+    public var calendarButton: UIButton = {
+        let button = UIButton(type: .roundedRect)
+        button.tintColor = .black
+        button.backgroundColor = .systemGray6
+        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
+        button.layer.cornerRadius = 4
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    func updateButtonTitle(withTitle title: String) {
+        print("working \(title)")
+        calendarButton.setTitle(title, for: .normal)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         self.backgroundColor = .white
         filterButtonSetUp()
     }
@@ -40,15 +61,13 @@ class CakeStoreHeaderView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-    }
-    
     private func filterButtonSetUp() {
         self.addSubview(filterButton)
         self.addSubview(filterDropDown)
+        self.addSubview(calendarButton)
         
-        filterButton.setTitle("필터 옵션", for: .normal)
+        filterButton.setTitle("인기순", for: .normal)
+        calendarButton.setTitle("날짜 검색", for: .normal)
         
         filterDropDown.dataSource = dropDownDataSource
         filterDropDown.anchorView = filterButton
@@ -57,15 +76,26 @@ class CakeStoreHeaderView: UICollectionReusableView {
             self!.filterButton.setTitle(item, for: .normal)
         }
         
-        filterButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
-        filterButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
-        filterButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.15).isActive = true
+        filterButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        filterButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 12).isActive = true
+        filterButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.2).isActive = true
+        calendarButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        calendarButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
+        calendarButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.2).isActive = true
 
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        calendarButton.addTarget(self, action: #selector(calendarButtonTapped), for: .touchUpInside)
     }
     
     @objc func filterButtonTapped(_ sender: UIButton) {
-        print("CakeVC :   Option Tapped")
+        print("CakeVC :     Filter Option Tapped")
         filterDropDown.show()
     }
+    
+    @objc func calendarButtonTapped() {
+        print("CakeVC :     Calendar Button Tapped")
+        delegate?.calendarButtonTapped()
+    }
+    
+    
 }

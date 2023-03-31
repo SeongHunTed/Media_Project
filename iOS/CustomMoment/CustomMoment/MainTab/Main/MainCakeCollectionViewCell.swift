@@ -111,18 +111,18 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         cellImage.trailingAnchor.constraint(equalTo: self.stackView.trailingAnchor).isActive = true
         
         storeLabel.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 2).isActive = true
-        storeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 3).isActive = true
+        storeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 6).isActive = true
         storeLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         
         reviewLabel.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 2).isActive = true
-        reviewLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -3).isActive = true
+        reviewLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -5).isActive = true
         
         cakeLabel.topAnchor.constraint(equalTo: storeLabel.bottomAnchor, constant: 2).isActive = true
-        cakeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 3).isActive = true
+        cakeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 6).isActive = true
         cakeLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         
-        priceLabel.topAnchor.constraint(equalTo: cakeLabel.bottomAnchor, constant: 5).isActive = true
-        priceLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 3).isActive = true
+        priceLabel.topAnchor.constraint(equalTo: cakeLabel.bottomAnchor, constant: 1).isActive = true
+        priceLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 6).isActive = true
         priceLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         
     }

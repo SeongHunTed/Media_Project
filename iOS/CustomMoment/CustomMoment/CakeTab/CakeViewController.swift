@@ -128,6 +128,21 @@ extension CakeViewController {
 }
 
 extension CakeViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("item at \(indexPath.section)/\(indexPath.item) tapped")
+        
+        if indexPath.section == 0 {
+            cakeTapped()
+        }
+    }
+    
+    @objc func cakeTapped() {
+        print("CakeVC :     Collection Cell Tapped")
+        
+        let cakeVC = MainCakeViewController()
+        
+        self.present(cakeVC, animated: true)
+    }
     
 }
 
@@ -162,6 +177,40 @@ extension CakeViewController: UICollectionViewDataSource {
     // dataSource Header, Footer
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CakeStoreHeaderView", for: indexPath) as! CakeStoreHeaderView
+        header.delegate = self
         return header
+    }
+    
+
+}
+
+
+extension CakeViewController: CalendarPopUpDelegate {
+    
+    func didSelectDate(_ data: Date) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "M월 d일"
+        let dateString = dateFormatter.string(from: data)
+        if let headerView = collectionView.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionHeader).first as? CakeStoreHeaderView {
+            headerView.calendarButton.setTitle(dateString, for: .normal)
+        }
+    }
+    
+    
+}
+
+extension CakeViewController: CakeStoreHeaderViewDelegate {
+    
+    func showCalendarPopUp() {
+        print("Hi")
+        let calendarPopUpVC = CalendarPopUpViewController()
+        calendarPopUpVC.modalPresentationStyle = .overFullScreen
+        calendarPopUpVC.delegate = self
+        present(calendarPopUpVC, animated: true, completion: nil)
+    }
+
+    func calendarButtonTapped() {
+        print("CakeVC :     func calendarButtonTapped()")
+        showCalendarPopUp()
     }
 }
