@@ -187,7 +187,7 @@ extension HomeViewController {
     // banner compositional layout
     private func bannerCompositionalLayout() -> NSCollectionLayoutSection {
         
-//        collectionView.register(MyFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
+        collectionView.register(MyFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
         
         // item size - absolute : 고정값, estimated : 추측, fraction : 퍼센트
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
@@ -202,10 +202,12 @@ extension HomeViewController {
         // making group
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.1))
+        
         let section = NSCollectionLayoutSection(group: group)
-//        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50)), elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
-//
-//        section.boundarySupplementaryItems = [footer]
+        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
+
+        section.boundarySupplementaryItems = [footer]
         section.orthogonalScrollingBehavior = .paging
         
         return section
@@ -234,13 +236,19 @@ extension HomeViewController {
         let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50.0))
         
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-//        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
-        
+
         section.orthogonalScrollingBehavior = .continuous
-//        section.boundarySupplementaryItems = [header, footer]
         section.boundarySupplementaryItems = [header]
         
         return section
+    }
+    
+    // Return Current Page
+    private func getCurrentPage() -> Int {
+        let currentPage = Int(collectionView.contentOffset.x / collectionView.bounds.width)
+            print("Current page: \(currentPage)")
+            return currentPage
+
     }
     
     // Banner Timer action()
@@ -250,15 +258,19 @@ extension HomeViewController {
         }
     }
     
-    // Banner move action
+//    Banner move action
     private func bannerMove() {
         if curPage == collectionView.numberOfItems(inSection: 0) {
             collectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .right, animated: true)
             curPage = 0
+            print("curpage : ", curPage)
             return
         }
         curPage += 1
         collectionView.scrollToItem(at: NSIndexPath(item: curPage, section: 0) as IndexPath, at: .right, animated: true)
+
+        print("curpage : ", curPage)
+
     }
 }
 
@@ -290,7 +302,6 @@ extension HomeViewController: UICollectionViewDelegate {
         print("HomeVC :     Collection Cell Tapped")
         
         let cakeVC = MainCakeViewController()
-        
         self.present(cakeVC, animated: true)
     }
     
@@ -312,9 +323,9 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            return collectionView.bounds.size
+        return collectionView.bounds.size
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         switch self.dataSource[indexPath.section] {
@@ -326,7 +337,7 @@ extension HomeViewController: UICollectionViewDataSource {
             cell.cellImage.image = UIImage(named: items[indexPath.item].image)
             cell.cellImage.contentMode = .scaleAspectFill
             cell.cellImage.clipsToBounds = true
-
+            
             return cell
             
         case let .cake(items):
@@ -345,11 +356,6 @@ extension HomeViewController: UICollectionViewDataSource {
             cell.layer.cornerRadius = 8
             cell.layer.borderWidth = 0.1
             cell.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
-//            cell.layer.shadowColor = UIColor.black.cgColor
-//            cell.layer.shadowOpacity = 0.5
-//            cell.layer.shadowRadius = 0.3
-//            cell.layer.shadowOffset = CGSize(width: 1, height: 1)
-//            cell.layer.masksToBounds = false
             
             return cell
         }
@@ -365,10 +371,23 @@ extension HomeViewController: UICollectionViewDataSource {
             return header
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyFooterView
-            footer.prepare()
+            //            footer.prepare(collectionView.numberOfItems(inSection: 0), indexPath.item)
+            footer.bannerPageControl.numberOfPages = collectionView.numberOfItems(inSection: 0)
             return footer
         default:
             return UICollectionReusableView()
         }
+    }
+        
+}
+
+extension HomeViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let width = collectionView.frame.width
+        let currentPage = Int((collectionView.contentOffset.x + width/2)/width)
+        print("current offset: \(collectionView.contentOffset.x)")
+        let footerView = collectionView.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionFooter).first as! MyFooterView
+            footerView.bannerPageControl.currentPage = currentPage
     }
 }

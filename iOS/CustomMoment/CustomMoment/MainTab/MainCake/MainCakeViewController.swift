@@ -331,7 +331,7 @@ extension MainCakeViewController: UICollectionViewDataSource {
             return header
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyFooterView
-            footer.prepare()
+            footer.prepare(cakeImages.count, indexPath.item)
             return footer
         default:
             return UICollectionReusableView()

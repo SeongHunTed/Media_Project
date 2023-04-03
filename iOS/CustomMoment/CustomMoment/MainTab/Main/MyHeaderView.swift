@@ -19,13 +19,10 @@ class MyHeaderView: UICollectionReusableView {
         return label
     }()
     
-    private lazy var bottomBoarder = UIImageView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0.5))
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.backgroundColor = .white
-        self.addSubview(bottomBoarder)
         NSLayoutConstraint.activate([
 //            self.label.topAnchor.constraint(equalTo: self..bottomAnchor, constant: 10),
             self.label.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
@@ -50,11 +47,12 @@ class MyHeaderView: UICollectionReusableView {
 
 class MyFooterView: UICollectionReusableView {
     
-    private let bannerPageControl: UIPageControl = {
+    let bannerPageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.pageIndicatorTintColor = .systemGray
-        pageControl.currentPageIndicatorTintColor = .white
+        pageControl.currentPageIndicatorTintColor = .systemGray5
         pageControl.currentPage = 0
+        pageControl.numberOfPages = 3
         pageControl.isUserInteractionEnabled = false
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
@@ -70,22 +68,23 @@ class MyFooterView: UICollectionReusableView {
     }
     
     private func configure() {
-        addSubview(bannerPageControl)
+        self.addSubview(bannerPageControl)
         NSLayoutConstraint.activate([
-            bannerPageControl.topAnchor.constraint(equalTo: topAnchor),
-            bannerPageControl.bottomAnchor.constraint(equalTo: bottomAnchor),
-            bannerPageControl.leadingAnchor.constraint(equalTo: leadingAnchor),
-            bannerPageControl.trailingAnchor.constraint(equalTo: trailingAnchor)
+            bannerPageControl.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            bannerPageControl.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            bannerPageControl.widthAnchor.constraint(equalToConstant: 200), // 원하는 크기로 지정해주세요
+            bannerPageControl.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
     
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.prepare()
+        self.prepare(nil, nil)
     }
     
-    func prepare() {
-        
+    func prepare(_ itemCounts: Int?, _ currentPage: Int?) {
+        bannerPageControl.numberOfPages = itemCounts!
+        bannerPageControl.currentPage = currentPage!
     }
 }
