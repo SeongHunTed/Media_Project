@@ -246,7 +246,7 @@ extension HomeViewController {
     // Return Current Page
     private func getCurrentPage() -> Int {
         let currentPage = Int(collectionView.contentOffset.x / collectionView.bounds.width)
-            print("Current page: \(currentPage)")
+//            print("Current page: \(currentPage)")
             return currentPage
 
     }
@@ -263,13 +263,13 @@ extension HomeViewController {
         if curPage == collectionView.numberOfItems(inSection: 0) {
             collectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .right, animated: true)
             curPage = 0
-            print("curpage : ", curPage)
+//            print("curpage : ", curPage)
             return
         }
         curPage += 1
         collectionView.scrollToItem(at: NSIndexPath(item: curPage, section: 0) as IndexPath, at: .right, animated: true)
 
-        print("curpage : ", curPage)
+//        print("curpage : ", curPage)
 
     }
 }
