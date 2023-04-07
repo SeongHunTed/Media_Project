@@ -28,6 +28,12 @@
 		78DFB06A29DC7B2C002DC963 /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB06929DC7B2C002DC963 /* CartViewController.swift */; };
 		78DFB06C29DC7B83002DC963 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB06B29DC7B83002DC963 /* OrderViewController.swift */; };
 		78DFB06E29DC7BE6002DC963 /* MemberInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB06D29DC7BE6002DC963 /* MemberInfoViewController.swift */; };
+		78DFB07029DD4B2E002DC963 /* MyInfoSubViewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB06F29DD4B2E002DC963 /* MyInfoSubViewsViewController.swift */; };
+		78DFB07529DD686E002DC963 /* CartCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB07429DD686E002DC963 /* CartCollectionViewCell.swift */; };
+		78DFB07729DDF0AB002DC963 /* OrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB07629DDF0AB002DC963 /* OrderDetailViewController.swift */; };
+		78DFB07A29DF1872002DC963 /* DrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB07929DF1872002DC963 /* DrawViewController.swift */; };
+		78DFB07D29DF1EC2002DC963 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB07C29DF1EC2002DC963 /* APIService.swift */; };
+		78DFB08029DF20C5002DC963 /* OpenAIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 78DFB07F29DF20C5002DC963 /* OpenAIKit */; };
 		78EBE59C29B600CB00E3B065 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE59B29B600CB00E3B065 /* AppDelegate.swift */; };
 		78EBE59E29B600CB00E3B065 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE59D29B600CB00E3B065 /* SceneDelegate.swift */; };
 		78EBE5A529B600CE00E3B065 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78EBE5A429B600CE00E3B065 /* Assets.xcassets */; };
@@ -86,6 +92,12 @@
 		78DFB06929DC7B2C002DC963 /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		78DFB06B29DC7B83002DC963 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		78DFB06D29DC7BE6002DC963 /* MemberInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberInfoViewController.swift; sourceTree = "<group>"; };
+		78DFB06F29DD4B2E002DC963 /* MyInfoSubViewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfoSubViewsViewController.swift; sourceTree = "<group>"; };
+		78DFB07429DD686E002DC963 /* CartCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCollectionViewCell.swift; sourceTree = "<group>"; };
+		78DFB07629DDF0AB002DC963 /* OrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailViewController.swift; sourceTree = "<group>"; };
+		78DFB07929DF1872002DC963 /* DrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawViewController.swift; sourceTree = "<group>"; };
+		78DFB07C29DF1EC2002DC963 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		78DFB08129DF5FBC002DC963 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		78EBE59829B600CB00E3B065 /* CustomMoment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomMoment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78EBE59B29B600CB00E3B065 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		78EBE59D29B600CB00E3B065 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +133,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				78DFB05F29D73E20002DC963 /* Pods_CustomMoment.framework in Frameworks */,
+				78DFB08029DF20C5002DC963 /* OpenAIKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,11 +198,55 @@
 		78DFB06629DB0E78002DC963 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
-				78DFB06929DC7B2C002DC963 /* CartViewController.swift */,
-				78DFB06B29DC7B83002DC963 /* OrderViewController.swift */,
-				78DFB06D29DC7BE6002DC963 /* MemberInfoViewController.swift */,
+				78DFB07329DD594C002DC963 /* MemberInfo */,
+				78DFB07229DD5945002DC963 /* Order */,
+				78DFB07129DD593A002DC963 /* Cart */,
+				78DFB06F29DD4B2E002DC963 /* MyInfoSubViewsViewController.swift */,
 			);
 			path = Subviews;
+			sourceTree = "<group>";
+		};
+		78DFB07129DD593A002DC963 /* Cart */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB06929DC7B2C002DC963 /* CartViewController.swift */,
+				78DFB07429DD686E002DC963 /* CartCollectionViewCell.swift */,
+				78DFB07629DDF0AB002DC963 /* OrderDetailViewController.swift */,
+			);
+			path = Cart;
+			sourceTree = "<group>";
+		};
+		78DFB07229DD5945002DC963 /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB06B29DC7B83002DC963 /* OrderViewController.swift */,
+			);
+			path = Order;
+			sourceTree = "<group>";
+		};
+		78DFB07329DD594C002DC963 /* MemberInfo */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB06D29DC7BE6002DC963 /* MemberInfoViewController.swift */,
+			);
+			path = MemberInfo;
+			sourceTree = "<group>";
+		};
+		78DFB07829DF1783002DC963 /* DrawTab */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB07B29DF1E2A002DC963 /* DALLE_API */,
+				78DFB07929DF1872002DC963 /* DrawViewController.swift */,
+			);
+			path = DrawTab;
+			sourceTree = "<group>";
+		};
+		78DFB07B29DF1E2A002DC963 /* DALLE_API */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB07C29DF1EC2002DC963 /* APIService.swift */,
+			);
+			path = DALLE_API;
 			sourceTree = "<group>";
 		};
 		78EBE58F29B600CB00E3B065 = {
@@ -217,6 +274,7 @@
 		78EBE59A29B600CB00E3B065 /* CustomMoment */ = {
 			isa = PBXGroup;
 			children = (
+				78DFB07829DF1783002DC963 /* DrawTab */,
 				78FD436429D3441E006ED4F8 /* MyInfoTab */,
 				78FD436329D34414006ED4F8 /* StoreTab */,
 				78FD436029D3439C006ED4F8 /* CakeTab */,
@@ -227,6 +285,7 @@
 				78EBE59D29B600CB00E3B065 /* SceneDelegate.swift */,
 				78EBE59B29B600CB00E3B065 /* AppDelegate.swift */,
 				78EBE5A929B600CE00E3B065 /* Info.plist */,
+				78DFB08129DF5FBC002DC963 /* Secrets.xcconfig */,
 			);
 			path = CustomMoment;
 			sourceTree = "<group>";
@@ -343,6 +402,9 @@
 			dependencies = (
 			);
 			name = CustomMoment;
+			packageProductDependencies = (
+				78DFB07F29DF20C5002DC963 /* OpenAIKit */,
+			);
 			productName = CustomMoment;
 			productReference = 78EBE59829B600CB00E3B065 /* CustomMoment.app */;
 			productType = "com.apple.product-type.application";
@@ -418,6 +480,9 @@
 				Base,
 			);
 			mainGroup = 78EBE58F29B600CB00E3B065;
+			packageReferences = (
+				78DFB07E29DF20C4002DC963 /* XCRemoteSwiftPackageReference "OpenAIKit" */,
+			);
 			productRefGroup = 78EBE59929B600CB00E3B065 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -567,16 +632,19 @@
 				786509B829C193A000B7C7F3 /* BannerCollectionViewCell.swift in Sources */,
 				78EBE5CE29B620B900E3B065 /* LoginViewController.swift in Sources */,
 				7862AB3C29C81BFC00E501C9 /* MainCakeViewController.swift in Sources */,
+				78DFB07A29DF1872002DC963 /* DrawViewController.swift in Sources */,
 				78DFB06529D87FBD002DC963 /* StorePopUpHeaderView.swift in Sources */,
 				78FD435E29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift in Sources */,
 				78FD436629D34435006ED4F8 /* StoreViewController.swift in Sources */,
 				78DFB06C29DC7B83002DC963 /* OrderViewController.swift in Sources */,
+				78DFB07529DD686E002DC963 /* CartCollectionViewCell.swift in Sources */,
 				785C487C29D4AF6D00F52CFD /* CakeHeaderView.swift in Sources */,
 				78EBE59C29B600CB00E3B065 /* AppDelegate.swift in Sources */,
 				78DFB06329D75E20002DC963 /* StorePopUpCollectionViewCell.swift in Sources */,
 				78FD436229D343B4006ED4F8 /* CakeViewController.swift in Sources */,
 				78DFB06E29DC7BE6002DC963 /* MemberInfoViewController.swift in Sources */,
 				78FD436A29D349DA006ED4F8 /* TabBarViewController.swift in Sources */,
+				78DFB07729DDF0AB002DC963 /* OrderDetailViewController.swift in Sources */,
 				785BFE0029BA236500CBDB0C /* LoginModel.swift in Sources */,
 				7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */,
 				785CC9B129C43DEF0034BD30 /* MyHeaderView.swift in Sources */,
@@ -588,7 +656,9 @@
 				78DFB05B29D72E63002DC963 /* StorePopUpViewController.swift in Sources */,
 				78DFB05529D70F22002DC963 /* StoreCollectionViewCell.swift in Sources */,
 				78DFB06829DB2033002DC963 /* MyInfoTableViewCell.swift in Sources */,
+				78DFB07029DD4B2E002DC963 /* MyInfoSubViewsViewController.swift in Sources */,
 				78EBE5D029B7012F00E3B065 /* SignUpViewController.swift in Sources */,
+				78DFB07D29DF1EC2002DC963 /* APIService.swift in Sources */,
 				78FD435A29CCBCB6006ED4F8 /* MainOptionViewController.swift in Sources */,
 				7858F8D929CA0EC200E20C92 /* SubCakeCollectionViewCell.swift in Sources */,
 				78FD436829D3444B006ED4F8 /* MyInfoViewController.swift in Sources */,
@@ -672,6 +742,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CONFIG_FILE_PATH = "$(SRCROOT)/CustomMoment/Secrets.xcconfig";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -694,6 +765,9 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OPENAI_API_KEY = "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";
+				PAPAGO_API_ID = usOTVLF7ZLwHAGkX5qXV;
+				PAPAGO_API_PW = ECmb6wKzg9;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -732,6 +806,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CONFIG_FILE_PATH = "$(SRCROOT)/CustomMoment/Secrets.xcconfig";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -747,6 +822,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OPENAI_API_KEY = "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";
+				PAPAGO_API_ID = usOTVLF7ZLwHAGkX5qXV;
+				PAPAGO_API_PW = ECmb6wKzg9;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -934,6 +1012,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		78DFB07E29DF20C4002DC963 /* XCRemoteSwiftPackageReference "OpenAIKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MarcoDotIO/OpenAIKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		78DFB07F29DF20C5002DC963 /* OpenAIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78DFB07E29DF20C4002DC963 /* XCRemoteSwiftPackageReference "OpenAIKit" */;
+			productName = OpenAIKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 78EBE59029B600CB00E3B065 /* Project object */;
 }

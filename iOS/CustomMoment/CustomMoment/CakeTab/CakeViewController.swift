@@ -72,12 +72,11 @@ class CakeViewController: UIViewController {
         collectionView.backgroundColor = .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(MainCakeCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: MainCakeCollectionViewCell.self))
+        self.view.addSubview(collectionView)
         return collectionView
     }()
     
     private func collectionViewSetUp() {
-        self.view.addSubview(collectionView)
-        
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         
@@ -202,7 +201,6 @@ extension CakeViewController: CalendarPopUpDelegate {
 extension CakeViewController: CakeHeaderViewDelegate {
     
     func showCalendarPopUp() {
-        print("Hi")
         let calendarPopUpVC = CalendarPopUpViewController()
         calendarPopUpVC.modalPresentationStyle = .overFullScreen
         calendarPopUpVC.delegate = self

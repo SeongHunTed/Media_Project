@@ -60,7 +60,6 @@ class StoreCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = .clear
-        
     }
     
     required init?(coder: NSCoder) {

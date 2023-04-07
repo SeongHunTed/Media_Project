@@ -165,19 +165,19 @@ extension MyInfoViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             // "사진" 버튼을 눌렀을 때
             // 새로운 UIViewController를 생성하여 present 합니다.
-            let cartVC = CartViewController()
+            let cartVC = CartViewController("장바구니")
             cartVC.modalTransitionStyle = .coverVertical
             cartVC.modalPresentationStyle = .fullScreen
             self.present(cartVC, animated: true)
         case 1:
             // "장바구니" 버튼을 눌렀을 때
-            let orderVC = OrderViewController()
+            let orderVC = OrderViewController("구매내역")
             orderVC.modalTransitionStyle = .coverVertical
             orderVC.modalPresentationStyle = .fullScreen
             self.present(orderVC, animated: true)
         case 2:
             // "구매내역" 버튼을 눌렀을 때
-            let memberInfoVC = MemberInfoViewController()
+            let memberInfoVC = MemberInfoViewController("회원정보")
             memberInfoVC.modalTransitionStyle = .coverVertical
             memberInfoVC.modalPresentationStyle = .fullScreen
             self.present(memberInfoVC, animated: true)

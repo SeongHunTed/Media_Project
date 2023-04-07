@@ -164,8 +164,6 @@ class HomeViewController: UIViewController {
         
         self.present(loginVC, animated: true, completion: nil)
     }
-    
-    
 }
 
 //  MARK: - CollectionView Compositional Layout
@@ -263,13 +261,10 @@ extension HomeViewController {
         if curPage == collectionView.numberOfItems(inSection: 0) {
             collectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .right, animated: true)
             curPage = 0
-//            print("curpage : ", curPage)
             return
         }
         curPage += 1
         collectionView.scrollToItem(at: NSIndexPath(item: curPage, section: 0) as IndexPath, at: .right, animated: true)
-
-//        print("curpage : ", curPage)
 
     }
 }
@@ -386,7 +381,6 @@ extension HomeViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let width = collectionView.frame.width
         let currentPage = Int((collectionView.contentOffset.x + width/2)/width)
-        print("current offset: \(collectionView.contentOffset.x)")
         let footerView = collectionView.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionFooter).first as! MyFooterView
             footerView.bannerPageControl.currentPage = currentPage
     }
