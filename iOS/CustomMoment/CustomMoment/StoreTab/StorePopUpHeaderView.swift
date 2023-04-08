@@ -174,8 +174,8 @@ class StorePopUpFooterView: UICollectionReusableView {
             
             mapView.topAnchor.constraint(equalTo: addressLabel.bottomAnchor, constant: 20),
             mapView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            mapView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5),
-            mapView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8),
+            mapView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.6),
+            mapView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.9),
             
             naverMapView.topAnchor.constraint(equalTo: mapView.topAnchor),
             naverMapView.bottomAnchor.constraint(equalTo: mapView.bottomAnchor),

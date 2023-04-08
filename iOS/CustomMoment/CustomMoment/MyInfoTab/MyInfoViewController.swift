@@ -14,50 +14,69 @@ class MyInfoViewController: UIViewController {
         self.view.backgroundColor = .white
         imageSetUp()
         configure()
+        collectionViewSetUp()
     }
     
-    override func viewDidLayoutSubviews() {
-        profileImage.layer.cornerRadius = profileImage.frame.height/2
-        profileImage.clipsToBounds = true
-        profileImage.contentMode = .scaleAspectFit
-    }
     
     // MARK: - Variables
     
+    let loginSuccess = true
+    
     let profile = "ted"
     let userName = "김성훈"
+    let userEmail = "4047ksh@naver.com"
     let data = ["장바구니", "구매내역", "회원정보", "test"]
     let cellImage = ["cart", "creditcard", "person", "pencil"]
     
+    let collectionImages = ["newspaper", "gift", "wonsign.circle", "ticket"]
+    let collectionTitle = ["공지사항", "이벤트", "구매내역", "쿠폰"]
+    
+    let cake = ["cake6"]
+    
     // MARK: - Profile
     
-    private lazy var profileLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 30)
+        label.font = UIFont.boldSystemFont(ofSize: 17)
         label.text = userName + " 님"
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private lazy var profileImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: profile)
-        imageView.layer.borderWidth = 1
-        imageView.layer.borderColor = UIColor.systemRed.cgColor
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
+    private lazy var idLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.text = userEmail
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
+    
+    private lazy var profileButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("내 정보", for: .normal)
+        button.setImage(UIImage(systemName: "person"), for: .normal)
+        button.backgroundColor = .white
+        button.tintColor = .black
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    @objc func profileButtonTapped() {
+        let memberInfoVC = MemberInfoViewController()
+        
+        self.present(memberInfoVC, animated: true)
+    }
 
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.backgroundColor = .clear
-        stackView.layer.cornerRadius = 4
-        stackView.layer.borderWidth = 2
-        stackView.layer.borderColor = UIColor.systemRed.withAlphaComponent(0.8).cgColor
-        stackView.addSubview(profileImage)
-        stackView.addSubview(profileLabel)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+    private lazy var profileView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemGray5
+        view.layer.borderColor = UIColor.systemRed.withAlphaComponent(0.8).cgColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     // MARK: - logo
@@ -76,6 +95,7 @@ class MyInfoViewController: UIViewController {
     func imageSetUp() {
         self.view.addSubview(logo)
         self.view.addSubview(bottomBoarder)
+        bottomBoarder.translatesAutoresizingMaskIntoConstraints = false
         
         logo.topAnchor.constraint(
             equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 1).isActive = true
@@ -97,92 +117,261 @@ class MyInfoViewController: UIViewController {
         tabBarController?.selectedIndex = 0
     }
     
-    // MARK: - TableView
+    // MARK: - Login Part
     
-    private let tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.separatorStyle = .none
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        return tableView
+    let loginButton = UIButton(type: .system)
+    
+    // 로그인버튼 처리
+    @objc func loginButtonTapped(sender: UIButton) {
+        print("HomeVC :    Login Button Tapped")
+        
+        let loginVC = LoginViewController()
+        
+        loginVC.modalTransitionStyle = .coverVertical
+        loginVC.modalPresentationStyle = .automatic
+        
+        self.present(loginVC, animated: true, completion: nil)
+    }
+    
+    // MARK: - Collection Vieww
+    
+    // 컬렉션뷰 생성
+    private lazy var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: getLayout())
+        collectionView.isScrollEnabled = false
+        collectionView.clipsToBounds = true
+        collectionView.backgroundColor = .white
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(MyInfoCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: MyInfoCollectionViewCell.self))
+        collectionView.register(CartCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: CartCollectionViewCell.self))
+        return collectionView
     }()
+    
+    private func collectionViewSetUp() {
+        self.view.addSubview(collectionView)
+        
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
+        
+        collectionView.topAnchor.constraint(equalTo: self.profileView.bottomAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+    }
     
     // MARK: - Configure
     
     private func configure() {
         
-        self.view.addSubview(stackView)
-        stackView.topAnchor.constraint(equalTo: bottomBoarder.bottomAnchor, constant: 20).isActive = true
-//        stackView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
-        stackView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        stackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        self.view.addSubview(profileView)
         
-        profileImage.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 10).isActive = true
-        profileImage.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        profileImage.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        profileImage.centerYAnchor.constraint(equalTo: stackView.centerYAnchor).isActive = true
+        profileView.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 10).isActive = true
+        profileView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        profileView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        profileView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        profileView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         
-        profileLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 20).isActive = true
-        profileLabel.centerYAnchor.constraint(equalTo: stackView.centerYAnchor).isActive = true
+        if loginSuccess == false {
+            loginFailedConfigure()
+        } else {
+            loginSuceesConfigure()
+        }
         
-        self.view.addSubview(tableView)
+    }
+    
+    private func loginSuceesConfigure() {
         
-        tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        profileView.addSubview(nameLabel)
+        profileView.addSubview(idLabel)
+        profileView.addSubview(profileButton)
         
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(MyInfoTableViewCell.self, forCellReuseIdentifier: "MyInfoTableViewCell")
+        idLabel.centerXAnchor.constraint(equalTo: profileView.centerXAnchor).isActive = true
+        idLabel.centerYAnchor.constraint(equalTo: profileView.centerYAnchor).isActive = true
+        
+        nameLabel.bottomAnchor.constraint(equalTo: idLabel.topAnchor,constant: -2).isActive = true
+        nameLabel.centerXAnchor.constraint(equalTo: self.profileView.centerXAnchor).isActive = true
+        
+        profileButton.centerXAnchor.constraint(equalTo: profileView.centerXAnchor).isActive = true
+        profileButton.topAnchor.constraint(equalTo: idLabel.bottomAnchor, constant: 5).isActive = true
+        profileButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        profileButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+    }
+    
+    private func loginFailedConfigure() {
+        
+        profileView.addSubview(loginButton)
+        
+        loginButton.translatesAutoresizingMaskIntoConstraints = false
+        loginButton.widthAnchor.constraint(
+            equalToConstant: 80).isActive = true
+        loginButton.heightAnchor.constraint(
+            equalToConstant: 30).isActive = true
+        loginButton.centerXAnchor.constraint(
+            equalTo: self.profileView.centerXAnchor).isActive = true
+        loginButton.centerYAnchor.constraint(equalTo: self.profileView.centerYAnchor).isActive = true
+        
+        loginButton.setTitle("로그인", for: .normal)
+        loginButton.setTitleColor(.blue, for: .normal)
+        loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        loginButton.backgroundColor = .white
+        loginButton.layer.cornerRadius = 4
+        
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        
     }
 }
 
-extension MyInfoViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MyInfoTableViewCell", for: indexPath) as? MyInfoTableViewCell else {
-            return UITableViewCell()
-        }
-        cell.label.text = data[indexPath.row]
-        cell.cellImageView.image = UIImage(systemName: cellImage[indexPath.row])?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
+// MARK: - CollectionView Delegate, DataSource, Layout
 
-        return cell
+extension MyInfoViewController {
+    
+    private func getLayout() -> UICollectionViewLayout {
+        return UICollectionViewCompositionalLayout { sectionIndex, layoutenvironment -> NSCollectionLayoutSection? in
+            if sectionIndex == 0 {
+                return self.infoCollectionCompositionalLayout()
+            } else {
+                return self.cartCollectionCompositionalLayout()
+            }
+        }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+    private func infoCollectionCompositionalLayout() -> NSCollectionLayoutSection {
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.25), heightDimension: .fractionalHeight(1.0))
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+//        item.contentInsets = NSDirectionalEdgeInsets(top)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.15))
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: .fixed(10), trailing: nil, bottom: .fixed(10))
+        
+        let section = NSCollectionLayoutSection(group: group)
+        
+        return section
     }
     
-    // UITableView의 셀을 누르면 해당 기능에 맞는 화면으로 이동합니다.
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.row {
-        case 0:
-            // "사진" 버튼을 눌렀을 때
-            // 새로운 UIViewController를 생성하여 present 합니다.
-            let cartVC = CartViewController("장바구니")
-            cartVC.modalTransitionStyle = .coverVertical
-            cartVC.modalPresentationStyle = .fullScreen
-            self.present(cartVC, animated: true)
-        case 1:
-            // "장바구니" 버튼을 눌렀을 때
-            let orderVC = OrderViewController("구매내역")
-            orderVC.modalTransitionStyle = .coverVertical
-            orderVC.modalPresentationStyle = .fullScreen
-            self.present(orderVC, animated: true)
-        case 2:
-            // "구매내역" 버튼을 눌렀을 때
-            let memberInfoVC = MemberInfoViewController("회원정보")
-            memberInfoVC.modalTransitionStyle = .coverVertical
-            memberInfoVC.modalPresentationStyle = .fullScreen
-            self.present(memberInfoVC, animated: true)
+    private func cartCollectionCompositionalLayout() -> NSCollectionLayoutSection {
+        
+        collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.23))
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: .fixed(10), trailing: nil, bottom: .fixed(10))
+        
+        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50.0))
+        
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [header]
+        
+        return section
+    }
+}
+
+extension MyInfoViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if indexPath.section == 0 {
+            switch indexPath.item {
+            case 0:
+                let noticeVC = NoticeViewController()
+                self.present(noticeVC, animated: true)
+            case 1:
+                let eventVC = EventViewController()
+                self.present(eventVC, animated: true)
+            case 2:
+                let orderVC = OrderViewController()
+                self.present(orderVC, animated: true)
+            case 3:
+                let couponVC = CouponViewController()
+                self.present(couponVC, animated: true)
+            default:
+                print("Nothing happens")
+            }
+        }
+    }
+    
+}
+
+extension MyInfoViewController: UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        if section == 0 {
+            return collectionImages.count
+        } else {
+            return cake.count
+        }
+        
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        
+        if loginSuccess == false {
+            return 1
+        } else {
+            return 2
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        if indexPath.section == 0 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: MyInfoCollectionViewCell.self), for: indexPath) as? MyInfoCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            
+            cell.cellImage.image = UIImage(systemName: collectionImages[indexPath.row])
+            cell.cellImage.contentMode = .scaleAspectFill
+            cell.cellTitle.text = collectionTitle[indexPath.row]
+            cell.infoLayout()
+            
+            cell.cellImage.contentMode = .scaleAspectFill
+            return cell
+            
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CartCollectionViewCell.self), for: indexPath) as? CartCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            
+            cell.cellImage.image = UIImage(named: cake[indexPath.row])
+            cell.cartLayout()
+            cell.layer.cornerRadius = 8
+            cell.layer.borderWidth = 0.5
+            cell.contentView.layer.borderColor = UIColor.red.withAlphaComponent(0.8).cgColor
+            return cell
+        }
+        
+    }
+    
+    // dataSource Header, Footer
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderView
+            header.prepare(text: " 🍰 장바구니")
+            let borderLayer = CALayer()
+            borderLayer.frame = CGRect(x: 0, y: header.frame.size.height - 1, width: header.frame.size.width, height: 1)
+            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+            header.layer.addSublayer(borderLayer)
+                    
+            return header
+        case UICollectionView.elementKindSectionFooter:
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyFooterView
+            footer.bannerPageControl.numberOfPages = collectionView.numberOfItems(inSection: 0)
+            return footer
         default:
-            break
+            return UICollectionReusableView()
         }
     }
 }

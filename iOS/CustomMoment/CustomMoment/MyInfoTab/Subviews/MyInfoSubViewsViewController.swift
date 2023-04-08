@@ -15,7 +15,6 @@ class MyInfoSubViewsViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         configure()
-        
     }
     
     init(_ title: String) {

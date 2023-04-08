@@ -92,8 +92,7 @@ class CartCollectionViewCell: UICollectionViewCell {
     @objc func orderButtonTapped() {
         
         let orderDetailVC = OrderDetailViewController()
-        
-        self.window?.rootViewController?.presentedViewController?.present(orderDetailVC, animated: true, completion: nil)
+        self.window?.rootViewController?.present(orderDetailVC, animated: true)
     }
     
     private lazy var deleteButton: UIButton = {
@@ -116,7 +115,7 @@ class CartCollectionViewCell: UICollectionViewCell {
 //            self?.deleteCell()}
         alertController.addAction(cancelAction)
         alertController.addAction(deleteAction)
-        self.window?.rootViewController?.presentedViewController?.present(alertController, animated: true, completion: nil)
+        self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
     }
     
     override init(frame: CGRect) {

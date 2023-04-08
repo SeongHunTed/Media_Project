@@ -1,13 +1,13 @@
 //
-//  MemberInfoViewController.swift
+//  NoticeViewController.swift
 //  CustomMoment
 //
-//  Created by Hoon on 2023/04/05.
+//  Created by Hoon on 2023/04/08.
 //
 
 import UIKit
 
-class MemberInfoViewController: UIViewController {
+class NoticeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +21,7 @@ class MemberInfoViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "회원정보"
+        label.text = "공지사항"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
