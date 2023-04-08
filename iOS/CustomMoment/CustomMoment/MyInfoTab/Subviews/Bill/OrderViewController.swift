@@ -29,7 +29,7 @@ class OrderViewController: UIViewController {
         collectionView.clipsToBounds = true
         collectionView.backgroundColor = .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(OrderCollecitionViewCell.self, forCellWithReuseIdentifier: String(describing: OrderCollecitionViewCell.self))
+        collectionView.register(OrderCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: OrderCollectionViewCell.self))
         return collectionView
     }()
     
@@ -98,7 +98,7 @@ extension OrderViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: OrderCollecitionViewCell.self), for: indexPath) as? OrderCollecitionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: OrderCollectionViewCell.self), for: indexPath) as? OrderCollectionViewCell else {
             return UICollectionViewCell()
         }
         

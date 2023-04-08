@@ -1,5 +1,5 @@
 //
-//  CollectionViewCell.swift
+//  OrderCollectionViewCell.swift
 //  CustomMoment
 //
 //  Created by Hoon on 2023/04/09.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OrderCollecitionViewCell: UICollectionViewCell {
+class OrderCollectionViewCell: UICollectionViewCell {
     
     let cellImage: UIImageView = {
         let imageView = UIImageView()
@@ -103,9 +103,9 @@ class OrderCollecitionViewCell: UICollectionViewCell {
         
         guard let vc = self.findViewController() else { return }
         
-        let orderDetailVC = OrderDetailViewController()
-        
-        vc.present(orderDetailVC, animated: true, completion: nil)    }
+        let billVC = BillViewController()
+        vc.present(billVC, animated: true, completion: nil)
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -167,6 +167,6 @@ class OrderCollecitionViewCell: UICollectionViewCell {
         
     }
     
+
+    
 }
-
-
