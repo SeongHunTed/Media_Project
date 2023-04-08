@@ -9,19 +9,10 @@ import UIKit
 
 class SignUpViewController: UIViewController {
 
-//    private let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer()
-
-//    private let appiconImageView: UIImageView = {
-//        let imageView = UIImageView(image: UIImage(named: "appicon"))
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        return imageView
-//    }()
-
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = .white
-//        scrollView.alwaysBounceVertical = true
         return scrollView
     }()
     
@@ -37,7 +28,7 @@ class SignUpViewController: UIViewController {
         return label
     }()
 
-    private let emailField: UITextField = {
+    let emailField: UITextField = {
         let textField = UITextField()
 
         textField.placeholder = " 이메일"
@@ -63,7 +54,7 @@ class SignUpViewController: UIViewController {
         return label
     }()
 
-    private let passwordField: UITextField = {
+    let passwordField: UITextField = {
         let textField = UITextField()
 
         textField.placeholder = " 비밀번호"
@@ -88,7 +79,7 @@ class SignUpViewController: UIViewController {
         return label
     }()
 
-    private let checkPasswordField: UITextField = {
+    let checkPasswordField: UITextField = {
         let textField = UITextField()
 
         textField.placeholder = " 비밀번호 확인"
@@ -113,7 +104,7 @@ class SignUpViewController: UIViewController {
         return label
     }()
 
-    private let addressField: UITextField = {
+    let addressField: UITextField = {
         let textField = UITextField()
 
         textField.placeholder = " 주소"
@@ -136,7 +127,7 @@ class SignUpViewController: UIViewController {
     }()
 
 
-    private let nameField: UITextField = {
+    let nameField: UITextField = {
         let textField = UITextField()
 
         textField.placeholder = " 이름"
@@ -158,7 +149,7 @@ class SignUpViewController: UIViewController {
         return label
     }()
 
-    private let digitField: UITextField = {
+    let digitField: UITextField = {
         let textField = UITextField()
 
         textField.placeholder = " 전화번호 '-'빼고 입력하세요"
@@ -182,11 +173,10 @@ class SignUpViewController: UIViewController {
     }()
 
 
-    private let birthField: UIDatePicker = {
+    let birthField: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .wheels
-        
         return datePicker
     }()
     

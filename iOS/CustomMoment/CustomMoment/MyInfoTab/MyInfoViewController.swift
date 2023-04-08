@@ -21,6 +21,7 @@ class MyInfoViewController: UIViewController {
     // MARK: - Variables
     
     let loginSuccess = true
+    let is_seller = true
     
     let profile = "ted"
     let userName = "김성훈"
@@ -77,6 +78,18 @@ class MyInfoViewController: UIViewController {
         view.layer.borderColor = UIColor.systemRed.withAlphaComponent(0.8).cgColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    private lazy var sellerButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("판매자", for: .normal)
+        button.setImage(UIImage(systemName: "person.2.gobackward"), for: .normal)
+        button.backgroundColor = .systemRed.withAlphaComponent(0.8)
+        button.tintColor = .white
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     // MARK: - logo
@@ -191,10 +204,23 @@ class MyInfoViewController: UIViewController {
         nameLabel.bottomAnchor.constraint(equalTo: idLabel.topAnchor,constant: -2).isActive = true
         nameLabel.centerXAnchor.constraint(equalTo: self.profileView.centerXAnchor).isActive = true
         
-        profileButton.centerXAnchor.constraint(equalTo: profileView.centerXAnchor).isActive = true
-        profileButton.topAnchor.constraint(equalTo: idLabel.bottomAnchor, constant: 5).isActive = true
-        profileButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
-        profileButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        if is_seller {
+            profileView.addSubview(sellerButton)
+            profileButton.topAnchor.constraint(equalTo: idLabel.bottomAnchor, constant: 5).isActive = true
+            profileButton.centerXAnchor.constraint(equalTo: profileView.centerXAnchor, constant: -50).isActive = true
+            profileButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
+            profileButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+            
+            sellerButton.topAnchor.constraint(equalTo: idLabel.bottomAnchor, constant: 5).isActive = true
+            sellerButton.centerXAnchor.constraint(equalTo: profileView.centerXAnchor, constant: 50).isActive = true
+            sellerButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
+            sellerButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        } else {
+            profileButton.centerXAnchor.constraint(equalTo: profileView.centerXAnchor).isActive = true
+            profileButton.topAnchor.constraint(equalTo: idLabel.bottomAnchor, constant: 5).isActive = true
+            profileButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
+            profileButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        }
     }
     
     private func loginFailedConfigure() {
@@ -240,7 +266,6 @@ extension MyInfoViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.25), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//        item.contentInsets = NSDirectionalEdgeInsets(top)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.15))
         
@@ -300,23 +325,19 @@ extension MyInfoViewController: UICollectionViewDelegate {
             }
         }
     }
-    
 }
 
 extension MyInfoViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         if section == 0 {
             return collectionImages.count
         } else {
             return cake.count
         }
-        
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        
         if loginSuccess == false {
             return 1
         } else {
@@ -351,7 +372,6 @@ extension MyInfoViewController: UICollectionViewDataSource {
             cell.contentView.layer.borderColor = UIColor.red.withAlphaComponent(0.8).cgColor
             return cell
         }
-        
     }
     
     // dataSource Header, Footer

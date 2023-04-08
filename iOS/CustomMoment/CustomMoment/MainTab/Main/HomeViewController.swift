@@ -15,7 +15,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+    
     let vcIdentifier = "HomeVC"
     
     private var curPage = 0
@@ -49,11 +49,10 @@ class HomeViewController: UIViewController {
         imageLayout()
         bannerLayout()
         bannerTimer()
-        setUpLoginButton()
     }
     
     // MARK: - Components
-
+    
     
     // 컬렉션뷰 생성
     private lazy var collectionView: UICollectionView = {
@@ -76,7 +75,7 @@ class HomeViewController: UIViewController {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
     }
-
+    
     // 컬렉션뷰 - 배너 : 레이아웃
     private func bannerLayout() {
         collectionView.topAnchor.constraint(equalTo: self.bottomBoarder.bottomAnchor, constant: 20).isActive = true
@@ -125,47 +124,7 @@ class HomeViewController: UIViewController {
             self.present(homeVC, animated: true)
         }
     }
-    
-    // MARK: - Login Part
-    
-    let loginButton = UIButton(type: .system)
-    
-    // 로그인버튼 생성
-    func setUpLoginButton() {
-        self.view.addSubview(loginButton)
-        
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.widthAnchor.constraint(
-            equalToConstant: 80).isActive = true
-        loginButton.heightAnchor.constraint(
-            equalToConstant: 30).isActive = true
-        loginButton.topAnchor.constraint(
-            equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
-        loginButton.trailingAnchor.constraint(
-            equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
-        
-        loginButton.setTitle("로그인", for: .normal)
-        loginButton.setTitleColor(.blue, for: .normal)
-        loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        loginButton.backgroundColor = .clear
-        loginButton.layer.cornerRadius = 4
-        
-        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
-    }
-    
-    // 로그인버튼 처리
-    @objc func loginButtonTapped(sender: UIButton) {
-        print("HomeVC :    Login Button Tapped")
-        
-        let loginVC = LoginViewController()
-        
-        loginVC.modalTransitionStyle = .coverVertical
-        loginVC.modalPresentationStyle = .automatic
-        
-        self.present(loginVC, animated: true, completion: nil)
-    }
 }
-
 //  MARK: - CollectionView Compositional Layout
 
 extension HomeViewController {
