@@ -17,14 +17,14 @@ class MainOptionViewController: UIViewController {
     private let calendarLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 20)
-        label.text = "날짜 선택"
+        label.text = "📅 날짜 선택"
         label.textColor = .black.withAlphaComponent(0.8)
         label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private lazy var calendar: FSCalendar = {
+    lazy var calendar: FSCalendar = {
         let calendar = FSCalendar()
         calendar.placeholderType = .none
         calendar.translatesAutoresizingMaskIntoConstraints = false
@@ -43,6 +43,53 @@ class MainOptionViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
+    
+    // Button 하단 뷰
+    private let buttonView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var cartButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("장바구니", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        button.layer.cornerRadius = 10
+        button.layer.borderColor = UIColor.systemGray4.cgColor
+        button.layer.borderWidth = 1
+        button.backgroundColor = .white
+        button.tintColor = .systemRed.withAlphaComponent(0.9)
+        button.addTarget(self, action: #selector(cartButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    @objc func cartButtonTapped() {
+        let alertController = UIAlertController(title: "확인", message: "장바구니에 상품을 담았습니다!", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true)
+    }
+    
+    private lazy var orderButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("주문하기", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        button.layer.cornerRadius = 10
+        button.backgroundColor = .systemRed.withAlphaComponent(0.9)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(orderButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    @objc func orderButtonTapped() {
+        let orderVC = OrderDetailViewController()
+        present(orderVC, animated: true)
+    }
+    
     
     //MARK: - Temperally DataSource (Change When API connect)
     
@@ -72,12 +119,23 @@ class MainOptionViewController: UIViewController {
         
     }
     
+    override func viewDidLayoutSubviews() {
+        let borderLayer = CALayer()
+        borderLayer.frame = CGRect(x: 0, y: calendarLabel.frame.size.height - 1, width: calendarLabel.frame.size.width - 10, height: 1)
+        borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+        calendarLabel.layer.addSublayer(borderLayer)
+        
+        }
+    
     //MARK: - Configure
     
     private func configure() {
         view.backgroundColor = .white
         view.addSubview(calendarLabel)
         view.addSubview(calendar)
+        view.addSubview(buttonView)
+        buttonView.addSubview(cartButton)
+        buttonView.addSubview(orderButton)
         view.addSubview(collectionView)
         
         calendarLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
@@ -89,13 +147,33 @@ class MainOptionViewController: UIViewController {
         calendar.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         calendar.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4).isActive = true
         
+        buttonView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        buttonView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        buttonView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        buttonView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        let buttonLayer = CALayer()
+        print(buttonView.frame.origin.y)
+        buttonLayer.frame = CGRect(x: 0, y: buttonView.frame.origin.y, width: view.frame.width, height: 0.7)
+        buttonLayer.backgroundColor = UIColor.black.cgColor
+        buttonView.layer.addSublayer(buttonLayer)
+        
+        cartButton.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: 15).isActive = true
+        cartButton.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 15).isActive = true
+        cartButton.bottomAnchor.constraint(equalTo: buttonView.bottomAnchor, constant: -15).isActive = true
+        cartButton.widthAnchor.constraint(equalTo: buttonView.widthAnchor, multiplier: 0.45).isActive = true
+        
+        orderButton.trailingAnchor.constraint(equalTo: buttonView.trailingAnchor, constant: -15).isActive = true
+        orderButton.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 15).isActive = true
+        orderButton.bottomAnchor.constraint(equalTo: buttonView.bottomAnchor, constant: -15).isActive = true
+        orderButton.widthAnchor.constraint(equalTo: buttonView.widthAnchor, multiplier: 0.45).isActive = true
+        
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        collectionView.topAnchor.constraint(equalTo: self.calendar.bottomAnchor, constant: 30).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        collectionView.topAnchor.constraint(equalTo: self.calendar.bottomAnchor, constant: 20).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: self.buttonView.topAnchor).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        
     }
 
 }
@@ -241,10 +319,15 @@ extension MainOptionViewController: UICollectionViewDataSource {
         if kind == UICollectionView.elementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderView
             if indexPath.section == 0 {
-                header.prepare(text: "픽업 시간")
+                header.prepare(text: "⏱️ 픽업 시간")
             } else if indexPath.section == 1 {
-                header.prepare(text: "옵션")
+                header.prepare(text: "🍰 옵션")
             }
+            let borderLayer = CALayer()
+            borderLayer.frame = CGRect(x: 10, y: header.frame.size.height - 1, width: header.frame.size.width - 20, height: 1)
+            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+            header.layer.addSublayer(borderLayer)
+            
             return header
         }
         return UICollectionReusableView()

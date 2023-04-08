@@ -20,7 +20,7 @@ class DrawViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         dalleImageView.layer.cornerRadius = dalleImageView.frame.height / 2
         dalleImageView.clipsToBounds = true
-        dalleImageView.layer.borderWidth = 1
+        dalleImageView.layer.borderWidth = 0.5
         dalleImageView.layer.borderColor = UIColor.black.withAlphaComponent(0.9).cgColor
     }
     

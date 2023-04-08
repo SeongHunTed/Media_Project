@@ -18,6 +18,7 @@ class MyHeaderView: UICollectionReusableView {
         self.addSubview(label)
         return label
     }()
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -76,7 +77,6 @@ class MyFooterView: UICollectionReusableView {
             bannerPageControl.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
-    
     
     override func prepareForReuse() {
         super.prepareForReuse()

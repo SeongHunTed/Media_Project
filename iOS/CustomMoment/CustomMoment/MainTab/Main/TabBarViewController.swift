@@ -26,6 +26,8 @@ class TabBarViewController: UITabBarController {
     // homeVC.tabBarItem.image = UIImage.init(systemName: "house")
     func setTapBar() {
         
+        self.tabBar.barTintColor = .white
+        
         let redHome = UIImage(systemName: "house")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
         let redCake = UIImage(systemName: "birthday.cake")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
         let redStore = UIImage(systemName: "door.french.open")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)

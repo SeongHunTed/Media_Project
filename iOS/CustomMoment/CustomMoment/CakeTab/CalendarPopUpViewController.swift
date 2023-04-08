@@ -37,17 +37,6 @@ class CalendarPopUpViewController: UIViewController {
         return calendar
     }()
     
-//    private let selectButton: UIButton = {
-//        let button = UIButton()
-//        button.setTitle("완료", for: .normal)
-//        button.setTitleColor(.white, for: .normal)
-//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-//        button.backgroundColor = .systemRed
-//        button.layer.cornerRadius = 8
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        return button
-//    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         calendar.delegate = self
@@ -73,12 +62,6 @@ class CalendarPopUpViewController: UIViewController {
         calendar.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         calendar.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
         
-//        containerView.addSubview(selectButton)
-        
-//        selectButton.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: 30).isActive = true
-//        selectButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-//        selectButton.addTarget(self, action: #selector(selectButtonTapped), for: .touchUpInside)
     }
     
     

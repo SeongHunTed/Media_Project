@@ -221,7 +221,7 @@ extension HomeViewController {
         
         // making item with above size
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 2, trailing: 10)
         
         // group size
         let groupSize = NSCollectionLayoutSize(widthDimension: itemSize.widthDimension, heightDimension: .fractionalHeight(0.4))
@@ -363,6 +363,11 @@ extension HomeViewController: UICollectionViewDataSource {
         case UICollectionView.elementKindSectionHeader:
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderView
             header.prepare(text: "오늘의 추천 케이크")
+            let borderLayer = CALayer()
+            borderLayer.frame = CGRect(x: 0, y: header.frame.size.height - 1, width: header.frame.size.width, height: 1)
+            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+            header.layer.addSublayer(borderLayer)
+                    
             return header
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyFooterView
