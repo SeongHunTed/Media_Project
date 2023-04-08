@@ -16,6 +16,19 @@ extension UIView {
     }
 }
 
+extension UIView {
+    func findViewController() -> UIViewController? {
+        var responder: UIResponder? = self
+        while let nextResponder = responder?.next {
+            responder = nextResponder
+            if let viewController = responder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
+    }
+}
+
 extension UICollectionViewDelegate {
     func currentItem(_ collectioView: UICollectionView, _ indexPath: IndexPath) -> Int {
         if indexPath.section == 0 {

@@ -1,13 +1,13 @@
 //
-//  CartCollectionViewCell.swift
+//  CollectionViewCell.swift
 //  CustomMoment
 //
-//  Created by Hoon on 2023/04/05.
+//  Created by Hoon on 2023/04/09.
 //
 
 import UIKit
 
-class CartCollectionViewCell: UICollectionViewCell {
+class OrderCollecitionViewCell: UICollectionViewCell {
     
     let cellImage: UIImageView = {
         let imageView = UIImageView()
@@ -77,46 +77,35 @@ class CartCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    private lazy var orderButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("주문하기", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        button.layer.cornerRadius = 4
-        button.backgroundColor = .systemRed.withAlphaComponent(0.9)
-        button.tintColor = .white
-        button.addTarget(self, action: #selector(orderButtonTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    let statusLabel: UILabel = {
+        let label = UILabel()
+        label.text = "픽업완료"
+        label.font = .boldSystemFont(ofSize: 18)
+        label.textColor = .black
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
-    
-    @objc func orderButtonTapped() {
-        
-        let orderDetailVC = OrderDetailViewController()
-        self.window?.rootViewController?.present(orderDetailVC, animated: true)
-    }
-    
-    private lazy var deleteButton: UIButton = {
+
+    private lazy var detailButton: UIButton = {
         let button = UIButton()
-        button.setTitle("삭제하기", for: .normal)
+        button.setTitle("상세보기", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         button.layer.cornerRadius = 4
         button.backgroundColor = .systemGray2
         button.tintColor = .white
-        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(detailButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    @objc func deleteButtonTapped() {
-        let alertController = UIAlertController(title: "삭제", message: "해당 상품을 삭제하시겠습니까?", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        let deleteAction = UIAlertAction(title: "삭제", style: .destructive)
-//        { [weak self] (action) in
-//            self?.deleteCell()}
-        alertController.addAction(cancelAction)
-        alertController.addAction(deleteAction)
-        self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
-    }
+    @objc func detailButtonTapped() {
+        
+        guard let vc = self.findViewController() else { return }
+        
+        let orderDetailVC = OrderDetailViewController()
+        
+        vc.present(orderDetailVC, animated: true, completion: nil)    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -131,7 +120,7 @@ class CartCollectionViewCell: UICollectionViewCell {
         
     }
     
-    func cartLayout() {
+    func orderLayout() {
         self.contentView.addSubview(stackView)
         
         stackView.addSubview(cellImage)
@@ -139,8 +128,8 @@ class CartCollectionViewCell: UICollectionViewCell {
         stackView.addSubview(cakeName)
         stackView.addSubview(pickUpDate)
         stackView.addSubview(pickUpTime)
-        stackView.addSubview(orderButton)
-        stackView.addSubview(deleteButton)
+        stackView.addSubview(statusLabel)
+        stackView.addSubview(detailButton)
         
         stackView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
@@ -166,15 +155,18 @@ class CartCollectionViewCell: UICollectionViewCell {
         
         let buttonWidth = (self.contentView.frame.width * 0.7 - 40)/2
         
-        orderButton.topAnchor.constraint(equalTo: pickUpTime.bottomAnchor, constant: 10).isActive = true
-        orderButton.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 10).isActive = true
-        orderButton.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
-        orderButton.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -10).isActive = true
+        statusLabel.topAnchor.constraint(equalTo: pickUpTime.bottomAnchor, constant: 10).isActive = true
+        statusLabel.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 10).isActive = true
+        statusLabel.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
+        statusLabel.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -10).isActive = true
         
-        deleteButton.topAnchor.constraint(equalTo: orderButton.topAnchor).isActive = true
-        deleteButton.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
-        deleteButton.heightAnchor.constraint(equalTo: orderButton.heightAnchor).isActive = true
-        deleteButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -10).isActive = true
+        detailButton.topAnchor.constraint(equalTo: statusLabel.topAnchor).isActive = true
+        detailButton.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
+        detailButton.heightAnchor.constraint(equalTo: statusLabel.heightAnchor).isActive = true
+        detailButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -10).isActive = true
         
     }
+    
 }
+
+
