@@ -19,10 +19,9 @@ class StoreCollectionViewCell: UICollectionViewCell {
     private let storeLabel: UILabel = {
         let label = UILabel()
         label.text = "딥 다이브"
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont.myFontM.withSize(15.0)
         label.textColor = .black
         label.numberOfLines = 1
-        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -30,11 +29,9 @@ class StoreCollectionViewCell: UICollectionViewCell {
     private let addressLabel: UILabel = {
         let label = UILabel()
         label.text = "서울 서초구 방배동 534-2"
-        label.font = .systemFont(ofSize: 13)
+        label.font = UIFont.myFontM.withSize(13.0)
         label.textColor = .black
         label.numberOfLines = 1
-        label.adjustsFontSizeToFitWidth = true
-//        label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -42,10 +39,9 @@ class StoreCollectionViewCell: UICollectionViewCell {
     private let infoLabel: UILabel = {
         let label = UILabel()
         label.text = "딥다이브는 서초구에서 졸라 잘나가는 케이크 집이지요."
-        label.font = .boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM.withSize(16.0)
         label.textColor = .black
         label.numberOfLines = 1
-        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -96,7 +92,7 @@ class StoreCollectionViewCell: UICollectionViewCell {
         storeLabel.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 5).isActive = true
         storeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 2).isActive = true
         
-        infoLabel.topAnchor.constraint(equalTo: storeLabel.bottomAnchor, constant: 5).isActive = true
+        infoLabel.topAnchor.constraint(equalTo: storeLabel.bottomAnchor).isActive = true
         infoLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 2).isActive = true
         infoLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -2).isActive = true
         

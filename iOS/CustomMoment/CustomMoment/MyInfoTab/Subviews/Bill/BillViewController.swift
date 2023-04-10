@@ -82,7 +82,7 @@ extension BillViewController: UITableViewDelegate {
         
         let titleLabel = UILabel(frame: CGRect(x: 16.0, y: 0, width: tableView.frame.width - 32.0, height: 40.0))
         titleLabel.text = "주문 정보"
-        titleLabel.font = .systemFont(ofSize: 18.0, weight: .semibold)
+        titleLabel.font = UIFont.myFontM.withSize(18.0)
         titleLabel.textColor = .black
         headerView.addSubview(titleLabel)
         
@@ -95,7 +95,7 @@ extension BillViewController: UITableViewDelegate {
         
         let totalPriceLabel = UILabel(frame: CGRect(x: 16.0, y: 0, width: tableView.frame.width - 32.0, height: 30.0))
         totalPriceLabel.text = "총 가격: 38,000원"
-        totalPriceLabel.font = .systemFont(ofSize: 16.0, weight: .medium)
+        totalPriceLabel.font = UIFont.myFontM.withSize(16.0)
         totalPriceLabel.textColor = .black
         footerView.addSubview(totalPriceLabel)
         

@@ -13,7 +13,7 @@ class StorePopUpHeaderView: UICollectionReusableView {
     private let label: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.myFontM.withSize(18)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -64,6 +64,7 @@ class StorePopUpSecondHeaderView: UICollectionReusableView {
         let button = UIButton()
         button.configuration = .filled()
         button.setTitle("케이크", for: .normal)
+        button.titleLabel?.font = UIFont.myFontM.withSize(15.0)
         button.titleLabel?.textColor = .white
         button.tintColor = .white
         button.layer.borderColor = UIColor.systemRed.withAlphaComponent(0.8).cgColor
@@ -94,7 +95,7 @@ class StorePopUpFooterView: UICollectionReusableView {
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.text = "⏰ 영업 : 수~일 10:00~17:00/ 휴무 : 월, 화"
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont.myFontR.withSize(15.0)
         label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -103,7 +104,7 @@ class StorePopUpFooterView: UICollectionReusableView {
     private let digitLabel: UILabel = {
         let label = UILabel()
         label.text = "☎️ 02-222-5555"
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont.myFontR.withSize(15.0)
         label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -112,7 +113,7 @@ class StorePopUpFooterView: UICollectionReusableView {
     private let addressLabel: UILabel = {
         let label = UILabel()
         label.text = "🚗 서울시 관악구 미성3길 20 1층"
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont.myFontR.withSize(15.0)
         label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

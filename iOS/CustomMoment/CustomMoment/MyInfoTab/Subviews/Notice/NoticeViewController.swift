@@ -37,6 +37,7 @@ class NoticeViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "공지사항 준비 중 입니다. 추후 업데이트 예정입니다."
+        label.font = UIFont.myFontM.withSize(14)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

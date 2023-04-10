@@ -13,22 +13,40 @@ class MainCakeViewController: UIViewController {
     let vcIdentifier = "CakeVC"
     
     let cakeImages = ["cake1", "cake2", "cake3", "cake4"]
+    let infoImages = ["infoview"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         setDelegate()
         configure()
-        belowConfigure()
     }
+    
+//    override func viewDidLayoutSubviews() {
+//        let bottomLine = CALayer()
+//        bottomLine.frame = CGRect(x: 0.0, y: 0.0, width: infoView.frame.width, height: 1.0)
+//        bottomLine.backgroundColor = UIColor.systemRed.cgColor
+//        infoView.layer.addSublayer(bottomLine)
+//    }
     
     // delegate 설정
     private func setDelegate() {
+        self.scrollView.delegate = self
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
     }
     
     // MARK: - Components
+    
+    // scrollView
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.isScrollEnabled = true
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = true
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
     
     // collectionview
     private lazy var collectionView: UICollectionView = {
@@ -52,60 +70,62 @@ class MainCakeViewController: UIViewController {
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Cake Name"
-        label.adjustsFontSizeToFitWidth = true
+        label.text = "김성훈 케이크"
+        label.font = UIFont.myFontM.withSize(20.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "0원"
-        label.font = .boldSystemFont(ofSize: 20)
-        label.adjustsFontSizeToFitWidth = true
+        label.text = "20,000원"
+        label.font = UIFont.myFontM.withSize(20.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let infoButton: UIButton = {
-        let button = UIButton()
-        button.configuration = .filled()
+    private lazy var infoButton: UIButton = {
+        let button = UIButton(type: .system)
         button.setTitle("상품 정보", for: .normal)
-        button.titleLabel?.textColor = .white
-        button.tintColor = .systemRed
+        button.titleLabel?.font = UIFont.myFontM.withSize(14.0)
+        button.backgroundColor = .systemRed
+        button.tintColor = .white
         button.layer.borderColor = UIColor.systemRed.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 6
+        button.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private let reviewButton: UIButton = {
-        let button = UIButton()
-        button.configuration = .filled()
+        let button = UIButton(type: .system)
         button.setTitle("구매 후기", for: .normal)
-        button.titleLabel?.text = "구매 후기"
-        button.setTitleColor(.systemRed, for: .normal)
-        button.tintColor = .white
+        button.titleLabel?.font = UIFont.myFontM.withSize(14.0)
+        button.tintColor = .systemRed
+        button.backgroundColor = .white
         button.layer.borderColor = UIColor.systemRed.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 6
+        button.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    // 상품정보 스크롤뷰
-    private let infoView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.isScrollEnabled = true
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
+    private let infoImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "infoview")
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
     // 상품 정보
     private let infoLabel: UILabel = {
         let textField = UILabel()
         textField.text = "케이크에 대한 설명이 들어갈 부분입니다만 일단을 졸라길게 한번 써보겠습니다. 이게 넘어가는지 확인해야죠"
+        textField.font = UIFont.myFontR
         textField.numberOfLines = 0
         textField.textAlignment = .natural
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -115,10 +135,7 @@ class MainCakeViewController: UIViewController {
     // 주문 버튼 View
     private let orderView: UIView = {
         let view = UIView()
-        view.layer.shadowOpacity = 0.5
-        view.layer.shadowColor = UIColor.lightGray.cgColor
-        view.layer.shadowRadius = 10
-        view.layer.shadowOffset = CGSize(width: 0, height: -10)
+        view.backgroundColor = .white
         view.layer.masksToBounds = false
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -126,11 +143,12 @@ class MainCakeViewController: UIViewController {
     
     // 주문버튼
     private let orderButton: UIButton = {
-        let button = UIButton()
-        button.configuration = .filled()
+        let button = UIButton(type: .system)
+        button.backgroundColor = .systemRed
+        button.titleLabel?.font = UIFont.myFontM.withSize(16.0)
         button.setTitle("주문 하기", for: .normal)
         button.titleLabel?.textColor = .white
-        button.tintColor = .systemRed
+        button.tintColor = .white
         button.layer.borderColor = UIColor.systemRed.cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 6
@@ -139,75 +157,75 @@ class MainCakeViewController: UIViewController {
     }()
     
     // MARK: - 하단 뷰 Layout
-    private func belowConfigure() {
-        self.view.addSubview(stackView)
+    private func configure() {
+        
+        self.view.addSubview(scrollView)
+        scrollView.addSubview(collectionView)
+        scrollView.addSubview(stackView)
         self.view.addSubview(orderView)
         
-        stackView.topAnchor.constraint(equalTo: collectionView.bottomAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+
+        collectionView.topAnchor.constraint(equalTo: self.scrollView.topAnchor).isActive = true
+        collectionView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor, multiplier: 1.0).isActive = true
+        collectionView.heightAnchor.constraint(equalTo: collectionView.widthAnchor, multiplier: 1.0).isActive = true
+        collectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         
-        stackView.addSubview(nameLabel)
-        stackView.addSubview(priceLabel)
-        stackView.addSubview(infoButton)
-        stackView.addSubview(reviewButton)
-        stackView.addSubview(infoView)
+        scrollView.addSubview(nameLabel)
+        scrollView.addSubview(priceLabel)
+        scrollView.addSubview(infoButton)
+        scrollView.addSubview(reviewButton)
         
         nameLabel.topAnchor.constraint(
-            equalTo: stackView.topAnchor, constant: 20).isActive = true
+            equalTo: collectionView.bottomAnchor, constant: 20).isActive = true
         nameLabel.leadingAnchor.constraint(
-            equalTo: stackView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+            equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         nameLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
 
         priceLabel.topAnchor.constraint(
             equalTo: nameLabel.bottomAnchor, constant: 20).isActive = true
         priceLabel.leadingAnchor.constraint(
-            equalTo: stackView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+            equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         priceLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         infoButton.topAnchor.constraint(
             equalTo: priceLabel.bottomAnchor, constant: 20).isActive = true
+        infoButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        infoButton.heightAnchor.constraint(equalToConstant: 33).isActive = true
         infoButton.leadingAnchor.constraint(
-            equalTo: stackView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+            equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        
         
         reviewButton.topAnchor.constraint(
             equalTo: priceLabel.bottomAnchor, constant: 20).isActive = true
+        reviewButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        reviewButton.heightAnchor.constraint(equalToConstant: 33).isActive = true
         reviewButton.leadingAnchor.constraint(
             equalTo: infoButton.trailingAnchor).isActive = true
         
+        scrollView.addSubview(infoImage)
         
-        // InfoView Layout
-        infoView.widthAnchor.constraint(lessThanOrEqualTo: stackView.widthAnchor).isActive = true
-        infoView.topAnchor.constraint(
-            equalTo: infoButton.bottomAnchor, constant: 10).isActive = true
-        infoView.leadingAnchor.constraint(
-            equalTo: stackView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-        infoView.trailingAnchor.constraint(
-            equalTo: stackView.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
-        infoView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
-        
-        
-        infoView.addSubview(infoLabel)
-        
-        infoLabel.widthAnchor.constraint(equalTo: infoView.widthAnchor).isActive = true
-        infoLabel.topAnchor.constraint(equalTo: infoView.topAnchor).isActive = true
-        infoLabel.leadingAnchor.constraint(equalTo: infoView.leadingAnchor).isActive = true
-        infoLabel.trailingAnchor.constraint(equalTo: infoView.trailingAnchor).isActive = true
-        infoLabel.bottomAnchor.constraint(equalTo: infoView.bottomAnchor).isActive = true
+        infoImage.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        infoImage.topAnchor.constraint(equalTo: infoButton.bottomAnchor).isActive = true
+        infoImage.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        infoImage.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+        infoImage.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
         
         // OrderView Layout
         orderView.addSubview(orderButton)
         
         orderView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        orderView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
-        orderView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
+        orderView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        orderView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         orderView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         orderView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.08).isActive = true
         
         // OrderButton
-        orderButton.leadingAnchor.constraint(equalTo: orderView.leadingAnchor).isActive = true
-        orderButton.trailingAnchor.constraint(equalTo: orderView.trailingAnchor).isActive = true
+        orderButton.leadingAnchor.constraint(equalTo: orderView.leadingAnchor, constant: 20).isActive = true
+        orderButton.trailingAnchor.constraint(equalTo: orderView.trailingAnchor, constant: -20).isActive = true
         orderButton.centerXAnchor.constraint(equalTo: orderView.centerXAnchor).isActive = true
         orderButton.centerYAnchor.constraint(equalTo: orderView.centerYAnchor, constant: -10).isActive = true
         
@@ -223,12 +241,12 @@ class MainCakeViewController: UIViewController {
     @objc func infoButtonTapped(_ sender: UIButton) {
         print("CakeVC :     infoButtonTapped")
         
-        if sender.tintColor == .white && reviewButton.tintColor == .systemRed {
-            sender.tintColor = .systemRed
-            sender.setTitleColor(.white, for: .normal)
-            reviewButton.tintColor = .white
-            reviewButton.setTitleColor(.systemRed, for: .normal)
-        } else if sender.tintColor == .systemRed && reviewButton.tintColor == .white {
+        if sender.backgroundColor == .white {
+            sender.backgroundColor = .systemRed
+            sender.tintColor = .white
+            reviewButton.tintColor = .systemRed
+            reviewButton.backgroundColor = .white
+        } else {
             print("nothing happened")
         }
     }
@@ -236,11 +254,11 @@ class MainCakeViewController: UIViewController {
     @objc func reviewButtonTapped(_ sender: UIButton) {
         print("CakeVC :     reviewButtonTapped")
         
-        if sender.tintColor == .white && infoButton.tintColor == .systemRed {
-            sender.tintColor = .systemRed
-            sender.setTitleColor(.white, for: .normal)
-            infoButton.tintColor = .white
-            infoButton.setTitleColor(.systemRed, for: .normal)
+        if sender.backgroundColor == .white {
+            sender.backgroundColor = .systemRed
+            sender.tintColor = .white
+            infoButton.tintColor = .systemRed
+            infoButton.backgroundColor = .white
         } else {
             print("nothing")
         }
@@ -255,13 +273,6 @@ class MainCakeViewController: UIViewController {
     }
     
     // MARK: - 상단 뷰 Layout - Compositional Layout
-    private func configure() {
-        self.view.addSubview(collectionView)
-        collectionView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        collectionView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.5).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-    }
     
     private func getLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, layoutenvironment -> NSCollectionLayoutSection? in
@@ -272,8 +283,8 @@ class MainCakeViewController: UIViewController {
     private func cakeBannerCompositionalLayout() -> NSCollectionLayoutSection {
         
         // header 구현 -> 기존 헤더 사용
-        
         collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
+        collectionView.register(MyFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
@@ -287,11 +298,14 @@ class MainCakeViewController: UIViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .paging
         
-        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.13))
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.13))
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.13))
         
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
+
         
-        section.boundarySupplementaryItems = [header]
+        section.boundarySupplementaryItems = [header, footer]
         return section
     }
     
@@ -328,10 +342,15 @@ extension MainCakeViewController: UICollectionViewDataSource {
         case UICollectionView.elementKindSectionHeader:
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderView
             header.prepare(text: "월선화 > 강릉바다떡케이크")
+            let borderLayer = CALayer()
+            borderLayer.frame = CGRect(x: 0, y: header.frame.size.height - 1, width: self.view.frame.size.width, height: 1)
+            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+            header.layer.addSublayer(borderLayer)
+            
             return header
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyFooterView
-            footer.prepare(cakeImages.count, indexPath.item)
+            footer.bannerPageControl.numberOfPages = collectionView.numberOfItems(inSection: 0)
             return footer
         default:
             return UICollectionReusableView()

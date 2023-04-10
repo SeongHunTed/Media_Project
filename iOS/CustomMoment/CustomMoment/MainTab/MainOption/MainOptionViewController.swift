@@ -16,7 +16,7 @@ class MainOptionViewController: UIViewController {
     
     private let calendarLabel: UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 20)
+        label.font = UIFont.myFontM.withSize(20.0)
         label.text = "📅 날짜 선택"
         label.textColor = .black.withAlphaComponent(0.8)
         label.adjustsFontSizeToFitWidth = true
@@ -27,6 +27,9 @@ class MainOptionViewController: UIViewController {
     lazy var calendar: FSCalendar = {
         let calendar = FSCalendar()
         calendar.placeholderType = .none
+        calendar.appearance.titleFont = UIFont.myFontR.withSize(12)
+        calendar.appearance.weekdayFont = UIFont.myFontM.withSize(14)
+        calendar.appearance.headerTitleFont = UIFont.myFontM
         calendar.translatesAutoresizingMaskIntoConstraints = false
         return calendar
     }()
@@ -55,7 +58,7 @@ class MainOptionViewController: UIViewController {
     private lazy var cartButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("장바구니", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        button.titleLabel?.font = UIFont.myFontM.withSize(14.0)
         button.layer.cornerRadius = 10
         button.layer.borderColor = UIColor.systemGray4.cgColor
         button.layer.borderWidth = 1
@@ -75,8 +78,8 @@ class MainOptionViewController: UIViewController {
     
     private lazy var orderButton: UIButton = {
         let button = UIButton(type: .system)
+        button.titleLabel?.font = UIFont.myFontM.withSize(14.0)
         button.setTitle("주문하기", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         button.layer.cornerRadius = 10
         button.backgroundColor = .systemRed.withAlphaComponent(0.9)
         button.tintColor = .white
@@ -124,8 +127,7 @@ class MainOptionViewController: UIViewController {
         borderLayer.frame = CGRect(x: 0, y: calendarLabel.frame.size.height - 1, width: calendarLabel.frame.size.width - 10, height: 1)
         borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
         calendarLabel.layer.addSublayer(borderLayer)
-        
-        }
+    }
     
     //MARK: - Configure
     

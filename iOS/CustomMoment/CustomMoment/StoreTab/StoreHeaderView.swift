@@ -16,7 +16,7 @@ class StoreHeaderView: UICollectionReusableView {
         let button = UIButton(type: .roundedRect)
         button.tintColor = .black
         button.backgroundColor = .systemGray6
-        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
+        button.titleLabel?.font = UIFont.myFontM.withSize(15)
         button.layer.cornerRadius = 4
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -25,6 +25,7 @@ class StoreHeaderView: UICollectionReusableView {
     private let filterDropDown: DropDown = {
         let dropDown = DropDown()
         dropDown.textColor = UIColor.black
+        dropDown.textFont = UIFont.myFontM.withSize(15)
         dropDown.cornerRadius = 4
         return dropDown
     }()

@@ -28,7 +28,7 @@ class MyInfoCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "test"
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 10)
+        label.font = UIFont.myFontR.withSize(10.0)
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

@@ -20,7 +20,7 @@ class MyInfoViewController: UIViewController {
     
     // MARK: - Variables
     
-    let loginSuccess = true
+    let loginSuccess = false
     let is_seller = true
     
     let profile = "ted"
@@ -38,7 +38,7 @@ class MyInfoViewController: UIViewController {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 17)
+        label.font = UIFont.myFontM.withSize(17.0)
         label.text = userName + " 님"
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -47,7 +47,7 @@ class MyInfoViewController: UIViewController {
     
     private lazy var idLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.myFontR.withSize(15.0)
         label.text = userEmail
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -57,6 +57,7 @@ class MyInfoViewController: UIViewController {
     private lazy var profileButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("내 정보", for: .normal)
+        button.titleLabel?.font = UIFont.myFontM.withSize(10.0)
         button.setImage(UIImage(systemName: "person"), for: .normal)
         button.backgroundColor = .white
         button.tintColor = .black
@@ -83,6 +84,7 @@ class MyInfoViewController: UIViewController {
     private lazy var sellerButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("판매자", for: .normal)
+        button.titleLabel?.font = UIFont.myFontM.withSize(10.0)
         button.setImage(UIImage(systemName: "person.2.gobackward"), for: .normal)
         button.backgroundColor = .systemRed.withAlphaComponent(0.8)
         button.tintColor = .white

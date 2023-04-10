@@ -21,7 +21,7 @@ class SignUpViewController: UIViewController {
     private let emailLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 이메일"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
@@ -35,7 +35,7 @@ class SignUpViewController: UIViewController {
         textField.layer.cornerRadius = 4
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor.lightGray.cgColor
-        
+        textField.font = UIFont.myFontR.withSize(16)
         textField.textContentType = .emailAddress
         textField.autocapitalizationType = .none
         textField.clearButtonMode = .always
@@ -47,7 +47,7 @@ class SignUpViewController: UIViewController {
     private let passwordLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 비밀번호"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
@@ -72,7 +72,7 @@ class SignUpViewController: UIViewController {
     private let checkPasswordLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 비밀번호 확인"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
@@ -97,7 +97,7 @@ class SignUpViewController: UIViewController {
     private let addressLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 주소"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
@@ -106,7 +106,7 @@ class SignUpViewController: UIViewController {
 
     let addressField: UITextField = {
         let textField = UITextField()
-
+        textField.font = UIFont.myFontR.withSize(16)
         textField.placeholder = " 주소"
         textField.layer.cornerRadius = 4
         textField.layer.borderWidth = 1
@@ -119,7 +119,7 @@ class SignUpViewController: UIViewController {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 이름"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
@@ -129,7 +129,7 @@ class SignUpViewController: UIViewController {
 
     let nameField: UITextField = {
         let textField = UITextField()
-
+        textField.font = UIFont.myFontR.withSize(16)
         textField.placeholder = " 이름"
         textField.layer.cornerRadius = 4
         textField.layer.borderWidth = 1
@@ -142,7 +142,7 @@ class SignUpViewController: UIViewController {
     private let digitLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 전화번호"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
@@ -151,7 +151,7 @@ class SignUpViewController: UIViewController {
 
     let digitField: UITextField = {
         let textField = UITextField()
-
+        textField.font = UIFont.myFontR.withSize(16)
         textField.placeholder = " 전화번호 '-'빼고 입력하세요"
         textField.layer.cornerRadius = 4
         textField.layer.borderWidth = 1
@@ -165,13 +165,12 @@ class SignUpViewController: UIViewController {
     private let birthLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 생년월일"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
         return label
     }()
-
 
     let birthField: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -182,10 +181,9 @@ class SignUpViewController: UIViewController {
     
     let signUpButton: UIButton = {
         let button = UIButton(type: .system)
-        
         button.setTitle("회원가입", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        button.titleLabel?.font = UIFont.myFontR.withSize(20.0)
         button.backgroundColor = .systemGreen
         button.layer.cornerRadius = 4
         

@@ -19,8 +19,6 @@ class SubCakeCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = .clear
-        self.contentView.layer.borderWidth = 1
-        self.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
     }
     
     required init?(coder: NSCoder) {
@@ -41,7 +39,7 @@ class SubCakeCollectionViewCell: UICollectionViewCell {
         cellImage.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
         cellImage.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
         cellImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 25).isActive = true
-//        cellImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -25).isActive = true
+        cellImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -25).isActive = true
         cellImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 25).isActive = true
         cellImage.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -25).isActive = true
         cellImage.contentMode = .scaleAspectFill

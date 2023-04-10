@@ -21,7 +21,7 @@ class CartCollectionViewCell: UICollectionViewCell {
     let optionLabel: UILabel = {
         let label = UILabel()
         label.text = "옵션 : [케이크 사이즈 : 도시락, 케이크 맛 : 바닐라, 케이크 색상 : 기본, 케이크 디자인 : 동물, 케이크 사이드 데코레이션 : 사이드 데코', 케이크 데코레이션 : 악세시리, 케이크 레터링 : 케이크, 케이크 폰트 : 궁서체, 케이크 사진 : 예, 케이크 포장 : 기본, 초 : 숫자초 ]"
-        label.font = .systemFont(ofSize: 12)
+        label.font = UIFont.myFontR.withSize(12.0)
         label.textColor = .black
         label.numberOfLines = 5
         label.adjustsFontSizeToFitWidth = false
@@ -32,7 +32,7 @@ class CartCollectionViewCell: UICollectionViewCell {
     let storeName: UILabel = {
         let label = UILabel()
         label.text = "딥 다이브"
-        label.font = .boldSystemFont(ofSize: 18)
+        label.font = UIFont.myFontM.withSize(18.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +42,7 @@ class CartCollectionViewCell: UICollectionViewCell {
     let cakeName: UILabel = {
         let label = UILabel()
         label.text = "반쪽 레터링 케이크"
-        label.font = .boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM.withSize(16.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +52,7 @@ class CartCollectionViewCell: UICollectionViewCell {
     let pickUpDate: UILabel = {
         let label = UILabel()
         label.text = "픽업 날짜 : " + "2023-04-26"
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont.myFontR.withSize(15.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +62,7 @@ class CartCollectionViewCell: UICollectionViewCell {
     let pickUpTime: UILabel = {
         let label = UILabel()
         label.text = "픽업 시간 : " + "17:30"
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont.myFontR.withSize(15.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +80,7 @@ class CartCollectionViewCell: UICollectionViewCell {
     private lazy var orderButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("주문하기", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        button.titleLabel?.font = UIFont.myFontR.withSize(14.0)
         button.layer.cornerRadius = 4
         button.backgroundColor = .systemRed.withAlphaComponent(0.9)
         button.tintColor = .white
@@ -98,7 +98,7 @@ class CartCollectionViewCell: UICollectionViewCell {
     private lazy var deleteButton: UIButton = {
         let button = UIButton()
         button.setTitle("삭제하기", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        button.titleLabel?.font = UIFont.myFontR.withSize(14.0)
         button.layer.cornerRadius = 4
         button.backgroundColor = .systemGray2
         button.tintColor = .white

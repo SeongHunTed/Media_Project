@@ -12,7 +12,7 @@ class MyHeaderView: UICollectionReusableView {
     private lazy var label: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize:20)
+        label.font = UIFont.myFontM.withSize(20)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(label)
@@ -25,7 +25,6 @@ class MyHeaderView: UICollectionReusableView {
         
         self.backgroundColor = .white
         NSLayoutConstraint.activate([
-//            self.label.topAnchor.constraint(equalTo: self..bottomAnchor, constant: 10),
             self.label.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
         ])
@@ -78,13 +77,13 @@ class MyFooterView: UICollectionReusableView {
         ])
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.prepare(nil, nil)
-    }
-    
-    func prepare(_ itemCounts: Int?, _ currentPage: Int?) {
-        bannerPageControl.numberOfPages = itemCounts!
-        bannerPageControl.currentPage = currentPage!
-    }
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        self.prepare(nil, nil)
+//    }
+//    
+//    func prepare(_ itemCounts: Int?, _ currentPage: Int?) {
+//        bannerPageControl.numberOfPages = itemCounts!
+//        bannerPageControl.currentPage = currentPage!
+//    }
 }

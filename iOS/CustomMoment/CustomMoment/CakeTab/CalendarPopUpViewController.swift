@@ -32,6 +32,9 @@ class CalendarPopUpViewController: UIViewController {
         calendar.placeholderType = .none
         calendar.backgroundColor = .white
         calendar.layer.cornerRadius = 10
+        calendar.appearance.titleFont = UIFont.myFontR.withSize(12)
+        calendar.appearance.weekdayFont = UIFont.myFontM.withSize(14)
+        calendar.appearance.headerTitleFont = UIFont.myFontM
         calendar.tintColor = .systemRed.withAlphaComponent(0.8)
         calendar.translatesAutoresizingMaskIntoConstraints = false
         return calendar

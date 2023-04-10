@@ -39,6 +39,7 @@ class DrawViewController: UIViewController {
         text.backgroundColor = .systemGray6
 //        text.becomeFirstResponder()
         text.placeholder = "케이크의 디자인을 텍스트로 표현하세요"
+        text.font = UIFont.myFontR.withSize(14)
         text.borderStyle = .roundedRect
         text.clearButtonMode = .whileEditing
         text.translatesAutoresizingMaskIntoConstraints = false
@@ -50,6 +51,7 @@ class DrawViewController: UIViewController {
         button.backgroundColor = .systemRed
         button.tintColor = .white
         button.setTitle("생성", for: .normal)
+        button.titleLabel?.font = UIFont.myFontM.withSize(14)
         button.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
         button.layer.cornerRadius = 5
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -61,6 +63,7 @@ class DrawViewController: UIViewController {
         button.backgroundColor = .systemGray4
         button.tintColor = .white
         button.setTitle("저장하기", for: .normal)
+        button.titleLabel?.font = UIFont.myFontM.withSize(16)
         button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         button.layer.cornerRadius = 5
         button.translatesAutoresizingMaskIntoConstraints = false

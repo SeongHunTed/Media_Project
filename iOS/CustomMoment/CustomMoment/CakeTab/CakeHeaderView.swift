@@ -23,7 +23,7 @@ public class CakeHeaderView: UICollectionReusableView {
         let button = UIButton(type: .roundedRect)
         button.tintColor = .black
         button.backgroundColor = .systemGray6
-        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
+        button.titleLabel?.font = UIFont.myFontM.withSize(15.0)
         button.layer.cornerRadius = 4
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -33,6 +33,7 @@ public class CakeHeaderView: UICollectionReusableView {
         let dropDown = DropDown()
         dropDown.textColor = UIColor.black
         dropDown.cornerRadius = 4
+        dropDown.textFont = UIFont.myFontM.withSize(15)
         return dropDown
     }()
     
@@ -40,7 +41,7 @@ public class CakeHeaderView: UICollectionReusableView {
         let button = UIButton(type: .roundedRect)
         button.tintColor = .black
         button.backgroundColor = .systemGray6
-        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
+        button.titleLabel?.font = UIFont.myFontM.withSize(15.0)
         button.layer.cornerRadius = 4
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

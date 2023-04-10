@@ -24,6 +24,7 @@ class OptionButtonCollectionViewCell: UICollectionViewCell {
     let dropDown: DropDown = {
         let dropDown = DropDown()
         dropDown.textColor = UIColor.black
+        dropDown.textFont = UIFont.myFontR.withSize(14)
         dropDown.cornerRadius = 4
         dropDown.selectionBackgroundColor = UIColor.systemRed.withAlphaComponent(0.8)
         dropDown.backgroundColor = .white
@@ -45,10 +46,11 @@ class OptionButtonCollectionViewCell: UICollectionViewCell {
         dropDown.anchorView = optionButton
         
         // 버튼을 가리지 않고 내려옴
-        dropDown.bottomOffset = CGPoint(x: 0, y:optionButton.bounds.height+40)
+        dropDown.bottomOffset = CGPoint(x: 0, y:optionButton.bounds.height+30)
 
         dropDown.selectionAction = { [weak self] (index, item) in
             self!.optionButton.setTitle(item, for: .normal)
+            self!.optionButton.titleLabel?.font = UIFont.myFontM
             self!.optionButton.backgroundColor = .systemRed.withAlphaComponent(0.8)
             self!.optionButton.tintColor = .white
             self!.optionButton.layer.borderColor = UIColor.systemRed.cgColor

@@ -27,10 +27,10 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
     private let storeLabel: UILabel = {
         let label = UILabel()
         label.text = "유니아 케이크"
-        label.font = .systemFont(ofSize: 10)
+        label.font = UIFont.myFontR
         label.textColor = .black
         label.numberOfLines = 1
-        label.adjustsFontSizeToFitWidth = true
+//        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -38,11 +38,9 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
     private let cakeLabel: UILabel = {
         let label = UILabel()
         label.text = "체커보드케이크"
-        label.font = .systemFont(ofSize: 15)
+        label.font = UIFont.myFontR.withSize(14.0)
         label.textColor = .black
         label.numberOfLines = 1
-        label.adjustsFontSizeToFitWidth = true
-//        label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -50,10 +48,9 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.text = "28,000원 ~"
-        label.font = .boldSystemFont(ofSize: 18)
+        label.font = UIFont.myFontM.withSize(14.0)
         label.textColor = .black
         label.numberOfLines = 1
-        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -61,10 +58,9 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
     private let reviewLabel: UILabel = {
         let label = UILabel()
         label.text = "리뷰 0"
-        label.font = .systemFont(ofSize: 10)
+        label.font = UIFont.myFontR
         label.textColor = .black
         label.numberOfLines = 1
-        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -72,9 +68,6 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = .clear
-//        self.contentView.layer.cornerRadius = 8
-//        self.contentView.layer.borderWidth = 1
-        
     }
     
     required init?(coder: NSCoder) {
@@ -121,7 +114,7 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         cakeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 6).isActive = true
         cakeLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         
-        priceLabel.topAnchor.constraint(equalTo: cakeLabel.bottomAnchor, constant: 1).isActive = true
+        priceLabel.topAnchor.constraint(equalTo: cakeLabel.bottomAnchor, constant: -4).isActive = true
         priceLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 6).isActive = true
         priceLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         

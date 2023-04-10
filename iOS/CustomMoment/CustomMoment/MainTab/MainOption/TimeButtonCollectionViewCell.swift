@@ -11,6 +11,7 @@ class TimeButtonCollectionViewCell: UICollectionViewCell {
     
     let timeButton: UIButton = {
         let button = UIButton(type: .roundedRect)
+        button.titleLabel?.font = UIFont.myFontR.withSize(15.0)
         button.tintColor = .white
         button.backgroundColor = .systemGray4
         button.layer.cornerRadius = 8
