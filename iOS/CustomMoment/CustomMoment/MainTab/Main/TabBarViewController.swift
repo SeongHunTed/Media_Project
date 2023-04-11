@@ -30,7 +30,7 @@ class TabBarViewController: UITabBarController {
         
         let redHome = UIImage(systemName: "house")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
         let redCake = UIImage(systemName: "birthday.cake")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
-        let redStore = UIImage(systemName: "door.french.open")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
+        let redStore = UIImage(systemName: "takeoutbag.and.cup.and.straw")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
         let redPencil = UIImage(systemName: "pencil.and.outline")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
         let redInfo = UIImage(systemName: "person")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
         
