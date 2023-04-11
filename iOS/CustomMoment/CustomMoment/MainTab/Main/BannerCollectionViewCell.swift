@@ -19,9 +19,6 @@ class BannerCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = .clear
-        self.contentView.layer.cornerRadius = 8
-        self.contentView.layer.borderWidth = 1
-        self.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
         self.contentView.addSubview(self.cellImage)
     }
     

@@ -38,7 +38,7 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
     private let cakeLabel: UILabel = {
         let label = UILabel()
         label.text = "체커보드케이크"
-        label.font = UIFont.myFontB.withSize(12.0)
+        label.font = UIFont.myFontM.withSize(12.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -75,12 +75,11 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         // 그림자 추가
         self.containerView.layer.shadowColor = UIColor.gray.cgColor
         self.containerView.layer.shadowRadius = 2.0
-        self.containerView.layer.shadowOpacity = 0.7
+        self.containerView.layer.shadowOpacity = 0.6
         self.containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
         self.containerView.layer.cornerRadius = 12.0
         self.containerView.clipsToBounds = true
         self.containerView.layer.masksToBounds = false
-        
         self.containerView.layer.shadowPath = nil
     }
     
@@ -133,18 +132,18 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         cellImage.trailingAnchor.constraint(equalTo: self.stackView.trailingAnchor).isActive = true
         
         storeLabel.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 2).isActive = true
-        storeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 6).isActive = true
+        storeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 8).isActive = true
         storeLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         
         reviewLabel.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 2).isActive = true
         reviewLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -5).isActive = true
         
         cakeLabel.topAnchor.constraint(equalTo: storeLabel.bottomAnchor, constant: -2).isActive = true
-        cakeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 6).isActive = true
+        cakeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 8).isActive = true
         cakeLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         
         priceLabel.topAnchor.constraint(equalTo: cakeLabel.bottomAnchor, constant: 4).isActive = true
-        priceLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 6).isActive = true
+        priceLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 8).isActive = true
         priceLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         
     }

@@ -19,7 +19,7 @@ class HomeViewController: UIViewController {
     let vcIdentifier = "HomeVC"
     
     private var timer: Timer?
-    private let bannerImages = ["mainFirstImage", "mainSecondImage", "mainThirdImage", "mainFourthImage"]
+    private let bannerImages = ["banner1", "banner2", "banner3", "banner4"]
     private let cakeImages = ["cake1", "cake2", "cake3", "cake4", "cake5", "cake6", "cake7", "cake8", "cake9"]
     
     override func viewDidLoad() {
@@ -71,8 +71,8 @@ class HomeViewController: UIViewController {
         collectionView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         collectionView.topAnchor.constraint(equalTo: self.bottomBoarder.bottomAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-//        collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-//        collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
     }
     
     // MARK: - Logo Layout
@@ -144,7 +144,7 @@ extension HomeViewController {
         item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         // group size
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.25))
         
         // making group
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
@@ -180,7 +180,7 @@ extension HomeViewController {
         
         let section = NSCollectionLayoutSection(group: group)
         
-        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50.0))
+        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(40.0))
         
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
 
