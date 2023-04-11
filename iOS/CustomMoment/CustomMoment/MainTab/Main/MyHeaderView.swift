@@ -51,8 +51,8 @@ class MyFooterView: UICollectionReusableView {
     
     let bannerPageControl: UIPageControl = {
         let pageControl = UIPageControl()
-        pageControl.pageIndicatorTintColor = .systemGray
-        pageControl.currentPageIndicatorTintColor = .systemGray5
+        pageControl.pageIndicatorTintColor = .systemGray5
+        pageControl.currentPageIndicatorTintColor = .systemGray
         pageControl.isUserInteractionEnabled = false
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl

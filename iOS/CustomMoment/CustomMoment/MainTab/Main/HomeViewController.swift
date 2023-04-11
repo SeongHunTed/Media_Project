@@ -339,12 +339,12 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        print("didEndDisplaying")
+//        print("didEndDisplaying")
         let pageWidth = collectionView.frame.width
         let currentPage = Int(collectionView.contentOffset.x / pageWidth)
-        print("pageWidth : ", pageWidth)
-        print("collectionView.offset.x : ", collectionView.contentOffset.x)
-        print("currentPage : ", currentPage)
+//        print("pageWidth : ", pageWidth)
+//        print("collectionView.offset.x : ", collectionView.contentOffset.x)
+//        print("currentPage : ", currentPage)
         if let footerView = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: 0)) as? MyFooterView {
             footerView.updateCurrentPage(currentPage)
         }

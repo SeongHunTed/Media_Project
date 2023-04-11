@@ -25,6 +25,22 @@ class MainCakeViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setupContentSize()
+        print(storeLabel.frame.size)
+        
+        let storeBottomLayer = CALayer()
+        storeBottomLayer.frame = CGRect(x: 0, y: 39, width: self.view.frame.size.width, height: 1)
+        storeBottomLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+        storeLabel.layer.addSublayer(storeBottomLayer)
+        
+        let cakeTopLayer = CALayer()
+        cakeTopLayer.frame = CGRect(x:-20, y: nameLabel.frame.height - 10, width: view.frame.size.width, height: 2)
+        cakeTopLayer.backgroundColor = UIColor.systemGray4.cgColor
+        nameLabel.layer.addSublayer(cakeTopLayer)
+        
+        let buttonBottomLayer = CALayer()
+        buttonBottomLayer.frame = CGRect(x: 0, y: 32, width: view.frame.size.width-40, height: 1)
+        buttonBottomLayer.backgroundColor = UIColor.systemRed.cgColor
+        infoButton.layer.addSublayer(buttonBottomLayer)
     }
     
     private func setupContentSize() {
@@ -77,10 +93,29 @@ class MainCakeViewController: UIViewController {
         return stackView
     }()
     
+    private let storeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "   ⭐️ 모율샵 > 컬러직사각케이크"
+        label.font = UIFont.myFontB.withSize(15)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let pageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        pageControl.pageIndicatorTintColor = .systemGray5
+        pageControl.currentPageIndicatorTintColor = .systemGray
+        pageControl.isUserInteractionEnabled = false
+        pageControl.currentPage = 0
+        pageControl.numberOfPages = 4
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        return pageControl
+    }()
+    
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "김성훈 케이크"
-        label.font = UIFont.myFontM.withSize(20.0)
+        label.text = "컬러직사각케이크"
+        label.font = UIFont.myFontR.withSize(18.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -88,7 +123,7 @@ class MainCakeViewController: UIViewController {
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.text = "20,000원"
-        label.font = UIFont.myFontM.withSize(20.0)
+        label.font = UIFont.myFontB.withSize(18.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -166,11 +201,24 @@ class MainCakeViewController: UIViewController {
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        
+        scrollView.addSubview(storeLabel)
+        scrollView.addSubview(pageControl)
+        
+        storeLabel.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        storeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        storeLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        storeLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -10).isActive = true
 
-        collectionView.topAnchor.constraint(equalTo: self.scrollView.topAnchor).isActive = true
-        collectionView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor, multiplier: 1.0).isActive = true
+        collectionView.topAnchor.constraint(equalTo: self.storeLabel.bottomAnchor).isActive = true
+        collectionView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor, multiplier: 0.8).isActive = true
         collectionView.heightAnchor.constraint(equalTo: collectionView.widthAnchor, multiplier: 1.0).isActive = true
         collectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        
+        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -10).isActive = true
+        pageControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        pageControl.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         scrollView.addSubview(nameLabel)
         scrollView.addSubview(priceLabel)
@@ -178,13 +226,13 @@ class MainCakeViewController: UIViewController {
         scrollView.addSubview(reviewButton)
         
         nameLabel.topAnchor.constraint(
-            equalTo: collectionView.bottomAnchor, constant: 20).isActive = true
+            equalTo: pageControl.bottomAnchor, constant: 20).isActive = true
         nameLabel.leadingAnchor.constraint(
             equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         nameLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
 
         priceLabel.topAnchor.constraint(
-            equalTo: nameLabel.bottomAnchor, constant: 20).isActive = true
+            equalTo: nameLabel.bottomAnchor, constant: 10).isActive = true
         priceLabel.leadingAnchor.constraint(
             equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         priceLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -277,16 +325,20 @@ class MainCakeViewController: UIViewController {
         }
     }
     
+    // 현 뷰에서는 해당 헤더 푸터를 사용할 수 없음
+    // Why? 전체가 스크롤뷰이고 그안에 콜렉션뷰인데, 상품설명 jpg가 꽤나 길다
+    // 해당 비율을 맞추는게 쉽지 않은데 지금이 최선으로써 느껴진다.
+    // 따라서 컬렉션 뷰는 정말 쎌 이미지만 보여주는 역할로 써 정의됨
     private func cakeBannerCompositionalLayout() -> NSCollectionLayoutSection {
         
         // header 구현 -> 기존 헤더 사용
-        collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
-        collectionView.register(MyFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
+//        collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
+//        collectionView.register(MyFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 30, bottom: 30, trailing: 30)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
@@ -295,14 +347,14 @@ class MainCakeViewController: UIViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .paging
         
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.13))
+//        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.13))
 //        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.13))
         
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+//        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
 //        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
 
         
-        section.boundarySupplementaryItems = [header]
+//        section.boundarySupplementaryItems = [header]
         return section
     }
     
@@ -326,9 +378,10 @@ extension MainCakeViewController: UICollectionViewDataSource {
         
         guard let cell: SubCakeCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: SubCakeCollectionViewCell.self), for: indexPath) as? SubCakeCollectionViewCell else { return UICollectionViewCell()
         }
-        
         cell.configure()
         cell.cellImage.image = UIImage(named: cakeImages[indexPath.item])
+        cell.layer.cornerRadius = 12.0
+        cell.clipsToBounds = true
         
         return cell
     }
@@ -353,5 +406,15 @@ extension MainCakeViewController: UICollectionViewDataSource {
             return UICollectionReusableView()
         }
     }
-
 }
+
+//
+//extension MainCakeViewController: UIScrollViewDelegate {
+//
+//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//        print("Hi")
+//        let pageWidth = collectionView.frame.width
+//        let currentPage = Int(collectionView.contentOffset.x / pageWidth)
+//        pageControl.currentPage = currentPage
+//    }
+//}
