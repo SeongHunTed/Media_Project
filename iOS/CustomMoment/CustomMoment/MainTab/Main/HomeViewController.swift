@@ -18,7 +18,7 @@ class HomeViewController: UIViewController {
     
     let vcIdentifier = "HomeVC"
     
-    private var curPage = 0
+    private var timer: Timer?
     private let bannerImages = ["mainFirstImage", "mainSecondImage", "mainThirdImage", "mainFourthImage"]
     private let cakeImages = ["cake1", "cake2", "cake3", "cake4", "cake5", "cake6", "cake7", "cake8", "cake9"]
     
@@ -26,14 +26,24 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setUpDelegate()
-        imageLayout()
+        logoLayout()
         bannerLayout()
-        bannerTimer()
+        startTimer()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("VDA Content offset x: \(collectionView.contentOffset.x)")
+        print("Content size: \(collectionView.contentSize)")
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print("VDLS Content offset x: \(collectionView.contentOffset.x)")
+    }
+
+    
     // MARK: - Components
-    
-    
     // 컬렉션뷰 생성
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: getLayout())
@@ -58,10 +68,11 @@ class HomeViewController: UIViewController {
     
     // 컬렉션뷰 - 배너 : 레이아웃
     private func bannerLayout() {
-        collectionView.topAnchor.constraint(equalTo: self.bottomBoarder.bottomAnchor, constant: 20).isActive = true
+        collectionView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        collectionView.topAnchor.constraint(equalTo: self.bottomBoarder.bottomAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+//        collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+//        collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
     }
     
     // MARK: - Logo Layout
@@ -78,7 +89,7 @@ class HomeViewController: UIViewController {
     private lazy var bottomBoarder = UIImageView(frame: CGRect(x: 0, y: 96.6, width: self.view.frame.width, height: 0.5))
     
     // 로고 터치 처리
-    func imageLayout() {
+    func logoLayout() {
         self.view.addSubview(logo)
         self.view.addSubview(bottomBoarder)
         
@@ -188,36 +199,54 @@ extension HomeViewController {
     }
     
     // Banner Timer action()
-    private func bannerTimer() {
-        let _ : Timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { (Timer) in
-            self.bannerMove()
+    private func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
+    }
+    
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    @objc private func moveToNextPage() {
+        let currentPage = getCurPage()
+        let nextPage = currentPage + 1
+        
+        if nextPage < getTotalPages() {
+            let indexPath = IndexPath(item: nextPage, section: 0)
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            updatePageControl(currentPage: nextPage)
+        } else {
+            let indexPath = IndexPath(item: 0, section: 0)
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            updatePageControl(currentPage: 0)
         }
     }
     
-//    Banner move action
-    private func bannerMove() {
-        if curPage == collectionView.numberOfItems(inSection: 0) {
-            collectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .right, animated: true)
-            curPage = 0
-            return
+    private func getCurPage() -> Int {
+        if let footerView = getFooterView() {
+            return footerView.bannerPageControl.currentPage
         }
-        curPage += 1
-        collectionView.scrollToItem(at: NSIndexPath(item: curPage, section: 0) as IndexPath, at: .right, animated: true)
+        return 0
+    }
 
+    private func getTotalPages() -> Int {
+        if let footerView = getFooterView() {
+            return footerView.bannerPageControl.numberOfPages
+        }
+        return 0
     }
-}
 
-// 섹션분리
-enum MySection {
-    struct BannerImage {
-        let image: String
+    private func updatePageControl(currentPage: Int) {
+        if let footerView = getFooterView() {
+            footerView.bannerPageControl.currentPage = currentPage
+        }
     }
-    struct CakeImage {
-        let image: String
+
+    private func getFooterView() -> MyFooterView? {
+        return collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: 0)) as? MyFooterView
     }
-    
-    case banner([BannerImage])
-    case cake([CakeImage])
+
 }
 
 // MARK: - 콜렉션뷰 델리겟 - 액션과 관련된 것들
@@ -294,31 +323,51 @@ extension HomeViewController: UICollectionViewDataSource {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderView
-            header.prepare(text: "오늘의 추천 케이크")
+            header.prepare(text: "🍰 오늘의 추천 케이크")
             let borderLayer = CALayer()
             borderLayer.frame = CGRect(x: 0, y: header.frame.size.height - 1, width: header.frame.size.width, height: 1)
             borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
             header.layer.addSublayer(borderLayer)
-                    
             return header
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyFooterView
-            //            footer.prepare(collectionView.numberOfItems(inSection: 0), indexPath.item)
-            footer.bannerPageControl.numberOfPages = collectionView.numberOfItems(inSection: 0)
+            footer.configure(delegate: self)
             return footer
         default:
             return UICollectionReusableView()
         }
     }
-        
-}
-
-extension HomeViewController: UIScrollViewDelegate {
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let width = collectionView.frame.width
-        let currentPage = Int((collectionView.contentOffset.x + width/2)/width)
-        let footerView = collectionView.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionFooter).first as! MyFooterView
-            footerView.bannerPageControl.currentPage = currentPage
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        print("didEndDisplaying")
+        let pageWidth = collectionView.frame.width
+        let currentPage = Int(collectionView.contentOffset.x / pageWidth)
+        print("pageWidth : ", pageWidth)
+        print("collectionView.offset.x : ", collectionView.contentOffset.x)
+        print("currentPage : ", currentPage)
+        if let footerView = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: 0)) as? MyFooterView {
+            footerView.updateCurrentPage(currentPage)
+        }
     }
 }
+
+//extension HomeViewController: UICollectionViewDelegateFlowLayout {
+//
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        print("Hi")
+//        stopTimer()
+//    }
+//
+//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        print("Hi")
+//        startTimer()
+//    }
+//
+//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//        let pageWidth = scrollView.frame.width
+//        let currentPage = Int(scrollView.contentOffset.x / pageWidth)
+//        if let footerView = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: 0)) as? MyFooterView {
+//            footerView.updateCurrentPage(currentPage)
+//        }
+//    }
+//}
