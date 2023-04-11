@@ -22,12 +22,21 @@ class MainCakeViewController: UIViewController {
         configure()
     }
     
-//    override func viewDidLayoutSubviews() {
-//        let bottomLine = CALayer()
-//        bottomLine.frame = CGRect(x: 0.0, y: 0.0, width: infoView.frame.width, height: 1.0)
-//        bottomLine.backgroundColor = UIColor.systemRed.cgColor
-//        infoView.layer.addSublayer(bottomLine)
-//    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setupContentSize()
+    }
+    
+    private func setupContentSize() {
+        infoImage.widthAnchor.constraint(equalToConstant: scrollView.frame.width-40).isActive = true
+        guard let image = infoImage.image else { return }
+        let aspectRatio = image.size.height / image.size.width
+        print("infoImage : \(infoImage.frame.width)")
+        let contentHeight = 350 * aspectRatio + infoImage.frame.origin.y
+        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: contentHeight)
+        
+        infoImage.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
+    }
     
     // delegate 설정
     private func setDelegate() {
@@ -116,20 +125,9 @@ class MainCakeViewController: UIViewController {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "infoview")
         imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
+//        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
-    }()
-    
-    // 상품 정보
-    private let infoLabel: UILabel = {
-        let textField = UILabel()
-        textField.text = "케이크에 대한 설명이 들어갈 부분입니다만 일단을 졸라길게 한번 써보겠습니다. 이게 넘어가는지 확인해야죠"
-        textField.font = UIFont.myFontR
-        textField.numberOfLines = 0
-        textField.textAlignment = .natural
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
     }()
     
     // 주문 버튼 View
@@ -198,7 +196,6 @@ class MainCakeViewController: UIViewController {
         infoButton.leadingAnchor.constraint(
             equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         
-        
         reviewButton.topAnchor.constraint(
             equalTo: priceLabel.bottomAnchor, constant: 20).isActive = true
         reviewButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
@@ -207,12 +204,13 @@ class MainCakeViewController: UIViewController {
             equalTo: infoButton.trailingAnchor).isActive = true
         
         scrollView.addSubview(infoImage)
-        
-        infoImage.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        infoImage.topAnchor.constraint(equalTo: infoButton.bottomAnchor).isActive = true
-        infoImage.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        infoImage.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+        print("scrollView : \(scrollView.frame.width)")
+        infoImage.widthAnchor.constraint(equalToConstant: scrollView.frame.width - 40).isActive = true
+        infoImage.topAnchor.constraint(equalTo: infoButton.bottomAnchor, constant: 20).isActive = true
+        infoImage.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20).isActive = true
+        infoImage.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20).isActive = true
         infoImage.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        
         
         // OrderView Layout
         orderView.addSubview(orderButton)
@@ -227,13 +225,12 @@ class MainCakeViewController: UIViewController {
         orderButton.leadingAnchor.constraint(equalTo: orderView.leadingAnchor, constant: 20).isActive = true
         orderButton.trailingAnchor.constraint(equalTo: orderView.trailingAnchor, constant: -20).isActive = true
         orderButton.centerXAnchor.constraint(equalTo: orderView.centerXAnchor).isActive = true
-        orderButton.centerYAnchor.constraint(equalTo: orderView.centerYAnchor, constant: -10).isActive = true
+        orderButton.centerYAnchor.constraint(equalTo: orderView.centerYAnchor).isActive = true
         
         // Button Tapped
         infoButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
         reviewButton.addTarget(self, action: #selector(reviewButtonTapped), for: .touchUpInside)
         orderButton.addTarget(self, action: #selector(orderButtonTapped), for: .touchUpInside)
-
     }
     
     // MARK: - Buttons
@@ -299,13 +296,13 @@ class MainCakeViewController: UIViewController {
         section.orthogonalScrollingBehavior = .paging
         
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.13))
-        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.13))
+//        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.13))
         
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
+//        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
 
         
-        section.boundarySupplementaryItems = [header, footer]
+        section.boundarySupplementaryItems = [header]
         return section
     }
     
@@ -341,7 +338,7 @@ extension MainCakeViewController: UICollectionViewDataSource {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderView
-            header.prepare(text: "월선화 > 강릉바다떡케이크")
+            header.prepare(text: " 🏡 월선화 > 강릉바다떡케이크")
             let borderLayer = CALayer()
             borderLayer.frame = CGRect(x: 0, y: header.frame.size.height - 1, width: self.view.frame.size.width, height: 1)
             borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor

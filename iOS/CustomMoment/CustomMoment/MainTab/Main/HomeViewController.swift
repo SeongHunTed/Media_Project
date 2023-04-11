@@ -22,26 +22,6 @@ class HomeViewController: UIViewController {
     private let bannerImages = ["mainFirstImage", "mainSecondImage", "mainThirdImage", "mainFourthImage"]
     private let cakeImages = ["cake1", "cake2", "cake3", "cake4", "cake5", "cake6", "cake7", "cake8", "cake9"]
     
-    private lazy var dataSource: [MySection] = [
-        .banner([
-            .init(image: self.bannerImages[0]),
-            .init(image: self.bannerImages[1]),
-            .init(image: self.bannerImages[2]),
-            .init(image: self.bannerImages[3]),
-        ]),
-        .cake([
-            .init(image: self.cakeImages[0]),
-            .init(image: self.cakeImages[1]),
-            .init(image: self.cakeImages[2]),
-            .init(image: self.cakeImages[3]),
-            .init(image: self.cakeImages[4]),
-            .init(image: self.cakeImages[5]),
-            .init(image: self.cakeImages[6]),
-            .init(image: self.cakeImages[7]),
-            .init(image: self.cakeImages[8]),
-        ])
-    ]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -132,10 +112,9 @@ extension HomeViewController {
     // CollectionView Layout 생성
     private func getLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, layoutenvironment -> NSCollectionLayoutSection? in
-            switch self.dataSource[sectionIndex] {
-            case.banner:
+            if sectionIndex == 0 {
                 return self.bannerCompositionalLayout()
-            case.cake:
+            } else {
                 return self.cakeCompositionalLayout()
             }
         }
@@ -154,7 +133,7 @@ extension HomeViewController {
         item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         // group size
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))
         
         // making group
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
@@ -264,15 +243,14 @@ extension HomeViewController: UICollectionViewDelegate {
 extension HomeViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return self.dataSource.count
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch self.dataSource[section] {
-        case let .banner(items):
-            return items.count
-        case let .cake(items):
-            return items.count
+        if section == 0 {
+            return bannerImages.count
+        } else {
+            return cakeImages.count
         }
     }
     
@@ -282,29 +260,25 @@ extension HomeViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        switch self.dataSource[indexPath.section] {
-        case let .banner(items):
+        if indexPath.section == 0 {
             guard let cell: BannerCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: BannerCollectionViewCell.self), for: indexPath) as? BannerCollectionViewCell else {
                 return UICollectionViewCell()
             }
             cell.bannerLayout()
-            cell.cellImage.image = UIImage(named: items[indexPath.item].image)
+            cell.cellImage.image = UIImage(named: bannerImages[indexPath.row])
             cell.cellImage.contentMode = .scaleAspectFill
             cell.cellImage.clipsToBounds = true
             
             return cell
-            
-        case let .cake(items):
+        } else {
             guard let cell: MainCakeCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: MainCakeCollectionViewCell.self), for: indexPath) as? MainCakeCollectionViewCell else {
                 return UICollectionViewCell()
             }
             collectionView.showsHorizontalScrollIndicator = true
             collectionView.showsVerticalScrollIndicator = false
-            cell.cellImage.image = UIImage(named: items[indexPath.item].image)
+            cell.cellImage.image = UIImage(named: cakeImages[indexPath.row])
             cell.cakeLayout()
             
-            // cell design
-            // scaleAspectFill 원본 비율 유지 + 여백없이
             cell.cellImage.contentMode = .scaleAspectFill
             cell.cellImage.clipsToBounds = true
             cell.layer.cornerRadius = 8
@@ -313,7 +287,6 @@ extension HomeViewController: UICollectionViewDataSource {
             
             return cell
         }
-        
     }
     
     // dataSource Header, Footer

@@ -20,7 +20,7 @@ class MyInfoViewController: UIViewController {
     
     // MARK: - Variables
     
-    let loginSuccess = false
+    let loginSuccess = true
     let is_seller = true
     
     let profile = "ted"
