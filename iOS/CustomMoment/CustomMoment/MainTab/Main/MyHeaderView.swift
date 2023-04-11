@@ -12,7 +12,7 @@ class MyHeaderView: UICollectionReusableView {
     private lazy var label: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.myFontM.withSize(20)
+        label.font = UIFont.myFontB.withSize(15.5)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(label)
@@ -26,7 +26,7 @@ class MyHeaderView: UICollectionReusableView {
         self.backgroundColor = .white
         NSLayoutConstraint.activate([
             self.label.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 5),
         ])
     }
     

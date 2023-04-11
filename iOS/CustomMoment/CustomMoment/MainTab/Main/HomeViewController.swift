@@ -306,13 +306,13 @@ extension HomeViewController: UICollectionViewDataSource {
             collectionView.showsHorizontalScrollIndicator = true
             collectionView.showsVerticalScrollIndicator = false
             cell.cellImage.image = UIImage(named: cakeImages[indexPath.row])
-            cell.cakeLayout()
             
             cell.cellImage.contentMode = .scaleAspectFill
-            cell.cellImage.clipsToBounds = true
-            cell.layer.cornerRadius = 8
-            cell.layer.borderWidth = 0.1
-            cell.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
+//            cell.cellImage.clipsToBounds = true
+//            cell.layer.cornerRadius = 12
+//            cell.clipsToBounds = true
+            
+            
             
             return cell
         }
