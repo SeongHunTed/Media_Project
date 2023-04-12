@@ -38,7 +38,7 @@ class TabBarViewController: UITabBarController {
         cakeVC.tabBarItem = UITabBarItem(title: "Cake", image: redCake, tag: 1)
         storeVC.tabBarItem = UITabBarItem(title: "Store", image: redStore, tag: 2)
         drawVC.tabBarItem = UITabBarItem(title: "A.I", image: redPencil, tag: 3)
-        myInfoVC.tabBarItem = UITabBarItem(title: "My Info", image: redInfo, tag: 4)
+        myInfoVC.tabBarItem = UITabBarItem(title: "MyPage", image: redInfo, tag: 4)
         
         
         setViewControllers([homeVC, cakeVC, storeVC, drawVC, myInfoVC], animated: false)

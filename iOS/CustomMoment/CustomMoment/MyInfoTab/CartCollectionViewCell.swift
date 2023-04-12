@@ -18,21 +18,10 @@ class CartCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    let optionLabel: UILabel = {
-        let label = UILabel()
-        label.text = "옵션 : [케이크 사이즈 : 도시락, 케이크 맛 : 바닐라, 케이크 색상 : 기본, 케이크 디자인 : 동물, 케이크 사이드 데코레이션 : 사이드 데코', 케이크 데코레이션 : 악세시리, 케이크 레터링 : 케이크, 케이크 폰트 : 궁서체, 케이크 사진 : 예, 케이크 포장 : 기본, 초 : 숫자초 ]"
-        label.font = UIFont.myFontR.withSize(12.0)
-        label.textColor = .black
-        label.numberOfLines = 5
-        label.adjustsFontSizeToFitWidth = false
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     let storeName: UILabel = {
         let label = UILabel()
         label.text = "딥 다이브"
-        label.font = UIFont.myFontM.withSize(18.0)
+        label.font = UIFont.myFontM.withSize(16.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +31,7 @@ class CartCollectionViewCell: UICollectionViewCell {
     let cakeName: UILabel = {
         let label = UILabel()
         label.text = "반쪽 레터링 케이크"
-        label.font = UIFont.myFontM.withSize(16.0)
+        label.font = UIFont.myFontB.withSize(14.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +41,7 @@ class CartCollectionViewCell: UICollectionViewCell {
     let pickUpDate: UILabel = {
         let label = UILabel()
         label.text = "픽업 날짜 : " + "2023-04-26"
-        label.font = UIFont.myFontR.withSize(15.0)
+        label.font = UIFont.myFontR.withSize(12.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +51,7 @@ class CartCollectionViewCell: UICollectionViewCell {
     let pickUpTime: UILabel = {
         let label = UILabel()
         label.text = "픽업 시간 : " + "17:30"
-        label.font = UIFont.myFontR.withSize(15.0)
+        label.font = UIFont.myFontR.withSize(12.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -152,24 +141,29 @@ class CartCollectionViewCell: UICollectionViewCell {
         cellImage.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 10).isActive = true
         cellImage.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -10).isActive = true
         
-        storeName.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 10).isActive = true
+        storeName.bottomAnchor.constraint(equalTo: cakeName.topAnchor, constant: -3).isActive = true
+        storeName.heightAnchor.constraint(equalToConstant: 18).isActive = true
         storeName.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 10).isActive = true
         
-        cakeName.topAnchor.constraint(equalTo: storeName.bottomAnchor).isActive = true
+        cakeName.bottomAnchor.constraint(equalTo: pickUpDate.topAnchor, constant: -2).isActive = true
+        cakeName.heightAnchor.constraint(equalToConstant: 16).isActive = true
         cakeName.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 10).isActive = true
         
-        pickUpDate.topAnchor.constraint(equalTo: cakeName.bottomAnchor, constant: 5).isActive = true
+        pickUpDate.bottomAnchor.constraint(equalTo: pickUpTime.topAnchor).isActive = true
+        pickUpDate.heightAnchor.constraint(equalToConstant: 14).isActive = true
         pickUpDate.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 10).isActive = true
         
-        pickUpTime.topAnchor.constraint(equalTo: pickUpDate.bottomAnchor).isActive = true
+        pickUpTime.bottomAnchor.constraint(equalTo: orderButton.topAnchor, constant: -20).isActive = true
+        pickUpTime.heightAnchor.constraint(equalToConstant: 14).isActive = true
         pickUpTime.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 10).isActive = true
         
         let buttonWidth = (self.contentView.frame.width * 0.7 - 40)/2
         
-        orderButton.topAnchor.constraint(equalTo: pickUpTime.bottomAnchor, constant: 10).isActive = true
+//        orderButton.topAnchor.constraint(equalTo: pickUpTime.bottomAnchor, constant: 10).isActive = true
         orderButton.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 10).isActive = true
         orderButton.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
         orderButton.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -10).isActive = true
+        orderButton.heightAnchor.constraint(equalToConstant: 33).isActive = true
         
         deleteButton.topAnchor.constraint(equalTo: orderButton.topAnchor).isActive = true
         deleteButton.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true

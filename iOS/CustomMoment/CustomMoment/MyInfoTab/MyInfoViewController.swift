@@ -184,7 +184,8 @@ class MyInfoViewController: UIViewController {
         profileView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         profileView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         profileView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        profileView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+//        profileView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        profileView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.15).isActive = true
         
         if loginSuccess == false {
             loginFailedConfigure()
@@ -286,7 +287,7 @@ extension MyInfoViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.23))
         
