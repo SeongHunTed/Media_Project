@@ -153,7 +153,7 @@ class CartCollectionViewCell: UICollectionViewCell {
         pickUpDate.heightAnchor.constraint(equalToConstant: 14).isActive = true
         pickUpDate.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 10).isActive = true
         
-        pickUpTime.bottomAnchor.constraint(equalTo: orderButton.topAnchor, constant: -20).isActive = true
+        pickUpTime.bottomAnchor.constraint(equalTo: orderButton.topAnchor, constant: -5).isActive = true
         pickUpTime.heightAnchor.constraint(equalToConstant: 14).isActive = true
         pickUpTime.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 10).isActive = true
         

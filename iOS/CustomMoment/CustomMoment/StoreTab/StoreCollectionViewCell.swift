@@ -19,7 +19,7 @@ class StoreCollectionViewCell: UICollectionViewCell {
     private let storeLabel: UILabel = {
         let label = UILabel()
         label.text = "딥 다이브"
-        label.font = UIFont.myFontM.withSize(15.0)
+        label.font = UIFont.myFontM.withSize(13.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -29,7 +29,7 @@ class StoreCollectionViewCell: UICollectionViewCell {
     private let addressLabel: UILabel = {
         let label = UILabel()
         label.text = "서울 서초구 방배동 534-2"
-        label.font = UIFont.myFontM.withSize(13.0)
+        label.font = UIFont.myFontR.withSize(11.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +39,7 @@ class StoreCollectionViewCell: UICollectionViewCell {
     private let infoLabel: UILabel = {
         let label = UILabel()
         label.text = "딥다이브는 서초구에서 졸라 잘나가는 케이크 집이지요."
-        label.font = UIFont.myFontM.withSize(16.0)
+        label.font = UIFont.myFontB.withSize(15.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
