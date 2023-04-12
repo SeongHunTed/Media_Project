@@ -16,28 +16,30 @@ class StorePopUpCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    let pageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        pageControl.pageIndicatorTintColor = .systemGray6
+        pageControl.currentPageIndicatorTintColor = .systemGray
+        pageControl.isUserInteractionEnabled = false
+        pageControl.currentPage = 0
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        return pageControl
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = .clear
-        self.contentView.layer.borderWidth = 1
-        self.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.prepare()
-    }
-    
-    private func prepare() {
-
-    }
-    
     func configure() {
         self.contentView.addSubview(cellImage)
+        self.contentView.addSubview(pageControl)
+        
         cellImage.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
         cellImage.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
         cellImage.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
@@ -45,6 +47,11 @@ class StorePopUpCollectionViewCell: UICollectionViewCell {
         cellImage.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
         cellImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
         cellImage.contentMode = .scaleAspectFill
+        
+        pageControl.topAnchor.constraint(equalTo: cellImage.bottomAnchor).isActive = true
+        pageControl.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
+        pageControl.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        pageControl.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
 }

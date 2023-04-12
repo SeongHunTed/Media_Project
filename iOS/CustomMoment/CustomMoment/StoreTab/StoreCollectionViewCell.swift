@@ -59,9 +59,9 @@ class StoreCollectionViewCell: UICollectionViewCell {
         storeLayout()
         // 그림자 추가
         cellImage.layer.shadowColor = UIColor.gray.cgColor
-        cellImage.layer.shadowRadius = 2.0
+        cellImage.layer.shadowRadius = 20.0
         cellImage.layer.shadowOpacity = 0.6
-        cellImage.layer.shadowOffset = CGSize(width: 0, height: 2)
+        cellImage.layer.shadowOffset = CGSize(width: 0, height: 20)
         cellImage.layer.cornerRadius = 12.0
         cellImage.layer.shadowPath = nil
     }

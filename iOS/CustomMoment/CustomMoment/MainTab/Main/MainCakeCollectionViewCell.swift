@@ -87,15 +87,15 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.prepare()
-    }
-    
-    private func prepare() {
-        // 아마도 케이크 정보를 받는 text 들을 초기화 해주어야할 것 같음
-//        print("Main-CakeCell :      prepareForReuse(), prepare() called")
-    }
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        self.prepare()
+//    }
+//
+//    private func prepare() {
+//        // 아마도 케이크 정보를 받는 text 들을 초기화 해주어야할 것 같음
+////        print("Main-CakeCell :      prepareForReuse(), prepare() called")
+//    }
 
     func cakeLayout() {
         self.contentView.addSubview(self.containerView)

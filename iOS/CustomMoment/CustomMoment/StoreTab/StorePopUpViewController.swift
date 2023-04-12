@@ -13,9 +13,16 @@ class StorePopUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
         configure()
-        
+//        startAutoScroll()
     }
+    
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        timer?.invalidate()
+//    }
     
     // MARK: - Layout Components
     
@@ -26,6 +33,7 @@ class StorePopUpViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: getLayout())
         collectionView.isScrollEnabled = true
+        collectionView.isPagingEnabled = true
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.clipsToBounds = true
@@ -35,13 +43,10 @@ class StorePopUpViewController: UIViewController {
         collectionView.register(MainCakeCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: MainCakeCollectionViewCell.self))
         return collectionView
     }()
-    
    
     // MARK: - Set Up Layout
     
     private func configure() {
-        self.collectionView.delegate = self
-        self.collectionView.dataSource = self
         
         self.view.addSubview(collectionView)
         
@@ -71,9 +76,9 @@ class StorePopUpViewController: UIViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.45))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
@@ -96,7 +101,7 @@ class StorePopUpViewController: UIViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
         
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.33))
@@ -113,8 +118,8 @@ class StorePopUpViewController: UIViewController {
     }
 }
 
-// MARK: extension
-extension StorePopUpViewController: UICollectionViewDelegate {
+// MARK: -extension
+extension StorePopUpViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("item at \(indexPath.section)/\(indexPath.item) tapped")
@@ -131,6 +136,63 @@ extension StorePopUpViewController: UICollectionViewDelegate {
         
         self.present(cakeVC, animated: true)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let visibleIndexPaths = collectionView.indexPathsForVisibleItems
+        if !visibleIndexPaths.contains(indexPath) {
+            return
+        }
+        let contentOffset = collectionView.contentOffset
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+        collectionView.contentOffset = contentOffset
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = collectionView.frame.size
+        return size
+    }
+    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        let pageIndex = round(collectionView.contentOffset.x / collectionView.frame.width)
+////        print("scrollVDidScroll collectionView.contentOffset", collectionView.contentOffset)
+//        print("What the fuck?")
+//        pageControl.currentPage = Int(pageIndex)
+//    }
+//
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        timer?.invalidate()
+//    }
+//
+//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//        startAutoScroll()
+//    }
+    
+//    private func startAutoScroll() {
+//        timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in
+//            guard let self = self else { return }
+//
+//            var newIndex = self.pageControl.currentPage + 1
+//
+//            if newIndex == self.storeDetailImages.count {
+//                newIndex = 0
+//            }
+//
+//            let indexPath = IndexPath(item: newIndex, section: 0)
+//
+//            let previousContentOffset = self.collectionView.contentOffset.y
+//
+//            self.collectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: true)
+//
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+//                self.collectionView.contentOffset.y = previousContentOffset
+//            }
+//
+//            print("newIndex : ", newIndex)
+//            print("prev offset.y", previousContentOffset)
+//            print("collectionview.contentoffset", collectionView.contentOffset)
+//
+//        }
+//    }
     
 }
 
@@ -158,6 +220,8 @@ extension StorePopUpViewController: UICollectionViewDataSource {
             }
             
             cell.configure()
+            cell.pageControl.numberOfPages = storeDetailImages.count
+            cell.pageControl.currentPage = indexPath.item
             cell.cellImage.image = UIImage(named: storeDetailImages[indexPath.item])
             
             return cell
@@ -186,16 +250,14 @@ extension StorePopUpViewController: UICollectionViewDataSource {
         case UICollectionView.elementKindSectionHeader:
             if indexPath.section == 0 {
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "StorePopUpHeaderView", for: indexPath) as! StorePopUpHeaderView
-                header.prepare(text: "딥 다이브")
+                header.prepare(text: "🍰 딥 다이브")
                 return header
             } else {
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "StorePopUpSecondHeaderView", for: indexPath) as! StorePopUpSecondHeaderView
                 return header
             }
         case UICollectionView.elementKindSectionFooter:
-            print("Working FooterView")
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "StorePopUpFooterView", for: indexPath) as! StorePopUpFooterView
-//            footer.prepare()
             return footer
         default:
             return UICollectionReusableView()
