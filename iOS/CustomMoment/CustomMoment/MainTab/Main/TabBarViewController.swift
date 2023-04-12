@@ -12,6 +12,7 @@ class TabBarViewController: UITabBarController {
     let homeVC = HomeViewController()
     let cakeVC = CakeViewController()
     let storeVC = StoreViewController()
+    let drawVC = DrawViewController()
     let myInfoVC = MyInfoViewController()
     
     private lazy var topBoarder: CALayer = {
@@ -25,18 +26,22 @@ class TabBarViewController: UITabBarController {
     // homeVC.tabBarItem.image = UIImage.init(systemName: "house")
     func setTapBar() {
         
+        self.tabBar.barTintColor = .white
+        
         let redHome = UIImage(systemName: "house")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
         let redCake = UIImage(systemName: "birthday.cake")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
-        let redStore = UIImage(systemName: "door.french.open")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
+        let redStore = UIImage(systemName: "takeoutbag.and.cup.and.straw")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
+        let redPencil = UIImage(systemName: "pencil.and.outline")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
         let redInfo = UIImage(systemName: "person")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
         
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: redHome, tag: 0)
         cakeVC.tabBarItem = UITabBarItem(title: "Cake", image: redCake, tag: 1)
         storeVC.tabBarItem = UITabBarItem(title: "Store", image: redStore, tag: 2)
-        myInfoVC.tabBarItem = UITabBarItem(title: "My Info", image: redInfo, tag: 3)
+        drawVC.tabBarItem = UITabBarItem(title: "A.I", image: redPencil, tag: 3)
+        myInfoVC.tabBarItem = UITabBarItem(title: "My Info", image: redInfo, tag: 4)
         
         
-        setViewControllers([homeVC, cakeVC, storeVC, myInfoVC], animated: false)
+        setViewControllers([homeVC, cakeVC, storeVC, drawVC, myInfoVC], animated: false)
         
         self.tabBar.tintColor = .systemRed.withAlphaComponent(1.0)
         self.tabBar.backgroundColor = .white
@@ -50,8 +55,6 @@ class TabBarViewController: UITabBarController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("Hi")
-        
     }
     
     override func viewDidLoad() {

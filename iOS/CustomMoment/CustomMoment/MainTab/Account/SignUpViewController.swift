@@ -9,19 +9,10 @@ import UIKit
 
 class SignUpViewController: UIViewController {
 
-//    private let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer()
-
-//    private let appiconImageView: UIImageView = {
-//        let imageView = UIImageView(image: UIImage(named: "appicon"))
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        return imageView
-//    }()
-
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = .white
-//        scrollView.alwaysBounceVertical = true
         return scrollView
     }()
     
@@ -30,21 +21,21 @@ class SignUpViewController: UIViewController {
     private let emailLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 이메일"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
         return label
     }()
 
-    private let emailField: UITextField = {
+    let emailField: UITextField = {
         let textField = UITextField()
 
         textField.placeholder = " 이메일"
         textField.layer.cornerRadius = 4
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor.lightGray.cgColor
-        
+        textField.font = UIFont.myFontR.withSize(16)
         textField.textContentType = .emailAddress
         textField.autocapitalizationType = .none
         textField.clearButtonMode = .always
@@ -56,14 +47,14 @@ class SignUpViewController: UIViewController {
     private let passwordLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 비밀번호"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
         return label
     }()
 
-    private let passwordField: UITextField = {
+    let passwordField: UITextField = {
         let textField = UITextField()
 
         textField.placeholder = " 비밀번호"
@@ -81,14 +72,14 @@ class SignUpViewController: UIViewController {
     private let checkPasswordLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 비밀번호 확인"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
         return label
     }()
 
-    private let checkPasswordField: UITextField = {
+    let checkPasswordField: UITextField = {
         let textField = UITextField()
 
         textField.placeholder = " 비밀번호 확인"
@@ -106,16 +97,16 @@ class SignUpViewController: UIViewController {
     private let addressLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 주소"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
         return label
     }()
 
-    private let addressField: UITextField = {
+    let addressField: UITextField = {
         let textField = UITextField()
-
+        textField.font = UIFont.myFontR.withSize(16)
         textField.placeholder = " 주소"
         textField.layer.cornerRadius = 4
         textField.layer.borderWidth = 1
@@ -128,7 +119,7 @@ class SignUpViewController: UIViewController {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 이름"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
@@ -136,9 +127,9 @@ class SignUpViewController: UIViewController {
     }()
 
 
-    private let nameField: UITextField = {
+    let nameField: UITextField = {
         let textField = UITextField()
-
+        textField.font = UIFont.myFontR.withSize(16)
         textField.placeholder = " 이름"
         textField.layer.cornerRadius = 4
         textField.layer.borderWidth = 1
@@ -151,16 +142,16 @@ class SignUpViewController: UIViewController {
     private let digitLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 전화번호"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
         return label
     }()
 
-    private let digitField: UITextField = {
+    let digitField: UITextField = {
         let textField = UITextField()
-
+        textField.font = UIFont.myFontR.withSize(16)
         textField.placeholder = " 전화번호 '-'빼고 입력하세요"
         textField.layer.cornerRadius = 4
         textField.layer.borderWidth = 1
@@ -174,28 +165,25 @@ class SignUpViewController: UIViewController {
     private let birthLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.myFontM
         label.text = " 생년월일"
         label.textColor = #colorLiteral(red: 0.4784313725, green: 0.4784313725, blue: 0.4784313725, alpha: 1)
         label.textAlignment = .left
         return label
     }()
 
-
-    private let birthField: UIDatePicker = {
+    let birthField: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .wheels
-        
         return datePicker
     }()
     
     let signUpButton: UIButton = {
         let button = UIButton(type: .system)
-        
         button.setTitle("회원가입", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        button.titleLabel?.font = UIFont.myFontR.withSize(20.0)
         button.backgroundColor = .systemGreen
         button.layer.cornerRadius = 4
         

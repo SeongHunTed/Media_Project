@@ -16,6 +16,19 @@ extension UIView {
     }
 }
 
+extension UIView {
+    func findViewController() -> UIViewController? {
+        var responder: UIResponder? = self
+        while let nextResponder = responder?.next {
+            responder = nextResponder
+            if let viewController = responder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
+    }
+}
+
 extension UICollectionViewDelegate {
     func currentItem(_ collectioView: UICollectionView, _ indexPath: IndexPath) -> Int {
         if indexPath.section == 0 {
@@ -23,4 +36,11 @@ extension UICollectionViewDelegate {
         }
         return 0
     }
+}
+
+extension UIFont {
+    static let myFontM = UIFont(name: "NotoSansKR-Medium", size: 16.0)!
+    static let myFontR = UIFont(name: "NotoSansKR-Regular", size: 10.0)!
+    static let myFontB = UIFont(name: "NotoSansKR-Bold", size: 20.0)!
+    static let myFontL = UIFont(name: "NotoSansKR-Light", size: 20.0)!
 }

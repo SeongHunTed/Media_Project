@@ -12,21 +12,21 @@ class MyHeaderView: UICollectionReusableView {
     private lazy var label: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize:20)
+        label.font = UIFont.myFontB.withSize(15.5)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(label)
         return label
     }()
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.backgroundColor = .white
         NSLayoutConstraint.activate([
-//            self.label.topAnchor.constraint(equalTo: self..bottomAnchor, constant: 10),
             self.label.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor ),
         ])
     }
     
@@ -47,11 +47,12 @@ class MyHeaderView: UICollectionReusableView {
 
 class MyFooterView: UICollectionReusableView {
     
-    private let bannerPageControl: UIPageControl = {
+    weak var homeVC: HomeViewController?
+    
+    let bannerPageControl: UIPageControl = {
         let pageControl = UIPageControl()
-        pageControl.pageIndicatorTintColor = .systemGray
-        pageControl.currentPageIndicatorTintColor = .white
-        pageControl.currentPage = 0
+        pageControl.pageIndicatorTintColor = .systemGray5
+        pageControl.currentPageIndicatorTintColor = .systemGray
         pageControl.isUserInteractionEnabled = false
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
@@ -59,30 +60,33 @@ class MyFooterView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+//        configure()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configure() {
-        addSubview(bannerPageControl)
+    func configure(delegate: UIScrollViewDelegate) {
+        self.addSubview(bannerPageControl)
+        bannerPageControl.currentPage = 0
+        bannerPageControl.numberOfPages = 4
+        
+        if let homeVC = delegate as? HomeViewController {
+            self.homeVC = homeVC
+        }
         NSLayoutConstraint.activate([
-            bannerPageControl.topAnchor.constraint(equalTo: topAnchor),
-            bannerPageControl.bottomAnchor.constraint(equalTo: bottomAnchor),
-            bannerPageControl.leadingAnchor.constraint(equalTo: leadingAnchor),
-            bannerPageControl.trailingAnchor.constraint(equalTo: trailingAnchor)
+            bannerPageControl.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            bannerPageControl.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            bannerPageControl.widthAnchor.constraint(equalToConstant: 200), // 원하는 크기로 지정해주세요
+            bannerPageControl.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
-    
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.prepare()
-    }
-    
-    func prepare() {
-        
+}
+
+
+extension MyFooterView {
+    func updateCurrentPage(_ page: Int) {
+        bannerPageControl.currentPage = page
     }
 }

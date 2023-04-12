@@ -15,46 +15,35 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+    
     let vcIdentifier = "HomeVC"
     
-    private var curPage = 0
-    private let bannerImages = ["mainFirstImage", "mainSecondImage", "mainThirdImage", "mainFourthImage"]
+    private var timer: Timer?
+    private let bannerImages = ["banner1", "banner2", "banner3", "banner4"]
     private let cakeImages = ["cake1", "cake2", "cake3", "cake4", "cake5", "cake6", "cake7", "cake8", "cake9"]
-    
-    private lazy var dataSource: [MySection] = [
-        .banner([
-            .init(image: self.bannerImages[0]),
-            .init(image: self.bannerImages[1]),
-            .init(image: self.bannerImages[2]),
-            .init(image: self.bannerImages[3]),
-        ]),
-        .cake([
-            .init(image: self.cakeImages[0]),
-            .init(image: self.cakeImages[1]),
-            .init(image: self.cakeImages[2]),
-            .init(image: self.cakeImages[3]),
-            .init(image: self.cakeImages[4]),
-            .init(image: self.cakeImages[5]),
-            .init(image: self.cakeImages[6]),
-            .init(image: self.cakeImages[7]),
-            .init(image: self.cakeImages[8]),
-        ])
-    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setUpDelegate()
-        imageLayout()
+        logoLayout()
         bannerLayout()
-        bannerTimer()
-        setUpLoginButton()
+        startTimer()
     }
     
-    // MARK: - Components
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("VDA Content offset x: \(collectionView.contentOffset.x)")
+        print("Content size: \(collectionView.contentSize)")
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print("VDLS Content offset x: \(collectionView.contentOffset.x)")
+    }
 
     
+    // MARK: - Components
     // 컬렉션뷰 생성
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: getLayout())
@@ -76,10 +65,11 @@ class HomeViewController: UIViewController {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
     }
-
+    
     // 컬렉션뷰 - 배너 : 레이아웃
     private func bannerLayout() {
-        collectionView.topAnchor.constraint(equalTo: self.bottomBoarder.bottomAnchor, constant: 20).isActive = true
+        collectionView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        collectionView.topAnchor.constraint(equalTo: self.bottomBoarder.bottomAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
@@ -99,7 +89,7 @@ class HomeViewController: UIViewController {
     private lazy var bottomBoarder = UIImageView(frame: CGRect(x: 0, y: 96.6, width: self.view.frame.width, height: 0.5))
     
     // 로고 터치 처리
-    func imageLayout() {
+    func logoLayout() {
         self.view.addSubview(logo)
         self.view.addSubview(bottomBoarder)
         
@@ -125,49 +115,7 @@ class HomeViewController: UIViewController {
             self.present(homeVC, animated: true)
         }
     }
-    
-    // MARK: - Login Part
-    
-    let loginButton = UIButton(type: .system)
-    
-    // 로그인버튼 생성
-    func setUpLoginButton() {
-        self.view.addSubview(loginButton)
-        
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.widthAnchor.constraint(
-            equalToConstant: 80).isActive = true
-        loginButton.heightAnchor.constraint(
-            equalToConstant: 30).isActive = true
-        loginButton.topAnchor.constraint(
-            equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
-        loginButton.trailingAnchor.constraint(
-            equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
-        
-        loginButton.setTitle("로그인", for: .normal)
-        loginButton.setTitleColor(.blue, for: .normal)
-        loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        loginButton.backgroundColor = .clear
-        loginButton.layer.cornerRadius = 4
-        
-        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
-    }
-    
-    // 로그인버튼 처리
-    @objc func loginButtonTapped(sender: UIButton) {
-        print("HomeVC :    Login Button Tapped")
-        
-        let loginVC = LoginViewController()
-        
-        loginVC.modalTransitionStyle = .coverVertical
-        loginVC.modalPresentationStyle = .automatic
-        
-        self.present(loginVC, animated: true, completion: nil)
-    }
-    
-    
 }
-
 //  MARK: - CollectionView Compositional Layout
 
 extension HomeViewController {
@@ -175,10 +123,9 @@ extension HomeViewController {
     // CollectionView Layout 생성
     private func getLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, layoutenvironment -> NSCollectionLayoutSection? in
-            switch self.dataSource[sectionIndex] {
-            case.banner:
+            if sectionIndex == 0 {
                 return self.bannerCompositionalLayout()
-            case.cake:
+            } else {
                 return self.cakeCompositionalLayout()
             }
         }
@@ -187,7 +134,7 @@ extension HomeViewController {
     // banner compositional layout
     private func bannerCompositionalLayout() -> NSCollectionLayoutSection {
         
-//        collectionView.register(MyFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
+        collectionView.register(MyFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
         
         // item size - absolute : 고정값, estimated : 추측, fraction : 퍼센트
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
@@ -197,15 +144,17 @@ extension HomeViewController {
         item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         // group size
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.25))
         
         // making group
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.05))
+        
         let section = NSCollectionLayoutSection(group: group)
-//        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50)), elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
-//
-//        section.boundarySupplementaryItems = [footer]
+        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
+
+        section.boundarySupplementaryItems = [footer]
         section.orthogonalScrollingBehavior = .paging
         
         return section
@@ -221,7 +170,7 @@ extension HomeViewController {
         
         // making item with above size
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 2, trailing: 10)
         
         // group size
         let groupSize = NSCollectionLayoutSize(widthDimension: itemSize.widthDimension, heightDimension: .fractionalHeight(0.4))
@@ -231,48 +180,73 @@ extension HomeViewController {
         
         let section = NSCollectionLayoutSection(group: group)
         
-        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50.0))
+        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(40.0))
         
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-//        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
-        
+
         section.orthogonalScrollingBehavior = .continuous
-//        section.boundarySupplementaryItems = [header, footer]
         section.boundarySupplementaryItems = [header]
         
         return section
     }
     
-    // Banner Timer action()
-    private func bannerTimer() {
-        let _ : Timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { (Timer) in
-            self.bannerMove()
-        }
-    }
-    
-    // Banner move action
-    private func bannerMove() {
-        if curPage == collectionView.numberOfItems(inSection: 0) {
-            collectionView.scrollToItem(at: NSIndexPath(item: 0, section: 0) as IndexPath, at: .right, animated: true)
-            curPage = 0
-            return
-        }
-        curPage += 1
-        collectionView.scrollToItem(at: NSIndexPath(item: curPage, section: 0) as IndexPath, at: .right, animated: true)
-    }
-}
+    // Return Current Page
+    private func getCurrentPage() -> Int {
+        let currentPage = Int(collectionView.contentOffset.x / collectionView.bounds.width)
+//            print("Current page: \(currentPage)")
+            return currentPage
 
-// 섹션분리
-enum MySection {
-    struct BannerImage {
-        let image: String
-    }
-    struct CakeImage {
-        let image: String
     }
     
-    case banner([BannerImage])
-    case cake([CakeImage])
+    // Banner Timer action()
+    private func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
+    }
+    
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    @objc private func moveToNextPage() {
+        let currentPage = getCurPage()
+        let nextPage = currentPage + 1
+        
+        if nextPage < getTotalPages() {
+            let indexPath = IndexPath(item: nextPage, section: 0)
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            updatePageControl(currentPage: nextPage)
+        } else {
+            let indexPath = IndexPath(item: 0, section: 0)
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            updatePageControl(currentPage: 0)
+        }
+    }
+    
+    private func getCurPage() -> Int {
+        if let footerView = getFooterView() {
+            return footerView.bannerPageControl.currentPage
+        }
+        return 0
+    }
+
+    private func getTotalPages() -> Int {
+        if let footerView = getFooterView() {
+            return footerView.bannerPageControl.numberOfPages
+        }
+        return 0
+    }
+
+    private func updatePageControl(currentPage: Int) {
+        if let footerView = getFooterView() {
+            footerView.bannerPageControl.currentPage = currentPage
+        }
+    }
+
+    private func getFooterView() -> MyFooterView? {
+        return collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: 0)) as? MyFooterView
+    }
+
 }
 
 // MARK: - 콜렉션뷰 델리겟 - 액션과 관련된 것들
@@ -290,7 +264,6 @@ extension HomeViewController: UICollectionViewDelegate {
         print("HomeVC :     Collection Cell Tapped")
         
         let cakeVC = MainCakeViewController()
-        
         self.present(cakeVC, animated: true)
     }
     
@@ -299,61 +272,50 @@ extension HomeViewController: UICollectionViewDelegate {
 extension HomeViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return self.dataSource.count
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch self.dataSource[section] {
-        case let .banner(items):
-            return items.count
-        case let .cake(items):
-            return items.count
+        if section == 0 {
+            return bannerImages.count
+        } else {
+            return cakeImages.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            return collectionView.bounds.size
+        return collectionView.bounds.size
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        switch self.dataSource[indexPath.section] {
-        case let .banner(items):
+        if indexPath.section == 0 {
             guard let cell: BannerCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: BannerCollectionViewCell.self), for: indexPath) as? BannerCollectionViewCell else {
                 return UICollectionViewCell()
             }
             cell.bannerLayout()
-            cell.cellImage.image = UIImage(named: items[indexPath.item].image)
+            cell.cellImage.image = UIImage(named: bannerImages[indexPath.row])
             cell.cellImage.contentMode = .scaleAspectFill
             cell.cellImage.clipsToBounds = true
-
-            return cell
             
-        case let .cake(items):
+            return cell
+        } else {
             guard let cell: MainCakeCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: MainCakeCollectionViewCell.self), for: indexPath) as? MainCakeCollectionViewCell else {
                 return UICollectionViewCell()
             }
             collectionView.showsHorizontalScrollIndicator = true
             collectionView.showsVerticalScrollIndicator = false
-            cell.cellImage.image = UIImage(named: items[indexPath.item].image)
-            cell.cakeLayout()
+            cell.cellImage.image = UIImage(named: cakeImages[indexPath.row])
             
-            // cell design
-            // scaleAspectFill 원본 비율 유지 + 여백없이
             cell.cellImage.contentMode = .scaleAspectFill
-            cell.cellImage.clipsToBounds = true
-            cell.layer.cornerRadius = 8
-            cell.layer.borderWidth = 0.1
-            cell.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
-//            cell.layer.shadowColor = UIColor.black.cgColor
-//            cell.layer.shadowOpacity = 0.5
-//            cell.layer.shadowRadius = 0.3
-//            cell.layer.shadowOffset = CGSize(width: 1, height: 1)
-//            cell.layer.masksToBounds = false
+//            cell.cellImage.clipsToBounds = true
+//            cell.layer.cornerRadius = 12
+//            cell.clipsToBounds = true
+            
+            
             
             return cell
         }
-        
     }
     
     // dataSource Header, Footer
@@ -361,14 +323,51 @@ extension HomeViewController: UICollectionViewDataSource {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderView
-            header.prepare(text: "오늘의 추천 케이크")
+            header.prepare(text: "🍰 오늘의 추천 케이크")
+            let borderLayer = CALayer()
+            borderLayer.frame = CGRect(x: 0, y: header.frame.size.height - 1, width: header.frame.size.width, height: 1)
+            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+            header.layer.addSublayer(borderLayer)
             return header
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyFooterView
-            footer.prepare()
+            footer.configure(delegate: self)
             return footer
         default:
             return UICollectionReusableView()
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        print("didEndDisplaying")
+        let pageWidth = collectionView.frame.width
+        let currentPage = Int(collectionView.contentOffset.x / pageWidth)
+//        print("pageWidth : ", pageWidth)
+//        print("collectionView.offset.x : ", collectionView.contentOffset.x)
+//        print("currentPage : ", currentPage)
+        if let footerView = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: 0)) as? MyFooterView {
+            footerView.updateCurrentPage(currentPage)
+        }
+    }
 }
+
+//extension HomeViewController: UICollectionViewDelegateFlowLayout {
+//
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        print("Hi")
+//        stopTimer()
+//    }
+//
+//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        print("Hi")
+//        startTimer()
+//    }
+//
+//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//        let pageWidth = scrollView.frame.width
+//        let currentPage = Int(scrollView.contentOffset.x / pageWidth)
+//        if let footerView = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: 0)) as? MyFooterView {
+//            footerView.updateCurrentPage(currentPage)
+//        }
+//    }
+//}

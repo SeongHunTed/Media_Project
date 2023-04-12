@@ -11,11 +11,50 @@
 		1420610BC3165F36D356AF7A /* Pods_CustomMoment_CustomMomentUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE6212CE56B56E1F8960AEA /* Pods_CustomMoment_CustomMomentUITests.framework */; };
 		7858F8D929CA0EC200E20C92 /* SubCakeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7858F8D829CA0EC200E20C92 /* SubCakeCollectionViewCell.swift */; };
 		785BFE0029BA236500CBDB0C /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785BFDFF29BA236500CBDB0C /* LoginModel.swift */; };
+		785C487C29D4AF6D00F52CFD /* CakeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785C487B29D4AF6D00F52CFD /* CakeHeaderView.swift */; };
+		785C487E29D5F06300F52CFD /* CalendarPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785C487D29D5F06300F52CFD /* CalendarPopUpViewController.swift */; };
 		785CC9B129C43DEF0034BD30 /* MyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785CC9B029C43DEF0034BD30 /* MyHeaderView.swift */; };
 		7862AB3C29C81BFC00E501C9 /* MainCakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB3B29C81BFC00E501C9 /* MainCakeViewController.swift */; };
 		7862AB3F29C824D400E501C9 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB3E29C824D400E501C9 /* UIViewExtension.swift */; };
 		7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */; };
 		786509B829C193A000B7C7F3 /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */; };
+		78DFB05529D70F22002DC963 /* StoreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB05429D70F22002DC963 /* StoreCollectionViewCell.swift */; };
+		78DFB05729D72B69002DC963 /* StoreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB05629D72B69002DC963 /* StoreHeaderView.swift */; };
+		78DFB05B29D72E63002DC963 /* StorePopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB05A29D72E63002DC963 /* StorePopUpViewController.swift */; };
+		78DFB05F29D73E20002DC963 /* Pods_CustomMoment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82991A5AC183263865885DC6 /* Pods_CustomMoment.framework */; };
+		78DFB06329D75E20002DC963 /* StorePopUpCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB06229D75E20002DC963 /* StorePopUpCollectionViewCell.swift */; };
+		78DFB06529D87FBD002DC963 /* StorePopUpHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB06429D87FBD002DC963 /* StorePopUpHeaderView.swift */; };
+		78DFB06C29DC7B83002DC963 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB06B29DC7B83002DC963 /* OrderViewController.swift */; };
+		78DFB06E29DC7BE6002DC963 /* MemberInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB06D29DC7BE6002DC963 /* MemberInfoViewController.swift */; };
+		78DFB07029DD4B2E002DC963 /* MyInfoSubViewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB06F29DD4B2E002DC963 /* MyInfoSubViewsViewController.swift */; };
+		78DFB07529DD686E002DC963 /* CartCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB07429DD686E002DC963 /* CartCollectionViewCell.swift */; };
+		78DFB07729DDF0AB002DC963 /* OrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB07629DDF0AB002DC963 /* OrderDetailViewController.swift */; };
+		78DFB07A29DF1872002DC963 /* DrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB07929DF1872002DC963 /* DrawViewController.swift */; };
+		78DFB07D29DF1EC2002DC963 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB07C29DF1EC2002DC963 /* APIService.swift */; };
+		78DFB08029DF20C5002DC963 /* OpenAIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 78DFB07F29DF20C5002DC963 /* OpenAIKit */; };
+		78DFB08929E155D5002DC963 /* MyInfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB08829E155D5002DC963 /* MyInfoCollectionViewCell.swift */; };
+		78DFB08E29E19A11002DC963 /* NoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB08D29E19A11002DC963 /* NoticeViewController.swift */; };
+		78DFB09029E19A76002DC963 /* CouponViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB08F29E19A76002DC963 /* CouponViewController.swift */; };
+		78DFB09229E19AA5002DC963 /* EventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB09129E19AA5002DC963 /* EventViewController.swift */; };
+		78DFB09629E1EBE5002DC963 /* OrderDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB09529E1EBE5002DC963 /* OrderDetailTableViewCell.swift */; };
+		78E0184729E38FFC0041F224 /* NotoSansKR-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184129E38FFC0041F224 /* NotoSansKR-Regular.otf */; };
+		78E0184829E38FFC0041F224 /* NotoSansKR-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184129E38FFC0041F224 /* NotoSansKR-Regular.otf */; };
+		78E0184929E38FFC0041F224 /* NotoSansKR-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184129E38FFC0041F224 /* NotoSansKR-Regular.otf */; };
+		78E0184A29E38FFC0041F224 /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184229E38FFC0041F224 /* NotoSansKR-Medium.otf */; };
+		78E0184B29E38FFC0041F224 /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184229E38FFC0041F224 /* NotoSansKR-Medium.otf */; };
+		78E0184C29E38FFC0041F224 /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184229E38FFC0041F224 /* NotoSansKR-Medium.otf */; };
+		78E0184D29E38FFC0041F224 /* NotoSansKR-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184329E38FFC0041F224 /* NotoSansKR-Thin.otf */; };
+		78E0184E29E38FFC0041F224 /* NotoSansKR-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184329E38FFC0041F224 /* NotoSansKR-Thin.otf */; };
+		78E0184F29E38FFC0041F224 /* NotoSansKR-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184329E38FFC0041F224 /* NotoSansKR-Thin.otf */; };
+		78E0185029E38FFC0041F224 /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184429E38FFC0041F224 /* NotoSansKR-Black.otf */; };
+		78E0185129E38FFC0041F224 /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184429E38FFC0041F224 /* NotoSansKR-Black.otf */; };
+		78E0185229E38FFC0041F224 /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184429E38FFC0041F224 /* NotoSansKR-Black.otf */; };
+		78E0185329E38FFC0041F224 /* NotoSansKR-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184529E38FFC0041F224 /* NotoSansKR-Light.otf */; };
+		78E0185429E38FFC0041F224 /* NotoSansKR-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184529E38FFC0041F224 /* NotoSansKR-Light.otf */; };
+		78E0185529E38FFC0041F224 /* NotoSansKR-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184529E38FFC0041F224 /* NotoSansKR-Light.otf */; };
+		78E0185629E38FFC0041F224 /* NotoSansKR-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184629E38FFC0041F224 /* NotoSansKR-Bold.otf */; };
+		78E0185729E38FFC0041F224 /* NotoSansKR-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184629E38FFC0041F224 /* NotoSansKR-Bold.otf */; };
+		78E0185829E38FFC0041F224 /* NotoSansKR-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78E0184629E38FFC0041F224 /* NotoSansKR-Bold.otf */; };
 		78EBE59C29B600CB00E3B065 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE59B29B600CB00E3B065 /* AppDelegate.swift */; };
 		78EBE59E29B600CB00E3B065 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE59D29B600CB00E3B065 /* SceneDelegate.swift */; };
 		78EBE5A529B600CE00E3B065 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78EBE5A429B600CE00E3B065 /* Assets.xcassets */; };
@@ -26,6 +65,8 @@
 		78EBE5CC29B613E400E3B065 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE5CB29B613E400E3B065 /* HomeViewController.swift */; };
 		78EBE5CE29B620B900E3B065 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE5CD29B620B900E3B065 /* LoginViewController.swift */; };
 		78EBE5D029B7012F00E3B065 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE5CF29B7012F00E3B065 /* SignUpViewController.swift */; };
+		78F6919B29E1FBE10037C684 /* OrderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F6919A29E1FBE10037C684 /* OrderCollectionViewCell.swift */; };
+		78F6919E29E1FDBD0037C684 /* BillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F6919D29E1FDBD0037C684 /* BillViewController.swift */; };
 		78FD435A29CCBCB6006ED4F8 /* MainOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD435929CCBCB6006ED4F8 /* MainOptionViewController.swift */; };
 		78FD435C29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD435B29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift */; };
 		78FD435E29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD435D29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift */; };
@@ -33,7 +74,6 @@
 		78FD436629D34435006ED4F8 /* StoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD436529D34435006ED4F8 /* StoreViewController.swift */; };
 		78FD436829D3444B006ED4F8 /* MyInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD436729D3444B006ED4F8 /* MyInfoViewController.swift */; };
 		78FD436A29D349DA006ED4F8 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD436929D349DA006ED4F8 /* TabBarViewController.swift */; };
-		BF915787BD7391E86CBE79E7 /* Pods_CustomMoment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82991A5AC183263865885DC6 /* Pods_CustomMoment.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,11 +99,37 @@
 		6190D7770358427396EAC926 /* Pods-CustomMoment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomMoment.debug.xcconfig"; path = "Target Support Files/Pods-CustomMoment/Pods-CustomMoment.debug.xcconfig"; sourceTree = "<group>"; };
 		7858F8D829CA0EC200E20C92 /* SubCakeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCakeCollectionViewCell.swift; sourceTree = "<group>"; };
 		785BFDFF29BA236500CBDB0C /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
+		785C487B29D4AF6D00F52CFD /* CakeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CakeHeaderView.swift; sourceTree = "<group>"; };
+		785C487D29D5F06300F52CFD /* CalendarPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPopUpViewController.swift; sourceTree = "<group>"; };
 		785CC9B029C43DEF0034BD30 /* MyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHeaderView.swift; sourceTree = "<group>"; };
 		7862AB3B29C81BFC00E501C9 /* MainCakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeViewController.swift; sourceTree = "<group>"; };
 		7862AB3E29C824D400E501C9 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeCollectionViewCell.swift; sourceTree = "<group>"; };
 		786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
+		78DFB05429D70F22002DC963 /* StoreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCollectionViewCell.swift; sourceTree = "<group>"; };
+		78DFB05629D72B69002DC963 /* StoreHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreHeaderView.swift; sourceTree = "<group>"; };
+		78DFB05A29D72E63002DC963 /* StorePopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePopUpViewController.swift; sourceTree = "<group>"; };
+		78DFB06229D75E20002DC963 /* StorePopUpCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePopUpCollectionViewCell.swift; sourceTree = "<group>"; };
+		78DFB06429D87FBD002DC963 /* StorePopUpHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePopUpHeaderView.swift; sourceTree = "<group>"; };
+		78DFB06B29DC7B83002DC963 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
+		78DFB06D29DC7BE6002DC963 /* MemberInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberInfoViewController.swift; sourceTree = "<group>"; };
+		78DFB06F29DD4B2E002DC963 /* MyInfoSubViewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfoSubViewsViewController.swift; sourceTree = "<group>"; };
+		78DFB07429DD686E002DC963 /* CartCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCollectionViewCell.swift; sourceTree = "<group>"; };
+		78DFB07629DDF0AB002DC963 /* OrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailViewController.swift; sourceTree = "<group>"; };
+		78DFB07929DF1872002DC963 /* DrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawViewController.swift; sourceTree = "<group>"; };
+		78DFB07C29DF1EC2002DC963 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		78DFB08129DF5FBC002DC963 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
+		78DFB08829E155D5002DC963 /* MyInfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfoCollectionViewCell.swift; sourceTree = "<group>"; };
+		78DFB08D29E19A11002DC963 /* NoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewController.swift; sourceTree = "<group>"; };
+		78DFB08F29E19A76002DC963 /* CouponViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponViewController.swift; sourceTree = "<group>"; };
+		78DFB09129E19AA5002DC963 /* EventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewController.swift; sourceTree = "<group>"; };
+		78DFB09529E1EBE5002DC963 /* OrderDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailTableViewCell.swift; sourceTree = "<group>"; };
+		78E0184129E38FFC0041F224 /* NotoSansKR-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSansKR-Regular.otf"; path = "../../../../../../Library/Fonts/NotoSansKR-Regular.otf"; sourceTree = "<group>"; };
+		78E0184229E38FFC0041F224 /* NotoSansKR-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSansKR-Medium.otf"; path = "../../../../../../Library/Fonts/NotoSansKR-Medium.otf"; sourceTree = "<group>"; };
+		78E0184329E38FFC0041F224 /* NotoSansKR-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSansKR-Thin.otf"; path = "../../../../../../Library/Fonts/NotoSansKR-Thin.otf"; sourceTree = "<group>"; };
+		78E0184429E38FFC0041F224 /* NotoSansKR-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSansKR-Black.otf"; path = "../../../../../../Library/Fonts/NotoSansKR-Black.otf"; sourceTree = "<group>"; };
+		78E0184529E38FFC0041F224 /* NotoSansKR-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSansKR-Light.otf"; path = "../../../../../../Library/Fonts/NotoSansKR-Light.otf"; sourceTree = "<group>"; };
+		78E0184629E38FFC0041F224 /* NotoSansKR-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSansKR-Bold.otf"; path = "../../../../../../Library/Fonts/NotoSansKR-Bold.otf"; sourceTree = "<group>"; };
 		78EBE59829B600CB00E3B065 /* CustomMoment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomMoment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78EBE59B29B600CB00E3B065 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		78EBE59D29B600CB00E3B065 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +144,8 @@
 		78EBE5CB29B613E400E3B065 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		78EBE5CD29B620B900E3B065 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		78EBE5CF29B7012F00E3B065 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		78F6919A29E1FBE10037C684 /* OrderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCollectionViewCell.swift; sourceTree = "<group>"; };
+		78F6919D29E1FDBD0037C684 /* BillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillViewController.swift; sourceTree = "<group>"; };
 		78FD435929CCBCB6006ED4F8 /* MainOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainOptionViewController.swift; sourceTree = "<group>"; };
 		78FD435B29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeButtonCollectionViewCell.swift; sourceTree = "<group>"; };
 		78FD435D29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionButtonCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -98,7 +166,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF915787BD7391E86CBE79E7 /* Pods_CustomMoment.framework in Frameworks */,
+				78DFB05F29D73E20002DC963 /* Pods_CustomMoment.framework in Frameworks */,
+				78DFB08029DF20C5002DC963 /* OpenAIKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,6 +229,91 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		78DFB06629DB0E78002DC963 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB06F29DD4B2E002DC963 /* MyInfoSubViewsViewController.swift */,
+				78DFB08C29E199E0002DC963 /* Coupon */,
+				78DFB08B29E199D6002DC963 /* Notice */,
+				78DFB08A29E199CC002DC963 /* Event */,
+				78F6919C29E1FD7F0037C684 /* Bill */,
+				78DFB07329DD594C002DC963 /* MemberInfo */,
+				78DFB07229DD5945002DC963 /* Order */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
+		78DFB07229DD5945002DC963 /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB07629DDF0AB002DC963 /* OrderDetailViewController.swift */,
+				78DFB09529E1EBE5002DC963 /* OrderDetailTableViewCell.swift */,
+			);
+			path = Order;
+			sourceTree = "<group>";
+		};
+		78DFB07329DD594C002DC963 /* MemberInfo */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB06D29DC7BE6002DC963 /* MemberInfoViewController.swift */,
+			);
+			path = MemberInfo;
+			sourceTree = "<group>";
+		};
+		78DFB07829DF1783002DC963 /* DrawTab */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB07B29DF1E2A002DC963 /* DALLE_API */,
+				78DFB07929DF1872002DC963 /* DrawViewController.swift */,
+			);
+			path = DrawTab;
+			sourceTree = "<group>";
+		};
+		78DFB07B29DF1E2A002DC963 /* DALLE_API */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB07C29DF1EC2002DC963 /* APIService.swift */,
+			);
+			path = DALLE_API;
+			sourceTree = "<group>";
+		};
+		78DFB08A29E199CC002DC963 /* Event */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB09129E19AA5002DC963 /* EventViewController.swift */,
+			);
+			path = Event;
+			sourceTree = "<group>";
+		};
+		78DFB08B29E199D6002DC963 /* Notice */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB08D29E19A11002DC963 /* NoticeViewController.swift */,
+			);
+			path = Notice;
+			sourceTree = "<group>";
+		};
+		78DFB08C29E199E0002DC963 /* Coupon */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB08F29E19A76002DC963 /* CouponViewController.swift */,
+			);
+			path = Coupon;
+			sourceTree = "<group>";
+		};
+		78E0184029E38F8B0041F224 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				78E0184429E38FFC0041F224 /* NotoSansKR-Black.otf */,
+				78E0184629E38FFC0041F224 /* NotoSansKR-Bold.otf */,
+				78E0184529E38FFC0041F224 /* NotoSansKR-Light.otf */,
+				78E0184229E38FFC0041F224 /* NotoSansKR-Medium.otf */,
+				78E0184129E38FFC0041F224 /* NotoSansKR-Regular.otf */,
+				78E0184329E38FFC0041F224 /* NotoSansKR-Thin.otf */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		78EBE58F29B600CB00E3B065 = {
 			isa = PBXGroup;
 			children = (
@@ -185,16 +339,19 @@
 		78EBE59A29B600CB00E3B065 /* CustomMoment */ = {
 			isa = PBXGroup;
 			children = (
+				78DFB07829DF1783002DC963 /* DrawTab */,
 				78FD436429D3441E006ED4F8 /* MyInfoTab */,
 				78FD436329D34414006ED4F8 /* StoreTab */,
 				78FD436029D3439C006ED4F8 /* CakeTab */,
 				78FD435F29D34362006ED4F8 /* MainTab */,
 				7862AB3D29C824A400E501C9 /* Extension */,
+				78E0184029E38F8B0041F224 /* Settings */,
 				78EBE5A429B600CE00E3B065 /* Assets.xcassets */,
 				78EBE5A629B600CE00E3B065 /* LaunchScreen.storyboard */,
 				78EBE59D29B600CB00E3B065 /* SceneDelegate.swift */,
 				78EBE59B29B600CB00E3B065 /* AppDelegate.swift */,
 				78EBE5A929B600CE00E3B065 /* Info.plist */,
+				78DFB08129DF5FBC002DC963 /* Secrets.xcconfig */,
 			);
 			path = CustomMoment;
 			sourceTree = "<group>";
@@ -214,6 +371,16 @@
 				78EBE5BE29B600CE00E3B065 /* CustomMomentUITestsLaunchTests.swift */,
 			);
 			path = CustomMomentUITests;
+			sourceTree = "<group>";
+		};
+		78F6919C29E1FD7F0037C684 /* Bill */ = {
+			isa = PBXGroup;
+			children = (
+				78DFB06B29DC7B83002DC963 /* OrderViewController.swift */,
+				78F6919A29E1FBE10037C684 /* OrderCollectionViewCell.swift */,
+				78F6919D29E1FDBD0037C684 /* BillViewController.swift */,
+			);
+			path = Bill;
 			sourceTree = "<group>";
 		};
 		78FD435829CCBC99006ED4F8 /* MainOption */ = {
@@ -241,6 +408,8 @@
 			isa = PBXGroup;
 			children = (
 				78FD436129D343B4006ED4F8 /* CakeViewController.swift */,
+				785C487B29D4AF6D00F52CFD /* CakeHeaderView.swift */,
+				785C487D29D5F06300F52CFD /* CalendarPopUpViewController.swift */,
 			);
 			path = CakeTab;
 			sourceTree = "<group>";
@@ -249,6 +418,11 @@
 			isa = PBXGroup;
 			children = (
 				78FD436529D34435006ED4F8 /* StoreViewController.swift */,
+				78DFB05429D70F22002DC963 /* StoreCollectionViewCell.swift */,
+				78DFB05629D72B69002DC963 /* StoreHeaderView.swift */,
+				78DFB05A29D72E63002DC963 /* StorePopUpViewController.swift */,
+				78DFB06229D75E20002DC963 /* StorePopUpCollectionViewCell.swift */,
+				78DFB06429D87FBD002DC963 /* StorePopUpHeaderView.swift */,
 			);
 			path = StoreTab;
 			sourceTree = "<group>";
@@ -256,7 +430,10 @@
 		78FD436429D3441E006ED4F8 /* MyInfoTab */ = {
 			isa = PBXGroup;
 			children = (
+				78DFB06629DB0E78002DC963 /* Subviews */,
 				78FD436729D3444B006ED4F8 /* MyInfoViewController.swift */,
+				78DFB08829E155D5002DC963 /* MyInfoCollectionViewCell.swift */,
+				78DFB07429DD686E002DC963 /* CartCollectionViewCell.swift */,
 			);
 			path = MyInfoTab;
 			sourceTree = "<group>";
@@ -302,6 +479,9 @@
 			dependencies = (
 			);
 			name = CustomMoment;
+			packageProductDependencies = (
+				78DFB07F29DF20C5002DC963 /* OpenAIKit */,
+			);
 			productName = CustomMoment;
 			productReference = 78EBE59829B600CB00E3B065 /* CustomMoment.app */;
 			productType = "com.apple.product-type.application";
@@ -377,6 +557,9 @@
 				Base,
 			);
 			mainGroup = 78EBE58F29B600CB00E3B065;
+			packageReferences = (
+				78DFB07E29DF20C4002DC963 /* XCRemoteSwiftPackageReference "OpenAIKit" */,
+			);
 			productRefGroup = 78EBE59929B600CB00E3B065 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -393,8 +576,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78E0184A29E38FFC0041F224 /* NotoSansKR-Medium.otf in Resources */,
 				78EBE5A829B600CE00E3B065 /* LaunchScreen.storyboard in Resources */,
+				78E0185629E38FFC0041F224 /* NotoSansKR-Bold.otf in Resources */,
+				78E0185329E38FFC0041F224 /* NotoSansKR-Light.otf in Resources */,
+				78E0184729E38FFC0041F224 /* NotoSansKR-Regular.otf in Resources */,
+				78E0185029E38FFC0041F224 /* NotoSansKR-Black.otf in Resources */,
 				78EBE5A529B600CE00E3B065 /* Assets.xcassets in Resources */,
+				78E0184D29E38FFC0041F224 /* NotoSansKR-Thin.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +591,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78E0184E29E38FFC0041F224 /* NotoSansKR-Thin.otf in Resources */,
+				78E0185429E38FFC0041F224 /* NotoSansKR-Light.otf in Resources */,
+				78E0184B29E38FFC0041F224 /* NotoSansKR-Medium.otf in Resources */,
+				78E0184829E38FFC0041F224 /* NotoSansKR-Regular.otf in Resources */,
+				78E0185729E38FFC0041F224 /* NotoSansKR-Bold.otf in Resources */,
+				78E0185129E38FFC0041F224 /* NotoSansKR-Black.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +604,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78E0184F29E38FFC0041F224 /* NotoSansKR-Thin.otf in Resources */,
+				78E0185529E38FFC0041F224 /* NotoSansKR-Light.otf in Resources */,
+				78E0184C29E38FFC0041F224 /* NotoSansKR-Medium.otf in Resources */,
+				78E0184929E38FFC0041F224 /* NotoSansKR-Regular.otf in Resources */,
+				78E0185829E38FFC0041F224 /* NotoSansKR-Bold.otf in Resources */,
+				78E0185229E38FFC0041F224 /* NotoSansKR-Black.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,23 +724,44 @@
 			buildActionMask = 2147483647;
 			files = (
 				7862AB3F29C824D400E501C9 /* UIViewExtension.swift in Sources */,
+				78DFB08929E155D5002DC963 /* MyInfoCollectionViewCell.swift in Sources */,
+				78DFB09629E1EBE5002DC963 /* OrderDetailTableViewCell.swift in Sources */,
 				786509B829C193A000B7C7F3 /* BannerCollectionViewCell.swift in Sources */,
 				78EBE5CE29B620B900E3B065 /* LoginViewController.swift in Sources */,
 				7862AB3C29C81BFC00E501C9 /* MainCakeViewController.swift in Sources */,
+				78DFB09229E19AA5002DC963 /* EventViewController.swift in Sources */,
+				78DFB07A29DF1872002DC963 /* DrawViewController.swift in Sources */,
+				78DFB06529D87FBD002DC963 /* StorePopUpHeaderView.swift in Sources */,
 				78FD435E29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift in Sources */,
 				78FD436629D34435006ED4F8 /* StoreViewController.swift in Sources */,
+				78DFB06C29DC7B83002DC963 /* OrderViewController.swift in Sources */,
+				78DFB07529DD686E002DC963 /* CartCollectionViewCell.swift in Sources */,
+				78F6919B29E1FBE10037C684 /* OrderCollectionViewCell.swift in Sources */,
+				785C487C29D4AF6D00F52CFD /* CakeHeaderView.swift in Sources */,
 				78EBE59C29B600CB00E3B065 /* AppDelegate.swift in Sources */,
+				78DFB06329D75E20002DC963 /* StorePopUpCollectionViewCell.swift in Sources */,
+				78DFB09029E19A76002DC963 /* CouponViewController.swift in Sources */,
 				78FD436229D343B4006ED4F8 /* CakeViewController.swift in Sources */,
+				78DFB06E29DC7BE6002DC963 /* MemberInfoViewController.swift in Sources */,
 				78FD436A29D349DA006ED4F8 /* TabBarViewController.swift in Sources */,
+				78DFB07729DDF0AB002DC963 /* OrderDetailViewController.swift in Sources */,
 				785BFE0029BA236500CBDB0C /* LoginModel.swift in Sources */,
 				7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */,
 				785CC9B129C43DEF0034BD30 /* MyHeaderView.swift in Sources */,
+				78DFB05729D72B69002DC963 /* StoreHeaderView.swift in Sources */,
+				785C487E29D5F06300F52CFD /* CalendarPopUpViewController.swift in Sources */,
 				78EBE59E29B600CB00E3B065 /* SceneDelegate.swift in Sources */,
 				78EBE5CC29B613E400E3B065 /* HomeViewController.swift in Sources */,
+				78DFB05B29D72E63002DC963 /* StorePopUpViewController.swift in Sources */,
+				78DFB05529D70F22002DC963 /* StoreCollectionViewCell.swift in Sources */,
+				78DFB07029DD4B2E002DC963 /* MyInfoSubViewsViewController.swift in Sources */,
 				78EBE5D029B7012F00E3B065 /* SignUpViewController.swift in Sources */,
+				78DFB07D29DF1EC2002DC963 /* APIService.swift in Sources */,
 				78FD435A29CCBCB6006ED4F8 /* MainOptionViewController.swift in Sources */,
 				7858F8D929CA0EC200E20C92 /* SubCakeCollectionViewCell.swift in Sources */,
 				78FD436829D3444B006ED4F8 /* MyInfoViewController.swift in Sources */,
+				78F6919E29E1FDBD0037C684 /* BillViewController.swift in Sources */,
+				78DFB08E29E19A11002DC963 /* NoticeViewController.swift in Sources */,
 				78FD435C29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -620,6 +842,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CONFIG_FILE_PATH = "$(SRCROOT)/CustomMoment/Secrets.xcconfig";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -642,6 +865,9 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OPENAI_API_KEY = "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";
+				PAPAGO_API_ID = usOTVLF7ZLwHAGkX5qXV;
+				PAPAGO_API_PW = ECmb6wKzg9;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -680,6 +906,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CONFIG_FILE_PATH = "$(SRCROOT)/CustomMoment/Secrets.xcconfig";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -695,6 +922,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OPENAI_API_KEY = "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";
+				PAPAGO_API_ID = usOTVLF7ZLwHAGkX5qXV;
+				PAPAGO_API_PW = ECmb6wKzg9;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -715,8 +945,9 @@
 				INFOPLIST_FILE = CustomMoment/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -744,8 +975,9 @@
 				INFOPLIST_FILE = CustomMoment/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -880,6 +1112,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		78DFB07E29DF20C4002DC963 /* XCRemoteSwiftPackageReference "OpenAIKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MarcoDotIO/OpenAIKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		78DFB07F29DF20C5002DC963 /* OpenAIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78DFB07E29DF20C4002DC963 /* XCRemoteSwiftPackageReference "OpenAIKit" */;
+			productName = OpenAIKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 78EBE59029B600CB00E3B065 /* Project object */;
 }

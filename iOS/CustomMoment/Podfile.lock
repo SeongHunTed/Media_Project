@@ -1,20 +1,28 @@
 PODS:
   - DropDown (2.3.13)
   - FSCalendar (2.8.4)
+  - NMapsGeometry (1.0.1)
+  - NMapsMap (3.16.2):
+    - NMapsGeometry
 
 DEPENDENCIES:
   - DropDown
   - FSCalendar
+  - NMapsMap
 
 SPEC REPOS:
   trunk:
     - DropDown
     - FSCalendar
+    - NMapsGeometry
+    - NMapsMap
 
 SPEC CHECKSUMS:
   DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
   FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
+  NMapsGeometry: 53c573ead66466681cf123f99f698dc8071a4b83
+  NMapsMap: aaa64717249b06ae82c3a3addb3a01f0e33100ab
 
-PODFILE CHECKSUM: 0b6a86507a8a5e77c37c3b2a560def3672e2ad04
+PODFILE CHECKSUM: cd4258cb8161bc4aaeb54d5f68395902996b003a
 
 COCOAPODS: 1.12.0
