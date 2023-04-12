@@ -20,7 +20,7 @@ class DrawViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         dalleImageView.layer.cornerRadius = dalleImageView.frame.height / 2
         dalleImageView.clipsToBounds = true
-        dalleImageView.layer.borderWidth = 0.5
+        dalleImageView.layer.borderWidth = 0.3
         dalleImageView.layer.borderColor = UIColor.black.withAlphaComponent(0.9).cgColor
     }
     
@@ -35,9 +35,7 @@ class DrawViewController: UIViewController {
     
     private let dallePrompt: UITextField = {
         let text = UITextField()
-//        text.layer.borderWidth = 0.4
         text.backgroundColor = .systemGray6
-//        text.becomeFirstResponder()
         text.placeholder = "케이크의 디자인을 텍스트로 표현하세요"
         text.font = UIFont.myFontR.withSize(14)
         text.borderStyle = .roundedRect
@@ -60,7 +58,7 @@ class DrawViewController: UIViewController {
     
     private lazy var saveButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = .systemGray4
+        button.backgroundColor = .systemGray2
         button.tintColor = .white
         button.setTitle("저장하기", for: .normal)
         button.titleLabel?.font = UIFont.myFontM.withSize(16)
@@ -96,15 +94,19 @@ class DrawViewController: UIViewController {
         dallePrompt.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -10).isActive = true
         dallePrompt.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-//        dalleImageView.topAnchor.constraint(greaterThanOrEqualTo: dallePrompt.bottomAnchor, constant: 10).isActive = true
-//        dalleImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        dalleImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
-        dalleImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
-//        dalleImageView.widthAnchor.constraint(lessThanOrEqualTo: self.view.widthAnchor, multiplier: 0.9).isActive = true
-        dalleImageView.heightAnchor.constraint(equalTo: dalleImageView.widthAnchor).isActive = true
-//        dalleImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-//        dalleImageView.bottomAnchor.constraint(lessThanOrEqualTo: self.saveButton.topAnchor, constant: -10).isActive = true
-        
+////        dalleImageView.topAnchor.constraint(greaterThanOrEqualTo: dallePrompt.bottomAnchor, constant: 10).isActive = true
+////        dalleImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+//        dalleImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
+//        dalleImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
+////        dalleImageView.widthAnchor.constraint(lessThanOrEqualTo: self.view.widthAnchor, multiplier: 0.9).isActive = true
+//        dalleImageView.heightAnchor.constraint(equalTo: dalleImageView.widthAnchor).isActive = true
+////        dalleImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+////        dalleImageView.bottomAnchor.constraint(lessThanOrEqualTo: self.saveButton.topAnchor, constant: -10).isActive = true
+  
+        dalleImageView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
+        dalleImageView.heightAnchor.constraint(equalTo: dalleImageView.widthAnchor, multiplier: 1.0).isActive = true
+        dalleImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        dalleImageView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -40).isActive = true
     }
     
     // MARK: - Logo Layout
@@ -147,21 +149,21 @@ class DrawViewController: UIViewController {
 
 extension DrawViewController: UITextFieldDelegate {
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let inputText = textField.text else {
-            print("nothing")
-            return
-        }
-        
-        let words = inputText.split(separator: " ")
-        
-        if words.count < 7 {
-            let alertController = UIAlertController(title: "경고", message: "정확한 케이크 이미지 생성을 위해 10단어 이상 입력하세요!", preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
-            alertController.addAction(cancelAction)
-            self.present(alertController, animated: true)
-        }
-    }
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        guard let inputText = textField.text else {
+//            print("nothing")
+//            return
+//        }
+//
+//        let words = inputText.split(separator: " ")
+//
+//        if words.count < 7 {
+//            let alertController = UIAlertController(title: "경고", message: "정확한 케이크 이미지 생성을 위해 7단어 이상 입력하세요!", preferredStyle: .alert)
+//            let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+//            alertController.addAction(cancelAction)
+//            self.present(alertController, animated: true)
+//        }
+//    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
         self.view.endEditing(true)

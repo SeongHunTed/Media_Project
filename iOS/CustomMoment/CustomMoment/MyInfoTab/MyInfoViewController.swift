@@ -370,8 +370,14 @@ extension MyInfoViewController: UICollectionViewDataSource {
             cell.cellImage.image = UIImage(named: cake[indexPath.row])
             cell.cartLayout()
             cell.layer.cornerRadius = 8
-            cell.layer.borderWidth = 0.5
-            cell.contentView.layer.borderColor = UIColor.red.withAlphaComponent(0.8).cgColor
+            cell.layer.shadowColor = UIColor.gray.cgColor
+            cell.layer.shadowRadius = 2.0
+            cell.layer.shadowOpacity = 0.6
+            cell.layer.shadowOffset = CGSize(width: 0, height: 2)
+            cell.layer.cornerRadius = 12.0
+            cell.clipsToBounds = true
+            cell.layer.masksToBounds = false
+            cell.layer.shadowPath = nil
             return cell
         }
     }
