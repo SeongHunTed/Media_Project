@@ -13,8 +13,7 @@ class StorePopUpHeaderView: UICollectionReusableView {
     private let label: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.myFontM.withSize(18)
-        label.textAlignment = .center
+        label.font = UIFont.myFontB.withSize(17.5)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -25,8 +24,8 @@ class StorePopUpHeaderView: UICollectionReusableView {
 
         addSubview(label)
         NSLayoutConstraint.activate([
-            self.label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.label.topAnchor.constraint(equalTo: self.topAnchor, constant: 2)
+            self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            self.label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
         ])
         addBottomBorder()
     }
@@ -37,15 +36,9 @@ class StorePopUpHeaderView: UICollectionReusableView {
     
     func addBottomBorder() {
         let borderLayer = CALayer()
-        borderLayer.frame = CGRect(x: 0, y: frame.size.height - 10, width: frame.size.width, height: 1)
+        borderLayer.frame = CGRect(x: 0, y: frame.size.height-10, width: frame.size.width, height: 1)
         borderLayer.backgroundColor = UIColor.lightGray.cgColor
         layer.addSublayer(borderLayer)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        label.frame = bounds
     }
     
     override func prepareForReuse() {
@@ -61,15 +54,14 @@ class StorePopUpHeaderView: UICollectionReusableView {
 class StorePopUpSecondHeaderView: UICollectionReusableView {
     
     private let cakeButton: UIButton = {
-        let button = UIButton()
-        button.configuration = .filled()
+        let button = UIButton(type: .system)
         button.setTitle("케이크", for: .normal)
-        button.titleLabel?.font = UIFont.myFontM.withSize(15.0)
+        button.titleLabel?.font = UIFont.myFontB.withSize(15.0)
         button.titleLabel?.textColor = .white
         button.tintColor = .white
-        button.layer.borderColor = UIColor.systemRed.withAlphaComponent(0.8).cgColor
-        button.layer.borderWidth = 1
+        button.backgroundColor = .systemRed
         button.layer.cornerRadius = 6
+        button.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -79,14 +71,23 @@ class StorePopUpSecondHeaderView: UICollectionReusableView {
 
         addSubview(cakeButton)
         NSLayoutConstraint.activate([
-            self.cakeButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.cakeButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            self.cakeButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.4)
+            self.cakeButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            self.cakeButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+            self.cakeButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.2),
+            self.cakeButton.heightAnchor.constraint(equalToConstant: 33)
         ])
+        addBottomBorder()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func addBottomBorder() {
+        let borderLayer = CALayer()
+        borderLayer.frame = CGRect(x: 20, y: 53, width: self.frame.size.width-35, height: 1)
+        borderLayer.backgroundColor = UIColor.systemRed.cgColor
+        layer.addSublayer(borderLayer)
     }
 }
 
@@ -96,7 +97,6 @@ class StorePopUpFooterView: UICollectionReusableView {
         let label = UILabel()
         label.text = "⏰ 영업 : 수~일 10:00~17:00/ 휴무 : 월, 화"
         label.font = UIFont.myFontR.withSize(15.0)
-        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -105,7 +105,6 @@ class StorePopUpFooterView: UICollectionReusableView {
         let label = UILabel()
         label.text = "☎️ 02-222-5555"
         label.font = UIFont.myFontR.withSize(15.0)
-        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -114,7 +113,6 @@ class StorePopUpFooterView: UICollectionReusableView {
         let label = UILabel()
         label.text = "🚗 서울시 관악구 미성3길 20 1층"
         label.font = UIFont.myFontR.withSize(15.0)
-        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -195,18 +193,9 @@ class StorePopUpFooterView: UICollectionReusableView {
         bottomBorderLayer.frame = CGRect(x: 0, y: frame.size.height - 1, width: frame.size.width, height: 1)
         bottomBorderLayer.backgroundColor = UIColor.lightGray.cgColor
         let topBorderLayer = CALayer()
-        topBorderLayer.frame = CGRect(x: 0, y: 10, width: frame.size.width, height: 1)
+        topBorderLayer.frame = CGRect(x: 0, y: 20, width: frame.size.width, height: 1)
         topBorderLayer.backgroundColor = UIColor.lightGray.cgColor
         layer.addSublayer(bottomBorderLayer)
         layer.addSublayer(topBorderLayer)
     }
-    
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-//        self.prepare(text: nil)
-//    }
-//
-//    func prepare(time: String?) {
-//
-//    }
 }

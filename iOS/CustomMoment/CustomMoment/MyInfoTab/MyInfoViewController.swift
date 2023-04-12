@@ -184,7 +184,8 @@ class MyInfoViewController: UIViewController {
         profileView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         profileView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         profileView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        profileView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+//        profileView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        profileView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.15).isActive = true
         
         if loginSuccess == false {
             loginFailedConfigure()
@@ -286,7 +287,7 @@ extension MyInfoViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 10)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.23))
         
@@ -370,8 +371,14 @@ extension MyInfoViewController: UICollectionViewDataSource {
             cell.cellImage.image = UIImage(named: cake[indexPath.row])
             cell.cartLayout()
             cell.layer.cornerRadius = 8
-            cell.layer.borderWidth = 0.5
-            cell.contentView.layer.borderColor = UIColor.red.withAlphaComponent(0.8).cgColor
+            cell.layer.shadowColor = UIColor.gray.cgColor
+            cell.layer.shadowRadius = 2.0
+            cell.layer.shadowOpacity = 0.6
+            cell.layer.shadowOffset = CGSize(width: 0, height: 2)
+            cell.layer.cornerRadius = 12.0
+            cell.clipsToBounds = true
+            cell.layer.masksToBounds = false
+            cell.layer.shadowPath = nil
             return cell
         }
     }

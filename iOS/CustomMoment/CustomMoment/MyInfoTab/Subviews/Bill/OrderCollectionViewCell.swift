@@ -32,7 +32,7 @@ class OrderCollectionViewCell: UICollectionViewCell {
     let storeName: UILabel = {
         let label = UILabel()
         label.text = "딥 다이브"
-        label.font = UIFont.myFontM.withSize(18.0)
+        label.font = UIFont.myFontM.withSize(16.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +42,7 @@ class OrderCollectionViewCell: UICollectionViewCell {
     let cakeName: UILabel = {
         let label = UILabel()
         label.text = "반쪽 레터링 케이크"
-        label.font = UIFont.myFontM.withSize(16.0)
+        label.font = UIFont.myFontB.withSize(14.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +52,7 @@ class OrderCollectionViewCell: UICollectionViewCell {
     let pickUpDate: UILabel = {
         let label = UILabel()
         label.text = "픽업 날짜 : " + "2023-04-26"
-        label.font = UIFont.myFontR.withSize(15.0)
+        label.font = UIFont.myFontR.withSize(12.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +62,7 @@ class OrderCollectionViewCell: UICollectionViewCell {
     let pickUpTime: UILabel = {
         let label = UILabel()
         label.text = "픽업 시간 : " + "17:30"
-        label.font = UIFont.myFontR.withSize(15.0)
+        label.font = UIFont.myFontR.withSize(12.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +80,7 @@ class OrderCollectionViewCell: UICollectionViewCell {
     let statusLabel: UILabel = {
         let label = UILabel()
         label.text = "픽업완료"
-        label.font = UIFont.myFontM.withSize(18.0)
+        label.font = UIFont.myFontM.withSize(16.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -128,8 +128,8 @@ class OrderCollectionViewCell: UICollectionViewCell {
         stackView.addSubview(cakeName)
         stackView.addSubview(pickUpDate)
         stackView.addSubview(pickUpTime)
-        stackView.addSubview(statusLabel)
         stackView.addSubview(detailButton)
+        stackView.addSubview(statusLabel)
         
         stackView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
@@ -141,16 +141,20 @@ class OrderCollectionViewCell: UICollectionViewCell {
         cellImage.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 10).isActive = true
         cellImage.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -10).isActive = true
         
-        storeName.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 10).isActive = true
+        storeName.bottomAnchor.constraint(equalTo: cakeName.topAnchor, constant: -3).isActive = true
+        storeName.heightAnchor.constraint(equalToConstant: 18).isActive = true
         storeName.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 10).isActive = true
         
-        cakeName.topAnchor.constraint(equalTo: storeName.bottomAnchor).isActive = true
+        cakeName.bottomAnchor.constraint(equalTo: pickUpDate.topAnchor, constant: -2).isActive = true
+        cakeName.heightAnchor.constraint(equalToConstant: 16).isActive = true
         cakeName.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 10).isActive = true
         
-        pickUpDate.topAnchor.constraint(equalTo: cakeName.bottomAnchor, constant: 5).isActive = true
+        pickUpDate.bottomAnchor.constraint(equalTo: pickUpTime.topAnchor).isActive = true
+        pickUpDate.heightAnchor.constraint(equalToConstant: 14).isActive = true
         pickUpDate.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 10).isActive = true
         
-        pickUpTime.topAnchor.constraint(equalTo: pickUpDate.bottomAnchor).isActive = true
+        pickUpTime.bottomAnchor.constraint(equalTo: detailButton.topAnchor, constant: -5).isActive = true
+        pickUpTime.heightAnchor.constraint(equalToConstant: 14).isActive = true
         pickUpTime.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 10).isActive = true
         
         let buttonWidth = (self.contentView.frame.width * 0.7 - 40)/2
