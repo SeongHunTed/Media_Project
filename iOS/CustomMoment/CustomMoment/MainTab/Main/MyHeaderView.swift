@@ -26,7 +26,7 @@ class MyHeaderView: UICollectionReusableView {
         self.backgroundColor = .white
         NSLayoutConstraint.activate([
             self.label.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 5),
+            self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor ),
         ])
     }
     

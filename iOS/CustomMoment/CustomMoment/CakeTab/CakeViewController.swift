@@ -105,13 +105,13 @@ extension CakeViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 15, leading: 20, bottom: 20, trailing: 15)
         
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.33))
 
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
-        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(2), top: nil, trailing: .fixed(2), bottom: .fixed(20))
+//        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: nil, trailing: nil, bottom: .fixed(20))
         
         let section = NSCollectionLayoutSection(group: group)
         
@@ -153,13 +153,7 @@ extension CakeViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.cellImage.image = UIImage(named: cakeImages[indexPath.item])
-        cell.cakeLayout()
-        
         cell.cellImage.contentMode = .scaleAspectFill
-        cell.cellImage.clipsToBounds = true
-        cell.layer.cornerRadius = 8
-        cell.layer.borderWidth = 0.1
-        cell.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
         
         return cell
     }

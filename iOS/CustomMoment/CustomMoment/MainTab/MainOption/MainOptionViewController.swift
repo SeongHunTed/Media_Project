@@ -16,7 +16,7 @@ class MainOptionViewController: UIViewController {
     
     private let calendarLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.myFontM.withSize(20.0)
+        label.font = UIFont.myFontB.withSize(15.5)
         label.text = "📅 날짜 선택"
         label.textColor = .black.withAlphaComponent(0.8)
         label.adjustsFontSizeToFitWidth = true
@@ -96,9 +96,8 @@ class MainOptionViewController: UIViewController {
     
     //MARK: - Temperally DataSource (Change When API connect)
     
-    private var dataSource = [
-        ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"],
-        ["Section2"]
+    private var dataSource: [(String, Bool)] = [
+        ("10:00", false), ("11:00", false), ("12:00", true), ("13:00", true), ("14:00", true), ("15:00", false), ("16:00", true)
     ]
     
     private var dropDownButtonTitle = [
@@ -143,7 +142,7 @@ class MainOptionViewController: UIViewController {
         calendarLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         calendarLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
         calendarLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        calendarLabel.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        calendarLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         calendar.topAnchor.constraint(equalTo: calendarLabel.bottomAnchor).isActive = true
         calendar.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
@@ -155,7 +154,6 @@ class MainOptionViewController: UIViewController {
         buttonView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         let buttonLayer = CALayer()
-        print(buttonView.frame.origin.y)
         buttonLayer.frame = CGRect(x: 0, y: buttonView.frame.origin.y, width: view.frame.width, height: 0.7)
         buttonLayer.backgroundColor = UIColor.black.cgColor
         buttonView.layer.addSublayer(buttonLayer)
@@ -289,12 +287,12 @@ extension MainOptionViewController: UICollectionViewDelegate {
 extension MainOptionViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return self.dataSource.count
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return dataSource[0].count
+            return dataSource.count
         } else {
             return dropDownDataSource.count
         }
@@ -305,7 +303,8 @@ extension MainOptionViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: TimeButtonCollectionViewCell.self), for: indexPath) as? TimeButtonCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            cell.timeButton.setTitle(dataSource[0][indexPath.item], for: .normal)
+            cell.timeButton.setTitle(dataSource[indexPath.item].0, for: .normal)
+            cell.prepare(dataSource[indexPath.item].1)
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: OptionButtonCollectionViewCell.self), for: indexPath) as? OptionButtonCollectionViewCell else {

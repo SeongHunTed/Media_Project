@@ -13,6 +13,7 @@ class OptionButtonCollectionViewCell: UICollectionViewCell {
     let optionButton: UIButton = {
         let button = UIButton(type: .roundedRect)
         button.tintColor = .systemGray2
+        button.titleLabel?.font = UIFont.myFontB.withSize(14)
         button.backgroundColor = .white
         button.layer.borderColor = UIColor.systemGray2.cgColor
         button.layer.borderWidth = 1
@@ -24,7 +25,7 @@ class OptionButtonCollectionViewCell: UICollectionViewCell {
     let dropDown: DropDown = {
         let dropDown = DropDown()
         dropDown.textColor = UIColor.black
-        dropDown.textFont = UIFont.myFontR.withSize(14)
+        dropDown.textFont = UIFont.myFontB.withSize(14)
         dropDown.cornerRadius = 4
         dropDown.selectionBackgroundColor = UIColor.systemRed.withAlphaComponent(0.8)
         dropDown.backgroundColor = .white
@@ -50,7 +51,7 @@ class OptionButtonCollectionViewCell: UICollectionViewCell {
 
         dropDown.selectionAction = { [weak self] (index, item) in
             self!.optionButton.setTitle(item, for: .normal)
-            self!.optionButton.titleLabel?.font = UIFont.myFontM
+            self!.optionButton.titleLabel?.font = UIFont.myFontB.withSize(14)
             self!.optionButton.backgroundColor = .systemRed.withAlphaComponent(0.8)
             self!.optionButton.tintColor = .white
             self!.optionButton.layer.borderColor = UIColor.systemRed.cgColor

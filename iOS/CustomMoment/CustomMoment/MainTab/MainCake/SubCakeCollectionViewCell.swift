@@ -42,8 +42,6 @@ class SubCakeCollectionViewCell: UICollectionViewCell {
         cellImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
         cellImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
         cellImage.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
-        cellImage.contentMode = .scaleAspectFill
-        
     }
     
 }

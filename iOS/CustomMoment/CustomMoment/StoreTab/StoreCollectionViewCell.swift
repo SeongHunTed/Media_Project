@@ -56,6 +56,14 @@ class StoreCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = .clear
+        storeLayout()
+        // 그림자 추가
+        cellImage.layer.shadowColor = UIColor.gray.cgColor
+        cellImage.layer.shadowRadius = 2.0
+        cellImage.layer.shadowOpacity = 0.6
+        cellImage.layer.shadowOffset = CGSize(width: 0, height: 2)
+        cellImage.layer.cornerRadius = 12.0
+        cellImage.layer.shadowPath = nil
     }
     
     required init?(coder: NSCoder) {
@@ -72,24 +80,24 @@ class StoreCollectionViewCell: UICollectionViewCell {
     }
     
     func storeLayout() {
+        self.contentView.addSubview(self.cellImage)
         self.contentView.addSubview(self.stackView)
         
-        stackView.addSubview(cellImage)
         stackView.addSubview(storeLabel)
         stackView.addSubview(infoLabel)
         stackView.addSubview(addressLabel)
         
-        stackView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        cellImage.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
+        cellImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
+        cellImage.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
+        cellImage.heightAnchor.constraint(equalTo: self.contentView.heightAnchor, multiplier: 0.7).isActive = true
         
-        cellImage.topAnchor.constraint(equalTo: stackView.topAnchor).isActive = true
-        cellImage.leadingAnchor.constraint(equalTo: stackView.leadingAnchor).isActive = true
-        cellImage.trailingAnchor.constraint(equalTo: stackView.trailingAnchor).isActive = true
-        cellImage.heightAnchor.constraint(equalTo: stackView.heightAnchor, multiplier: 0.7).isActive = true
+        stackView.topAnchor.constraint(equalTo: cellImage.bottomAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
         
-        storeLabel.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 5).isActive = true
+        storeLabel.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 5).isActive = true
         storeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 2).isActive = true
         
         infoLabel.topAnchor.constraint(equalTo: storeLabel.bottomAnchor).isActive = true

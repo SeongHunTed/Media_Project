@@ -14,7 +14,7 @@ class StoreHeaderView: UICollectionReusableView {
     
     let filterButton: UIButton = {
         let button = UIButton(type: .roundedRect)
-        button.tintColor = .black
+        button.tintColor = UIColor.systemGray
         button.backgroundColor = .systemGray6
         button.titleLabel?.font = UIFont.myFontM.withSize(15)
         button.layer.cornerRadius = 4
@@ -24,7 +24,7 @@ class StoreHeaderView: UICollectionReusableView {
     
     private let filterDropDown: DropDown = {
         let dropDown = DropDown()
-        dropDown.textColor = UIColor.black
+        dropDown.textColor = UIColor.systemGray
         dropDown.textFont = UIFont.myFontM.withSize(15)
         dropDown.cornerRadius = 4
         return dropDown
@@ -54,7 +54,7 @@ class StoreHeaderView: UICollectionReusableView {
         }
         
         filterButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        filterButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 12).isActive = true
+        filterButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         filterButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.2).isActive = true
         
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)

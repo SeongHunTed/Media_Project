@@ -21,9 +21,9 @@ public class CakeHeaderView: UICollectionReusableView {
     
     let filterButton: UIButton = {
         let button = UIButton(type: .roundedRect)
-        button.tintColor = .black
+        button.tintColor = .systemGray
         button.backgroundColor = .systemGray6
-        button.titleLabel?.font = UIFont.myFontM.withSize(15.0)
+        button.titleLabel?.font = UIFont.myFontB.withSize(14.0)
         button.layer.cornerRadius = 4
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -39,9 +39,9 @@ public class CakeHeaderView: UICollectionReusableView {
     
     public var calendarButton: UIButton = {
         let button = UIButton(type: .roundedRect)
-        button.tintColor = .black
+        button.tintColor = .systemGray
         button.backgroundColor = .systemGray6
-        button.titleLabel?.font = UIFont.myFontM.withSize(15.0)
+        button.titleLabel?.font = UIFont.myFontB.withSize(14.0)
         button.layer.cornerRadius = 4
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -51,8 +51,7 @@ public class CakeHeaderView: UICollectionReusableView {
         print("working \(title)")
         calendarButton.setTitle(title, for: .normal)
     }
-    
-    override init(frame: CGRect) {
+        override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
         filterButtonSetUp()
@@ -68,7 +67,7 @@ public class CakeHeaderView: UICollectionReusableView {
         self.addSubview(calendarButton)
         
         filterButton.setTitle("인기순", for: .normal)
-        calendarButton.setTitle("날짜 검색", for: .normal)
+        calendarButton.setTitle("🗓️ 날짜 검색", for: .normal)
         
         filterDropDown.dataSource = dropDownDataSource
         filterDropDown.anchorView = filterButton
@@ -82,7 +81,7 @@ public class CakeHeaderView: UICollectionReusableView {
         filterButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.2).isActive = true
         calendarButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         calendarButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
-        calendarButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.2).isActive = true
+        calendarButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.25).isActive = true
 
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         calendarButton.addTarget(self, action: #selector(calendarButtonTapped), for: .touchUpInside)

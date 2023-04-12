@@ -252,7 +252,6 @@ class MainCakeViewController: UIViewController {
             equalTo: infoButton.trailingAnchor).isActive = true
         
         scrollView.addSubview(infoImage)
-        print("scrollView : \(scrollView.frame.width)")
         infoImage.widthAnchor.constraint(equalToConstant: scrollView.frame.width - 40).isActive = true
         infoImage.topAnchor.constraint(equalTo: infoButton.bottomAnchor, constant: 20).isActive = true
         infoImage.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20).isActive = true

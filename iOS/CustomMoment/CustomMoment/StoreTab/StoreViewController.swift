@@ -103,13 +103,13 @@ extension StoreViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.4))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: nil, trailing: nil, bottom: .fixed(10))
-        
+
         let section = NSCollectionLayoutSection(group: group)
         
         let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.08))
@@ -157,12 +157,7 @@ extension StoreViewController: UICollectionViewDataSource {
         }
         
         cell.cellImage.image = UIImage(named: storeImages[indexPath.item])
-        cell.storeLayout()
-        
         cell.cellImage.contentMode = .scaleAspectFill
-        cell.cellImage.clipsToBounds = true
-        cell.layer.borderWidth = 0.1
-        cell.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
 
         return cell
     }
