@@ -15,13 +15,22 @@ class MyInfoViewController: UIViewController {
         imageSetUp()
         configure()
         collectionViewSetUp()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLoginSuccessNotification), name: .didLoginSuccess, object: nil)
+    }
+    
+    @objc func handleLoginSuccessNotification(_ notification: Notification) {
+        updateUIBaseOnLoginStatus()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .didLoginSuccess, object: nil)
     }
     
     
     // MARK: - Variables
     
-    let loginSuccess = true
-    let is_seller = true
+    let loginSuccess = APIClient.shared.authToken?.isEmpty
     
     let profile = "ted"
     let userName = "김성훈"
@@ -187,12 +196,16 @@ class MyInfoViewController: UIViewController {
 //        profileView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         profileView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.15).isActive = true
         
-        if loginSuccess == false {
-            loginFailedConfigure()
-        } else {
+        loginFailedConfigure()
+    }
+    
+    private func updateUIBaseOnLoginStatus() {
+        if let _ = APIClient.shared.authToken {
             loginSuceesConfigure()
+            loginButton.isHidden = true
+        } else {
+            loginFailedConfigure()
         }
-        
     }
     
     private func loginSuceesConfigure() {
@@ -207,7 +220,7 @@ class MyInfoViewController: UIViewController {
         nameLabel.bottomAnchor.constraint(equalTo: idLabel.topAnchor,constant: -2).isActive = true
         nameLabel.centerXAnchor.constraint(equalTo: self.profileView.centerXAnchor).isActive = true
         
-        if is_seller {
+        if let isSeller = APIClient.shared.isSeller, isSeller {
             profileView.addSubview(sellerButton)
             profileButton.topAnchor.constraint(equalTo: idLabel.bottomAnchor, constant: 5).isActive = true
             profileButton.centerXAnchor.constraint(equalTo: profileView.centerXAnchor, constant: -50).isActive = true

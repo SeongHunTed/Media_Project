@@ -168,16 +168,32 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @objc func loginButtonTapped(_ sender: UIButton) {
         print("LoginVC :    Login Button Tapped")
         
-        let loginModel = LoginModel()
         guard let email = emailField.text else { return }
         guard let password = passwordField.text else { return }
         
-        loginModel.login(email: email, password: password)
+        let loginRequest = LoginRequest(
+            email: email,
+            password: password
+        )
         
-//        print(loginModel.getToken())
-        
-        killKeyboardObserver()
-        self.dismiss(animated: true)
+        APIClient.shared.auth.login(loginRequest) { [weak self] result in
+            switch result {
+            case .success(let loginResponse):
+                APIClient.shared.authToken = loginResponse.token
+                APIClient.shared.isSeller = loginResponse.isSeller
+                self?.killKeyboardObserver()
+                NotificationCenter.default.post(name: .didLoginSuccess, object: nil)
+                self?.dismiss(animated: true)
+            case .failure:
+                DispatchQueue.main.async {
+                    let alertController = UIAlertController(title: "확인", message: "ID, PW를 다시 확인하세요", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+                    alertController.addAction(okAction)
+                    self?.present(alertController, animated: true, completion: nil)
+                }
+            }
+            
+        }
     }
     
     @objc func signUpButtonTapped(_ sender: UIButton) {

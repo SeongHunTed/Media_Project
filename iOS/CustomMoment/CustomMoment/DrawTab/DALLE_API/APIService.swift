@@ -32,9 +32,6 @@ final class DalleAPIService: ObservableObject {
         
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
         
-        print(apiKey)
-        print(response)
-        
         let decoder = JSONDecoder()
         let results = try decoder.decode(Reponse.self, from: data)
         

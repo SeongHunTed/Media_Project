@@ -252,6 +252,8 @@ def cart(request):
         elif request.method == 'GET':
             data = json.loads(request.body)
 
+            print(data)
+
             user_email = data['user_email']
 
             user = User.objects.get(email=user_email)

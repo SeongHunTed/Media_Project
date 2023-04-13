@@ -357,7 +357,6 @@ class SignUpViewController: UIViewController {
     @objc func signUpButtonTapped(sender: UIButton) {
         print("SignUpVC:    SignUp Button Tapped")
         
-        let signupModel = LoginModel()
         guard let email = emailField.text else { return }
         guard let password = passwordField.text else { return }
         guard let name = nameField.text else { return }
@@ -366,9 +365,30 @@ class SignUpViewController: UIViewController {
         let dateFormatter = DateFormatter()
         let birth = dateFormatter.string(from: birthField.date)
         
-        signupModel.signUp(email, password, name, digit, address, birth)
+        let signUpRequest = SignUpRequest (
+            email: email,
+            name: name,
+            password: password,
+            digit: digit,
+            birth: birth,
+            address: address
+        )
         
-        self.dismiss(animated: true)
+        APIClient.shared.auth.signUp(signUpRequest) { result in
+            switch result {
+            case .success:
+                self.dismiss(animated: true)
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alertController.addAction(okAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+        }
+        
+        
     }
 }
 
