@@ -9,7 +9,7 @@ from json.decoder import JSONDecodeError
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from django.contrib import auth
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from .serializers import *
 
 
@@ -66,12 +66,24 @@ def signup(request):
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_info(request):
+    try:
+        user = request.user
+
+        serializers = UserSerializer(user)
+        return Response(serializers.data, status=status.HTTP_202_ACCEPTED)        
+
+    except KeyError:
+        return Response(status==status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['POST'])
 def login(request):
     try:
         data = json.loads(request.body)
-        print(data)
         email = data['email']
         password = data['password']
         user = User.objects.get(email=email)

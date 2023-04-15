@@ -9,51 +9,88 @@ from django.http import JsonResponse, HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
+
+@api_view(['GET'])
+def main_menu_cake_list(request):
+    cakes = Cake.objects.all().order_by('?')[:10]
+    data = CakeSerializer(cakes, many=True).data
+    return Response(data, status=status.HTTP_200_OK)
+
+# 10개씩 끊어서 케이크 주는 API
+@api_view(['GET',])
+def cake_list_filterd(request, page):
+    cakes = Cake.objects.all()[page*10:(page+1)*10]
+    data = CakeSerializer(cakes, many=True).data
+    return Response(data, status=status.HTTP_200_OK)
+
+# popup view에 들어갈 이미지와 케이크 정보
+@api_view(['GET', ])
+def cake_pop_up(request):
+    cake_name = request.data['cake_name']
+    cake = Cake.objects.get(name=cake_name)
+    data = DetailCakeSerializer(cake).data
+    return Response(data, status=status.HTTP_200_OK)
+
+@api_view(['POST',])
+@permission_classes([IsAuthenticated])
+def cake_pop_up_set(request):
+    data = request.data
+    info_image = request.FILES.get('images')
+    cake_name = data['cake_name']
+    cake = Cake.objects.get(name=cake_name)
+    
+    CakeInfoImage.objects.create(cake=cake, info_image=info_image)
+
+    return Response(status=status.HTTP_201_CREATED)
+
+
 
 # 판매자에게 모든 케이크 보여줌
-@api_view(['GET'])
-def show(request):
-    try:
-        data = json.loads(request.body)
-        user_email = data['user_email']
+# @api_view(['GET'])
+# def show(request):
+#     try:
+#         data = json.loads(request.body)
+#         user_email = data['user_email']
 
-        user = User.objects.get(email=user_email)
-        store = Store.objects.get(user=user)
-        cakes = Cake.objects.filter(store=store)
+#         user = User.objects.get(email=user_email)
+#         store = Store.objects.get(user=user)
+#         cakes = Cake.objects.filter(store=store)
 
-        cake_size = CakeSerializer(cakes, many=True)
+#         cake_size = CakeSerializer(cakes, many=True)
 
-        return Response(cake_size.data,status=200)
+#         return Response(cake_size.data,status=200)
 
-    except KeyError:
-        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+#     except KeyError:
+#         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
     
-@api_view(['POST', 'PUT', 'DELETE'])
-def cake_image(request):
-    try:
-        data = request.data
-        user_email = data['user_email']
-        cake_name = data['cake_name']
+# @api_view(['POST', 'PUT', 'DELETE'])
+# def cake_image(request):
+#     try:
+#         data = request.data
+#         user_email = data['user_email']
+#         cake_name = data['cake_name']
         
-        user = User.objects.get(email=user_email)
-        store = Store.objects.get(user=user)
-        cake = Cake.objects.get(name=cake_name, store=store)
+#         user = User.objects.get(email=user_email)
+#         store = Store.objects.get(user=user)
+#         cake = Cake.objects.get(name=cake_name, store=store)
 
-        if request.method == 'POST' or request.method == 'PUT':
-            images = request.FILES.getlist('images')
+#         if request.method == 'POST' or request.method == 'PUT':
+#             images = request.FILES.getlist('images')
 
-            for image in images:
-                CakeImage.objects.update_or_create(cake=cake, image=image)
+#             for image in images:
+#                 CakeImage.objects.update_or_create(cake=cake, image=image)
             
-            return Response(status=status.HTTP_201_CREATED)
+#             return Response(status=status.HTTP_201_CREATED)
         
-        else:
-            cake.delete()
+#         else:
+#             cake.delete()
 
-            return Response(status=status.HTTP_200_OK)
+#             return Response(status=status.HTTP_200_OK)
 
-    except KeyError:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+#     except KeyError:
+#         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 # 케이크 생성, 수정, 삭제
 @api_view(['POST', 'PUT', 'DELETE'])
@@ -62,11 +99,10 @@ def cake(request):
         if request.method == 'POST' or request.method == 'PUT':
             data = json.loads(request.body)
             
-            user_email = data['user_email'] # 차후에 jwt 인증방식으로 변경
+            user = request.user # 차후에 jwt 인증방식으로 변경
             cake_name = data['cake_name']
             cake_price = data['cake_price']
 
-            user = User.objects.get(email=user_email)
             store = Store.objects.get(user=user)
             
             cake = Cake.objects.update_or_create(name=cake_name, price=cake_price, store=store)[0]
@@ -287,7 +323,7 @@ def main(request, page):
         # 차후 인기 있는 케이크를 보여줄 때 order_by 메소드 이용
         # 6개씩 보여주는 로직
         # cakes = Cake.objects.all()[:page*6]
-        store = Store.objects.all()[(page-1)*6:page*6]
+        store = Store.objects.all()[(page-1)*10:page*10]
         cake = StoreCakeSerializer(store, many=True, context={'request' : request})
 
         return Response(cake.data, status=status.HTTP_200_OK)
@@ -364,6 +400,29 @@ def filter(request, page):
         serializer = CakeSearchSerializer(cake, many=True)
 
         return Response(serializer.data)
+
+    except KeyError:
+        return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def cake_image(request):
+    try:
+        data = request.data
+        user = request.user
+        images_data = request.FILES.getlist('images')
+
+        print(images_data)
+
+        cake_name = data['cake_name']
+
+        cake = Cake.objects.get(name=cake_name)
+
+        for image_data in images_data:
+            CakeImage.objects.create(cake=cake, image=image_data)
+
+        return Response(status=201)
+
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)

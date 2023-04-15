@@ -11,6 +11,10 @@ class CakeImage(models.Model):
     image = models.ImageField(default='cake_images/cake_default.png',upload_to='cake_images/', null=True, blank=True)
     cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='image')
 
+class CakeInfoImage(models.Model):
+    info_image = models.ImageField(upload_to='cake_info_images/', null=True, blank=True)
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE, related_name='info_image')
+
 class CakeSize(models.Model):
     size = models.CharField(max_length=40)
     price = models.IntegerField()

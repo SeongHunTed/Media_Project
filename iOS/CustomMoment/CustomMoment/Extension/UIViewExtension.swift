@@ -44,3 +44,7 @@ extension UIFont {
     static let myFontB = UIFont(name: "NotoSansKR-Bold", size: 20.0)!
     static let myFontL = UIFont(name: "NotoSansKR-Light", size: 20.0)!
 }
+
+extension Notification.Name {
+    static let didLoginSuccess = Notification.Name("didLoginSuccess")
+}

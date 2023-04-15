@@ -7,18 +7,19 @@ from .models import *
 import json, datetime
 import calendar as cal
 from rest_framework.renderers import JSONRenderer
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 @api_view(['POST', 'PUT', 'GET'])
+@permission_classes([IsAuthenticated])
 def day(request):
     try:
-        data = json.loads(request.body)
-        
-        user_email = data['user_email']
-        user = User.objects.get(email=user_email)
+        user = request.user
+        data = request.data
         store = Store.objects.get(user=user)
 
         if request.method == 'POST' or request.method == 'PUT':
@@ -55,17 +56,18 @@ def day(request):
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
 @api_view(['GET', 'POST', 'PUT'])
+# @permission_classes([IsAuthenticated])
 def calender(request):
     try:
-        data = json.loads(request.body)
-        
-        user_email = data['user_email']
-        user = User.objects.get(email=user_email)
-        store = Store.objects.get(user=user)
-
-        week_day = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일']
 
         if request.method == 'POST' or request.method == 'PUT':
+
+            data = request.data
+            user = request.user
+            
+            store = Store.objects.get(user=user)
+
+            week_day = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일']
 
             year = int(data['year'])
             month = int(data['month'])
@@ -129,6 +131,11 @@ def calender(request):
             
 
         elif request.method == 'GET':
+            
+            # permission_classes = [AllowAny]
+            data = request.data
+            store_name = data['store_name']
+            store = Store.objects.get(store_name=store_name)
             today = datetime.date.today()
             this_month_last_day = cal.monthrange(today.year, today.month)[1]
 
@@ -171,7 +178,6 @@ def calender(request):
 def order(request):
     try:
         data = json.loads(request.body)
-        user_email = data['user_email']
         store_name = data['store_name']
         cake_name = data['cake_name']
         date = data['date']

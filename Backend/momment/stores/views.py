@@ -1,21 +1,23 @@
 from .models import Store
 from accounts.models import User
-from .serializers import StoreSerializer
+from .serializers import StoreSerializer, DetailStoreSerializer
 
 import json
 from django.http import HttpResponse, JsonResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
 def show(request):
     try:
-        data = request.data
-        user_email = data['user_email']
-
-        user = User.objects.get(email=user_email)
-        store = Store.objects.get(user=user)
+        # data = request.data
+        # user = request.user
+        
+        # store = Store.objects.get(user=user)
         store = Store.objects.all()
 
         serializer = StoreSerializer(store, many=True, context={'request': request})
@@ -27,13 +29,14 @@ def show(request):
 
 
 @api_view(['POST', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def store(request):
     try:
         if request.method == 'POST' or request.method == 'PUT':
             
             data = request.data
+            user = request.user
             images_data = request.FILES.getlist('images')
-            user_email = data['user_email']
             store_name = data['store_name']
             store_intro = data['store_intro']
             store_opentime = data['store_opentime']
@@ -46,8 +49,6 @@ def store(request):
             image3 = images_data[2]
             image4 = images_data[3]
             image5 = images_data[4]
-
-            user = User.objects.get(email=user_email)
 
             if Store.objects.filter(user=user).exists():
                 store = Store.objects.update(store_name=store_name, store_intro=store_intro, store_opentime=store_opentime,
@@ -75,3 +76,28 @@ def store(request):
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
+
+@api_view(['GET'])
+def main(request):
+    try:
+        store = Store.objects.all()[:4]
+        serializer = StoreSerializer(store, many=True, context={'request': request})
+
+        return Response(serializer.data, status=200)
+
+    except KeyError:
+        return Response({'message' : 'KEY_ERROR'}, status=400)
+
+@api_view(['GET'])
+def detail(request):
+    try:
+        data = request.data
+        name = data['store_name']
+        store = Store.objects.get(store_name = name)
+        
+        serializer = DetailStoreSerializer(store, context={'request': request})
+
+        return Response(serializer.data, status=200)
+
+    except KeyError:
+        return Response({'message' : 'KEY_ERROR'}, status=400)
