@@ -38,7 +38,7 @@ class Account(BaseUserManager):
 class User(AbstractBaseUser):
     email = models.EmailField(verbose_name='ID', max_length=60, unique=True, null=False, blank=False)
     name = models.CharField(max_length=20, null=False, blank=False)
-    digit = models.CharField(max_length=11)
+    digit = models.CharField(max_length=14)
     birth = models.DateField(verbose_name="생년월일", null=True, blank=True)
     address = models.CharField(max_length=80)
     is_admin = models.BooleanField(default=False)

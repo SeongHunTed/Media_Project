@@ -9,15 +9,18 @@ from rest_framework import status
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 @api_view(['POST', 'GET', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def order(request):
     try:
         if request.method == 'POST':
-            data = json.loads(request.body)
+            data = request.data
+            user = request.user
 
-            user_email = data['user_email']
             store_name = data['store_name']
             cake_name = data['cake_name']
             basic_options = data['cake_basic_option'].keys()
@@ -26,7 +29,7 @@ def order(request):
             pickup_date = data['pickup_date']
             pickup_time = data['pickup_time']
 
-            user = User.objects.get(email=user_email)
+            
             store = Store.objects.get(store_name=store_name)
             cake = Cake.objects.get(name=cake_name)
             
@@ -125,9 +128,10 @@ def order(request):
             return JsonResponse({'message' : 'SUCCESS'}, status=201)
         
         elif request.method == 'DELETE':
-            data = json.loads(request.body)
+            data = request.data
 
-            user_email = data['user_email']
+            user = request.user
+
             order_id = data['order_id']
             store_name = data['store_name']
             pickup_date = data['pickup_date']
@@ -147,11 +151,9 @@ def order(request):
             return JsonResponse({'message' : 'SUCCESS'}, status=200)
 
         elif request.method == 'GET':
-            data = json.loads(request.body)
+            data = request.data
 
-            user_email = data['user_email']
-
-            user = User.objects.get(email=user_email)
+            user = request.user
 
             # 판매자가 주문확인
             if Store.objects.filter(user=user).exists():
@@ -178,13 +180,14 @@ def order(request):
 
 
 @api_view(['GET', 'POST', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def cart(request):
     try:
         if request.method == 'POST':
 
-            data = json.loads(request.body)
+            data = request.data
+            user = request.user
 
-            user_email = data['user_email']
             store_name = data['store_name']
             cake_name = data['cake_name']
             basic_options = data['cake_basic_option'].keys()
@@ -193,7 +196,6 @@ def cart(request):
             pickup_date = data['pickup_date']
             pickup_time = data['pickup_time']
 
-            user = User.objects.get(email=user_email)
             store = Store.objects.get(store_name=store_name)
             cake = Cake.objects.get(name=cake_name)
             
@@ -250,13 +252,9 @@ def cart(request):
             return JsonResponse({'message' : 'SUCCESS'}, status=201)
 
         elif request.method == 'GET':
-            data = json.loads(request.body)
-
-            print(data)
-
-            user_email = data['user_email']
-
-            user = User.objects.get(email=user_email)
+            data = request.data
+            user = request.user
+            
             carts = Cart.objects.filter(user=user)
 
             serializer = CartSerializer(carts, many=True)
@@ -265,15 +263,13 @@ def cart(request):
 
         elif request.method == 'DELETE':
 
-            data = json.loads(request.body)
-
-            user_email = data['user_email']
+            data = request.data
+            user = request.user
             cake_name = data['cake_name']
             store_name = data['store_name']
             pickup_date = data['pickup_date']
             pickup_time = data['pickup_time']
 
-            user = User.objects.get(email=user_email)
             store= Store.objects.get(store_name=store_name)
             cake = Cake.objects.get(name=cake_name, store=store)
 
@@ -287,13 +283,13 @@ def cart(request):
 
 
 @api_view(['GET', 'POST', 'DELETE', 'PUT'])
+@permission_classes([IsAuthenticated])
 def review(request):
     try:
         if request.method == 'POST' or request.method == 'PUT':
 
-            data = json.loads(request.body)
-
-            user_email = data['user_email']
+            data = request.data
+            user = request.user
             order_id = data['order_id']
             review_contents = data['review_contents']
             image = data['image']
@@ -302,7 +298,6 @@ def review(request):
             if pay_status != '구매확정':
                 return JsonResponse({'message' : 'NOT_ALLOWED'}, status=400)
 
-            user = User.objects.get(email=user_email)
             order = Order.objects.get(id=order_id)
             cake = order.cake
 
@@ -319,7 +314,7 @@ def review(request):
 
         if request.method == 'GET':
             
-            data = json.loads(request.body)
+            data = request.data
 
             # store_name = data['store_name']
             cake_name = data['cake_name']

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 from stores.models import Store
+from django.conf import settings
 from stores.serializers import StoreSerializer
 
 
@@ -90,11 +91,30 @@ class CakeCandleSerializer(serializers.ModelSerializer):
 
 class CakeImageSerializer(serializers.ModelSerializer):
 
-    image = serializers.ImageField(use_url=True)
+    image = serializers.ImageField(use_url=False)
 
     class Meta:
         model = CakeImage
         fields = ['image']
+
+class CakeInfoImageSerializer(serializers.ModelSerializer):
+
+    info_image = serializers.ImageField(use_url=False)
+
+    class Meta:
+        model = CakeInfoImage
+        fields = ['info_image',]
+
+class DetailCakeSerializer(serializers.ModelSerializer):
+
+    image = CakeImageSerializer(many=True)
+    info_image = CakeInfoImageSerializer(many=True)
+    store_name =serializers.CharField(source='store.store_name')
+
+    class Meta:
+        model = Cake
+        exclude = ['id', 'store']
+
 
 class CakeSerializer(serializers.ModelSerializer):
 
