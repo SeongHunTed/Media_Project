@@ -11,25 +11,27 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+
 
 @api_view(['GET'])
 def main_menu_cake_list(request):
     cakes = Cake.objects.all().order_by('?')[:10]
-    data = CakeSerializer(cakes, many=True).data
+    data = CakeOnlySerializer(cakes, many=True).data
     return Response(data, status=status.HTTP_200_OK)
 
 # 10개씩 끊어서 케이크 주는 API
 @api_view(['GET',])
 def cake_list_filterd(request, page):
     cakes = Cake.objects.all()[page*10:(page+1)*10]
-    data = CakeSerializer(cakes, many=True).data
+    data = CakeOnlySerializer(cakes, many=True).data
     return Response(data, status=status.HTTP_200_OK)
 
 # popup view에 들어갈 이미지와 케이크 정보
 @api_view(['GET', ])
 def cake_pop_up(request):
-    cake_name = request.data['cake_name']
-    cake = Cake.objects.get(name=cake_name)
+    cake_name = request.GET.get('cake_name')
+    cake = get_object_or_404(Cake, name=cake_name)
     data = DetailCakeSerializer(cake).data
     return Response(data, status=status.HTTP_200_OK)
 

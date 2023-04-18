@@ -9,7 +9,7 @@ urlpatterns = [
     path('cake', views.cake),
     path('cake-image', views.cake_image),
     path('cake-info-image', views.cake_pop_up_set),
-    path('cake-popup', views.cake_pop_up),
+    path('cake-popup/', views.cake_pop_up),
     path('delete-detail', views.delete_detail),
     path('delete-option', views.delete_option),
     path('detail', views.detail),
