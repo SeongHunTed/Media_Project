@@ -9,16 +9,31 @@ import UIKit
 
 class StoreViewController: UIViewController {
     
+    private var stores: [MainStoreRequest] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        apiCall()
         imageSetUp()
         collectionViewSetUp()
     }
     
-    // MARK: - Variables
+    // MARK: - API Call
     
-    private let storeImages = ["store1", "store2", "store3"]
+    private func apiCall() {
+        APIClient.shared.main.fetchMainStore{ [weak self] result in
+            switch result {
+            case .success(let stores):
+                self?.stores = stores
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
     
     // MARK: - logo
     private lazy var logo: UIImageView = {
@@ -149,7 +164,7 @@ extension StoreViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return storeImages.count
+        return stores.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -158,7 +173,9 @@ extension StoreViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.cellImage.image = UIImage(named: storeImages[indexPath.item])
+        let store = stores[indexPath.item]
+        cell.storeLayout()
+        cell.configure(with: store)
         cell.cellImage.contentMode = .scaleAspectFill
 
         return cell
