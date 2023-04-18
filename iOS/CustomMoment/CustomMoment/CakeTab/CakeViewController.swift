@@ -10,16 +10,37 @@ import UIKit
 
 class CakeViewController: UIViewController {
     
+    private var hasMoreData = true
+    
+    private var cakes: [MainCakeRequest] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        firstApiCall()
         imageSetUp()
         collectionViewSetUp()
+        
     }
     
-    // MARK: - Variables
+    // MARK: - API Call
     
-    private let cakeImages = ["cake1", "cake2", "cake3", "cake4", "cake5", "cake6", "cake7", "cake8", "cake9"]
+    private func firstApiCall() {
+        APIClient.shared.cake.fetchCakeTapCake(0) { [weak self] result in
+            switch result {
+            case .success(let cakes):
+                self?.cakes = cakes
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                    if cakes.count < 10 {
+                        self?.hasMoreData = false
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
 
     
     // MARK: - Top View : Logo
@@ -73,6 +94,7 @@ class CakeViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(MainCakeCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: MainCakeCollectionViewCell.self))
         self.view.addSubview(collectionView)
+        self.view.addSubview(loadingIndicator)
         return collectionView
     }()
     
@@ -85,6 +107,12 @@ class CakeViewController: UIViewController {
         collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
     }
+    
+    private let loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
     
 }
 
@@ -154,7 +182,9 @@ extension CakeViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: MainCakeCollectionViewCell.self), for: indexPath) as? MainCakeCollectionViewCell else {
             return UICollectionViewCell()
         }
-        cell.cellImage.image = UIImage(named: cakeImages[indexPath.item])
+        
+        let cake = cakes[indexPath.item]
+        cell.configure(with: cake)
         cell.cellImage.contentMode = .scaleAspectFill
         
         return cell
@@ -166,7 +196,7 @@ extension CakeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cakeImages.count
+        return cakes.count
     }
     
     // dataSource Header, Footer
@@ -178,7 +208,6 @@ extension CakeViewController: UICollectionViewDataSource {
     
 
 }
-
 
 extension CakeViewController: CalendarPopUpDelegate {
     
@@ -206,5 +235,43 @@ extension CakeViewController: CakeHeaderViewDelegate {
     func calendarButtonTapped() {
         print("CakeVC :     func calendarButtonTapped()")
         showCalendarPopUp()
+    }
+}
+
+// scroll하여 api 추가호출
+extension CakeViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let scrollViewHeight = scrollView.frame.height
+        
+        print(offsetY)
+        print(contentHeight)
+        print(scrollViewHeight)
+        
+        if offsetY > contentHeight - scrollViewHeight {
+            loadMoreData()
+        }
+    }
+    
+    private func loadMoreData() {
+        print("scrolled : ", hasMoreData)
+        guard hasMoreData else { return }
+        loadingIndicator.startAnimating()
+        
+        let nextPage = (collectionView.numberOfItems(inSection: 0) / 10)
+        APIClient.shared.cake.fetchCakeTapCake(nextPage) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.loadingIndicator.stopAnimating()
+                switch result {
+                case . success(let newCakes):
+                    self?.cakes.append(contentsOf: newCakes)
+                    self?.collectionView.reloadData()
+                case .failure(let error):
+                    print("Error: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }

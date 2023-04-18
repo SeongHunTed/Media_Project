@@ -236,6 +236,39 @@ class APIClient {
         }
     }
     
+    class Cake {
+        func fetchCakeTapCake(_ page: Int, completion: @escaping (Result<[MainCakeRequest], Error>) -> Void) {
+            guard let url = URL(string: APIClient.shared.baseURL + "cakes/cake-tap/\(page)") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+        
+            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
+                    return
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let cakes = try decoder.decode([MainCakeRequest].self, from: data)
+                    completion(.success(cakes))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+    }
+    
     let auth = Auth()
     let main = Main()
+    let cake = Cake()
 }
