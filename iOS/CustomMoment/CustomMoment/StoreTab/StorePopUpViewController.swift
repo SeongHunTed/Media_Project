@@ -13,6 +13,8 @@ class StorePopUpViewController: UIViewController {
     var storeName: String
     
     private var storeInfo: MainStorePopUpRequest?
+    
+    private var cakes: [MainCakeRequest] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,12 +53,21 @@ class StorePopUpViewController: UIViewController {
                 print("Error: \(error.localizedDescription)")
             }
         }
+        
+        APIClient.shared.cake.fetchCakeTapCake(0) { [weak self] result in
+            switch result {
+            case .success(let cakes):
+                self?.cakes = cakes
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
     }
     
     // MARK: - Layout Components
-    
-//    let storeDetailImages = ["detail1", "detail2", "detail3", "detail4"]
-    let cakeImages = ["cake1", "cake2", "cake3", "cake4", "cake5", "cake6", "cake7", "cake8", "cake9"]
     
     // collectionview
     private lazy var collectionView: UICollectionView = {
@@ -238,7 +249,7 @@ extension StorePopUpViewController: UICollectionViewDataSource {
         if section == 0 {
             return 5
         } else {
-            return cakeImages.count
+            return cakes.count
         }
     }
     
@@ -265,11 +276,9 @@ extension StorePopUpViewController: UICollectionViewDataSource {
             guard let cell: MainCakeCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: MainCakeCollectionViewCell.self), for: indexPath) as? MainCakeCollectionViewCell else { return UICollectionViewCell()
             }
             
-            cell.cellImage.image = UIImage(named: cakeImages[indexPath.item])
-            cell.cakeLayout()
-            
+            let cake = cakes[indexPath.item]
+            cell.configure(with: cake)
             cell.cellImage.contentMode = .scaleAspectFill
-            cell.cellImage.clipsToBounds = true
             cell.layer.cornerRadius = 8
             cell.layer.borderWidth = 0.1
             cell.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
