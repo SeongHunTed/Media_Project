@@ -95,7 +95,6 @@ class StorePopUpFooterView: UICollectionReusableView {
     
     private let timeLabel: UILabel = {
         let label = UILabel()
-        label.text = "⏰ 영업 : 수~일 10:00~17:00/ 휴무 : 월, 화"
         label.font = UIFont.myFontR.withSize(15.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -103,7 +102,6 @@ class StorePopUpFooterView: UICollectionReusableView {
     
     private let digitLabel: UILabel = {
         let label = UILabel()
-        label.text = "☎️ 02-222-5555"
         label.font = UIFont.myFontR.withSize(15.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -111,7 +109,6 @@ class StorePopUpFooterView: UICollectionReusableView {
     
     private let addressLabel: UILabel = {
         let label = UILabel()
-        label.text = "🚗 서울시 관악구 미성3길 20 1층"
         label.font = UIFont.myFontR.withSize(15.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -197,5 +194,13 @@ class StorePopUpFooterView: UICollectionReusableView {
         topBorderLayer.backgroundColor = UIColor.lightGray.cgColor
         layer.addSublayer(bottomBorderLayer)
         layer.addSublayer(topBorderLayer)
+    }
+    
+    func configure(with store: MainStorePopUpRequest) {
+        let openTime = store.storeOpenTime.prefix(5)
+        let closeTime = store.storeCloseTime.prefix(5)
+        timeLabel.text = "⏰ 영업 : 평일 \(openTime) ~ \(closeTime)"
+        digitLabel.text = "☎️ \(store.storeDigit)"
+        addressLabel.text = "🚗 \(store.storeAddress)"
     }
 }

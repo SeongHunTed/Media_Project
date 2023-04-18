@@ -161,7 +161,6 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
             priceLabel.text = "\(formatterPrice)원~"
         }
         
-        
         if let firstImage = cake.mainImage {
             let url = firstImage.fullImageURL
             cellImage.loadImage(from: url)
