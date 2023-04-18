@@ -106,6 +106,14 @@ class StoreCollectionViewCell: UICollectionViewCell {
         
         addressLabel.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 5).isActive = true
         addressLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 2).isActive = true
+    }
+    
+    func configure(with store: MainStoreRequest) {
+        storeLabel.text = store.name
+        infoLabel.text = store.intro
+        addressLabel.text = store.address
         
+        let storeImageURL = store.fullImageURL
+        cellImage.loadImage(from: storeImageURL)
     }
 }

@@ -12,30 +12,60 @@ class MainCakeViewController: UIViewController {
     // MARK: - Variables
     let vcIdentifier = "CakeVC"
     
-    let cakeImages = ["cake1", "cake2", "cake3", "cake4"]
-    let infoImages = ["infoview"]
+    private var cakesInfo: MainCakeInfoResponse?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        apiCall()
         setDelegate()
         configure()
+    }
+    
+    // MARK: - API Call
+    
+    private func apiCall() {
+        APIClient.shared.main.fetchCakeInfo("플라워 케이크") { [weak self] result in
+            switch result {
+            case .success(let info):
+                self?.cakesInfo = info
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                    if let infoImage = info.infoImage.first {
+                        let imageURL = infoImage.fullInfoImageURL
+                        self?.infoImage.loadImage(from: imageURL)
+                    }
+                    self?.storeLabel.text = "   ⭐️ " +  info.storeName  + " > " + info.name
+                    self?.nameLabel.text = info.name
+                    self?.pageControl.numberOfPages = info.images.count
+                    let numberFomatter = NumberFormatter()
+                    numberFomatter.numberStyle = .decimal
+                    numberFomatter.groupingSeparator = ","
+                    numberFomatter.locale = Locale(identifier: "ko_KR")
+                    
+                    if let formatterPrice = numberFomatter.string(from: NSNumber(value: info.price)) {
+                        self?.priceLabel.text = "\(formatterPrice)원~"
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setupContentSize()
-        print(storeLabel.frame.size)
         
         let storeBottomLayer = CALayer()
         storeBottomLayer.frame = CGRect(x: 0, y: 39, width: self.view.frame.size.width, height: 1)
         storeBottomLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
         storeLabel.layer.addSublayer(storeBottomLayer)
         
-        let cakeTopLayer = CALayer()
-        cakeTopLayer.frame = CGRect(x:-20, y: nameLabel.frame.height - 10, width: view.frame.size.width, height: 2)
-        cakeTopLayer.backgroundColor = UIColor.systemGray4.cgColor
-        nameLabel.layer.addSublayer(cakeTopLayer)
+//        let cakeTopLayer = CALayer()
+//        cakeTopLayer.frame = CGRect(x:0, y: pageControl.frame.height+1, width: view.frame.size.width, height: 1)
+//        cakeTopLayer.backgroundColor = UIColor.systemGray4.cgColor
+//        pageControl.layer.addSublayer(cakeTopLayer)
         
         let buttonBottomLayer = CALayer()
         buttonBottomLayer.frame = CGRect(x: 0, y: 32, width: view.frame.size.width-40, height: 1)
@@ -95,7 +125,6 @@ class MainCakeViewController: UIViewController {
     
     private let storeLabel: UILabel = {
         let label = UILabel()
-        label.text = "   ⭐️ 모율샵 > 컬러직사각케이크"
         label.font = UIFont.myFontB.withSize(15)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -107,14 +136,12 @@ class MainCakeViewController: UIViewController {
         pageControl.currentPageIndicatorTintColor = .systemGray
         pageControl.isUserInteractionEnabled = false
         pageControl.currentPage = 0
-        pageControl.numberOfPages = 4
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
     }()
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "컬러직사각케이크"
         label.font = UIFont.myFontR.withSize(18.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -122,7 +149,6 @@ class MainCakeViewController: UIViewController {
     
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "20,000원"
         label.font = UIFont.myFontB.withSize(18.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -217,7 +243,7 @@ class MainCakeViewController: UIViewController {
         
         pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -10).isActive = true
         pageControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        pageControl.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        pageControl.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         scrollView.addSubview(nameLabel)
@@ -369,7 +395,7 @@ extension MainCakeViewController: UICollectionViewDataSource {
     
     // 필수 구현 1 : 섹션의 아이템 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cakeImages.count
+        return cakesInfo?.images.count ?? 0
     }
     
     // 필수 구현 2 : 아이템의 쎌 설정(?)
@@ -377,9 +403,15 @@ extension MainCakeViewController: UICollectionViewDataSource {
         
         guard let cell: SubCakeCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: SubCakeCollectionViewCell.self), for: indexPath) as? SubCakeCollectionViewCell else { return UICollectionViewCell()
         }
-        cell.configure()
-        cell.cellImage.image = UIImage(named: cakeImages[indexPath.item])
-        cell.layer.cornerRadius = 12.0
+        cell.infoLayout()
+        
+        if let cakesInfo = cakesInfo {
+            cell.configure(with: cakesInfo, item: indexPath.item)
+        } else {
+            print("Nothing")
+        }
+        
+        cell.layer.cornerRadius = 4.0
         cell.clipsToBounds = true
         
         return cell
@@ -406,14 +438,3 @@ extension MainCakeViewController: UICollectionViewDataSource {
         }
     }
 }
-
-//
-//extension MainCakeViewController: UIScrollViewDelegate {
-//
-//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        print("Hi")
-//        let pageWidth = collectionView.frame.width
-//        let currentPage = Int(collectionView.contentOffset.x / pageWidth)
-//        pageControl.currentPage = currentPage
-//    }
-//}

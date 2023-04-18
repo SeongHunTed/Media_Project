@@ -14,7 +14,8 @@ class APIClient {
     
     private init() {}
     
-    let baseURL = "http://custommoment.link/"
+//    let baseURL = "http://custommoment.link/"
+    let baseURL = "http://43.200.163.99/"
     
     // MARK: - Reuse Variables
     
@@ -108,5 +109,103 @@ class APIClient {
         
     }
     
+    class Main {
+        func fetchMainCake(completion: @escaping (Result<[MainCakeRequest], Error>) -> Void) {
+            guard let url = URL(string: APIClient.shared.baseURL + "cakes") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+        
+            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
+                    return
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let cakes = try decoder.decode([MainCakeRequest].self, from: data)
+                    completion(.success(cakes))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+        
+        func fetchMainStore(completion: @escaping (Result<[MainStoreRequest], Error>)->Void) {
+            
+            guard let url = URL(string: APIClient.shared.baseURL + "stores") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            
+            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
+                    return
+                }
+                
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let stores = try decoder.decode([MainStoreRequest].self, from: data)
+                    completion(.success(stores))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+        
+        func fetchCakeInfo(_ targetCake: String, completion: @escaping (Result<MainCakeInfoResponse, Error>) -> Void) {
+            
+            guard let url = URL(string: APIClient.shared.baseURL + "cakes/cake-popup/?cake_name=\(targetCake.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            
+            
+            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
+                    return
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let info = try decoder.decode(MainCakeInfoResponse.self, from: data)
+                    completion(.success(info))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+    }
+    
     let auth = Auth()
+    let main = Main()
 }
