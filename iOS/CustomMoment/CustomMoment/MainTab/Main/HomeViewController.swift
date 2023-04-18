@@ -325,7 +325,7 @@ extension HomeViewController: UICollectionViewDelegate {
         } else if indexPath.section == 2 {
             guard let cell = collectionView.cellForItem(at: indexPath) as? StoreCollectionViewCell else { return }
             let storeName = cell.storeLabel.text ?? ""
-            storeTapped(storeName)
+            storeTapped(storeName, indexPath.item)
         }
     }
     
@@ -336,9 +336,9 @@ extension HomeViewController: UICollectionViewDelegate {
         self.present(cakeVC, animated: true)
     }
     
-    @objc func storeTapped(_ storeName: String) {
+    @objc func storeTapped(_ storeName: String, _ storeIndex: Int) {
         
-        let storeVC = StorePopUpViewController(storeName: storeName)
+        let storeVC = StorePopUpViewController(storeName: storeName, storeIndex: storeIndex)
         self.present(storeVC, animated: true)
     }
     

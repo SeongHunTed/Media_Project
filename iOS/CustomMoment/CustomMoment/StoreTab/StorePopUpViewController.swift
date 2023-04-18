@@ -11,10 +11,14 @@ import NMapsMap
 class StorePopUpViewController: UIViewController {
     
     var storeName: String
+    var storeIndex: Int
     
     private var storeInfo: MainStorePopUpRequest?
     
     private var cakes: [MainCakeRequest] = []
+    
+    private let long = [127.035559, 126.987670, 126.838952, 126.792351]
+    private let lat = [37.5268459, 37.535031, 37.5576973, 37.6493171]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,8 +30,9 @@ class StorePopUpViewController: UIViewController {
 //        startAutoScroll()
     }
     
-    init(storeName: String) {
+    init(storeName: String, storeIndex: Int) {
         self.storeName = storeName
+        self.storeIndex = storeIndex
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -303,7 +308,7 @@ extension StorePopUpViewController: UICollectionViewDataSource {
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "StorePopUpFooterView", for: indexPath) as! StorePopUpFooterView
             if let storeInfo = storeInfo {
-                footer.configure(with: storeInfo)
+                footer.configure(with: storeInfo, lat[storeIndex], long[storeIndex])
             }
             return footer
         default:

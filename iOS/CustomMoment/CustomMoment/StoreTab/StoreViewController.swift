@@ -145,13 +145,13 @@ extension StoreViewController: UICollectionViewDelegate {
         if indexPath.section == 0 {
             guard let cell = collectionView.cellForItem(at: indexPath) as? StoreCollectionViewCell else { return }
             let storeName = cell.storeLabel.text ?? ""
-            storeTapped(storeName)
+            storeTapped(storeName, indexPath.item)
         }
     }
     
-    @objc func storeTapped(_ storeName: String) {
+    @objc func storeTapped(_ storeName: String, _ storeIndex: Int) {
         print("StoreVC :        Collection Cell Tapped")
-        let storePopVC = StorePopUpViewController(storeName: storeName)
+        let storePopVC = StorePopUpViewController(storeName: storeName, storeIndex: storeIndex)
         self.present(storePopVC, animated: true)
     }
     
