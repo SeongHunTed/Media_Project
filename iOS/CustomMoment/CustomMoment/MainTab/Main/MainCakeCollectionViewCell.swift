@@ -35,7 +35,7 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let cakeLabel: UILabel = {
+    let cakeLabel: UILabel = {
         let label = UILabel()
         label.text = "체커보드케이크"
         label.font = UIFont.myFontM.withSize(12.0)

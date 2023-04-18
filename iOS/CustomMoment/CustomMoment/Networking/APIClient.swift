@@ -103,7 +103,6 @@ class APIClient {
                     }
                 }
             }
-            
             task.resume()
         }
         
@@ -198,6 +197,37 @@ class APIClient {
                     let decoder = JSONDecoder()
                     let info = try decoder.decode(MainCakeInfoResponse.self, from: data)
                     completion(.success(info))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+        
+        func fetchStoreInfo(_ targetStore: String, completion: @escaping (Result<MainStorePopUpRequest, Error>)->Void) {
+            
+            guard let url = URL(string: APIClient.shared.baseURL + "stores/detail/?store_name=\(targetStore.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
+                    return
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let store = try decoder.decode(MainStorePopUpRequest.self, from: data)
+                    completion(.success(store))
                 } catch {
                     completion(.failure(error))
                 }
