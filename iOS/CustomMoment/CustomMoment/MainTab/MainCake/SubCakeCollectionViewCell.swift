@@ -34,7 +34,7 @@ class SubCakeCollectionViewCell: UICollectionViewCell {
 
     }
     
-    func configure() {
+    func infoLayout() {
         self.contentView.addSubview(cellImage)
         cellImage.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
         cellImage.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
@@ -44,4 +44,10 @@ class SubCakeCollectionViewCell: UICollectionViewCell {
         cellImage.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
     }
     
+    func configure(with info: MainCakeInfoResponse, item: Int) {
+        
+        let url = info.images[item].fullImageURL
+        print(url)
+        cellImage.loadImage(from: url)
+    }
 }

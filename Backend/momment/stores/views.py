@@ -91,8 +91,7 @@ def main(request):
 @api_view(['GET'])
 def detail(request):
     try:
-        data = request.data
-        name = data['store_name']
+        name = request.GET.get('store_name')
         store = Store.objects.get(store_name = name)
         
         serializer = DetailStoreSerializer(store, context={'request': request})

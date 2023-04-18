@@ -10,7 +10,7 @@ class StoreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Store
-        exclude = ('image2', 'image3', 'image4', 'image5', 'user', 'id')
+        exclude = ('store_opentime', 'store_closetime', 'store_digit', 'image2', 'image3', 'image4', 'image5', 'user', 'id')
 
 class DetailStoreSerializer(serializers.ModelSerializer):
 

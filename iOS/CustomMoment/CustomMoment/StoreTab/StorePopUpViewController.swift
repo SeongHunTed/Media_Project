@@ -9,14 +9,35 @@ import UIKit
 import NMapsMap
 
 class StorePopUpViewController: UIViewController {
+    
+    var storeName: String
+    var storeIndex: Int
+    
+    private var storeInfo: MainStorePopUpRequest?
+    
+    private var cakes: [MainCakeRequest] = []
+    
+    private let long = [127.035559, 126.987670, 126.838952, 126.792351]
+    private let lat = [37.5268459, 37.535031, 37.5576973, 37.6493171]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
+        apiCall()
         configure()
 //        startAutoScroll()
+    }
+    
+    init(storeName: String, storeIndex: Int) {
+        self.storeName = storeName
+        self.storeIndex = storeIndex
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
 //    override func viewWillDisappear(_ animated: Bool) {
@@ -24,10 +45,34 @@ class StorePopUpViewController: UIViewController {
 //        timer?.invalidate()
 //    }
     
-    // MARK: - Layout Components
+    // MARK: - API Call
+    private func apiCall() {
+        APIClient.shared.main.fetchStoreInfo(self.storeName) { [weak self] result in
+            switch result {
+            case .success(let store):
+                self?.storeInfo = store
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+        
+        APIClient.shared.cake.fetchCakeTapCake(0) { [weak self] result in
+            switch result {
+            case .success(let cakes):
+                self?.cakes = cakes
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
     
-    let storeDetailImages = ["detail1", "detail2", "detail3", "detail4"]
-    let cakeImages = ["cake1", "cake2", "cake3", "cake4", "cake5", "cake6", "cake7", "cake8", "cake9"]
+    // MARK: - Layout Components
     
     // collectionview
     private lazy var collectionView: UICollectionView = {
@@ -125,14 +170,16 @@ extension StorePopUpViewController: UICollectionViewDelegate, UICollectionViewDe
         print("item at \(indexPath.section)/\(indexPath.item) tapped")
         
         if indexPath.section == 1 {
-            cakeTapped()
+            guard let cell = collectionView.cellForItem(at: indexPath) as? MainCakeCollectionViewCell else { return }
+            let cakeName = cell.cakeLabel.text ?? ""
+            cakeTapped(cakeName)
         }
     }
     
-    @objc func cakeTapped() {
+    @objc func cakeTapped(_ cakeName: String) {
         print("StorePopVC :     Collection Cell Tapped")
         
-        let cakeVC = MainCakeViewController()
+        let cakeVC = MainCakeViewController(cakeName: cakeName)
         
         self.present(cakeVC, animated: true)
     }
@@ -205,9 +252,9 @@ extension StorePopUpViewController: UICollectionViewDataSource {
     // 필수 구현 1 : 섹션의 아이템 개수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return storeDetailImages.count
+            return 5
         } else {
-            return cakeImages.count
+            return cakes.count
         }
     }
     
@@ -219,10 +266,14 @@ extension StorePopUpViewController: UICollectionViewDataSource {
             guard let cell: StorePopUpCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: StorePopUpCollectionViewCell.self), for: indexPath) as? StorePopUpCollectionViewCell else { return UICollectionViewCell()
             }
             
-            cell.configure()
-            cell.pageControl.numberOfPages = storeDetailImages.count
-            cell.pageControl.currentPage = indexPath.item
-            cell.cellImage.image = UIImage(named: storeDetailImages[indexPath.item])
+            if let storeInfo = storeInfo {
+                cell.storePopUpLayout()
+                cell.configure(with: storeInfo, item: indexPath.item)
+                cell.pageControl.numberOfPages = 5
+                cell.pageControl.currentPage = 0
+            } else {
+                print("Nothing")
+            }
             
             return cell
         } else {
@@ -230,11 +281,9 @@ extension StorePopUpViewController: UICollectionViewDataSource {
             guard let cell: MainCakeCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: MainCakeCollectionViewCell.self), for: indexPath) as? MainCakeCollectionViewCell else { return UICollectionViewCell()
             }
             
-            cell.cellImage.image = UIImage(named: cakeImages[indexPath.item])
-            cell.cakeLayout()
-            
+            let cake = cakes[indexPath.item]
+            cell.configure(with: cake)
             cell.cellImage.contentMode = .scaleAspectFill
-            cell.cellImage.clipsToBounds = true
             cell.layer.cornerRadius = 8
             cell.layer.borderWidth = 0.1
             cell.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
@@ -250,7 +299,7 @@ extension StorePopUpViewController: UICollectionViewDataSource {
         case UICollectionView.elementKindSectionHeader:
             if indexPath.section == 0 {
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "StorePopUpHeaderView", for: indexPath) as! StorePopUpHeaderView
-                header.prepare(text: "🍰 딥 다이브")
+                header.prepare(text: "🍰 \(storeInfo?.storeName ?? "Unknown Store") " )
                 return header
             } else {
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "StorePopUpSecondHeaderView", for: indexPath) as! StorePopUpSecondHeaderView
@@ -258,6 +307,9 @@ extension StorePopUpViewController: UICollectionViewDataSource {
             }
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "StorePopUpFooterView", for: indexPath) as! StorePopUpFooterView
+            if let storeInfo = storeInfo {
+                footer.configure(with: storeInfo, lat[storeIndex], long[storeIndex])
+            }
             return footer
         default:
             return UICollectionReusableView()

@@ -36,7 +36,7 @@ class StorePopUpCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure() {
+    func storePopUpLayout() {
         self.contentView.addSubview(cellImage)
         self.contentView.addSubview(pageControl)
         
@@ -52,6 +52,11 @@ class StorePopUpCollectionViewCell: UICollectionViewCell {
         pageControl.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
         pageControl.widthAnchor.constraint(equalToConstant: 200).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
+    func configure(with store: MainStorePopUpRequest, item: Int) {
+        let url = store.fullImageURLs[item]
+        cellImage.loadImage(from: url)
     }
     
 }

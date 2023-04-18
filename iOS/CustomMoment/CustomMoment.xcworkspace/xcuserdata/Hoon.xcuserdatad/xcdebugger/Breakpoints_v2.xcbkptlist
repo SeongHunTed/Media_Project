@@ -14,9 +14,9 @@
             filePath = "CustomMoment/MainTab/Main/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "296"
-            endingLineNumber = "296"
-            landmarkName = "cakeTapped()"
+            startingLineNumber = "332"
+            endingLineNumber = "332"
+            landmarkName = "cakeTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

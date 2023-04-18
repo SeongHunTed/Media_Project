@@ -20,13 +20,15 @@ class HomeViewController: UIViewController {
     
     private var timer: Timer?
     private let bannerImages = ["banner1", "banner2", "banner3", "banner4"]
-    private let cakeImages = ["cake1", "cake2", "cake3", "cake4", "cake5", "cake6", "cake7", "cake8", "cake9"]
-    private let storeImages = ["store1", "store2", "store3"]
+    
+    private var cakes: [MainCakeRequest] = []
+    private var stores: [MainStoreRequest] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setUpDelegate()
+        apiCall()
         logoLayout()
         bannerLayout()
 //        startTimer()
@@ -34,13 +36,41 @@ class HomeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("VDA Content offset x: \(collectionView.contentOffset.x)")
-        print("Content size: \(collectionView.contentSize)")
+//        print("VDA Content offset x: \(collectionView.contentOffset.x)")
+//        print("Content size: \(collectionView.contentSize)")
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("VDLS Content offset x: \(collectionView.contentOffset.x)")
+//        print("VDLS Content offset x: \(collectionView.contentOffset.x)")
+    }
+    
+    // MARK: - API Call
+    
+    private func apiCall() {
+        APIClient.shared.main.fetchMainCake{ [weak self] result in
+            switch result {
+            case .success(let cakes):
+                self?.cakes = cakes
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+        
+        APIClient.shared.main.fetchMainStore{ [weak self] result in
+            switch result {
+            case .success(let stores):
+                self?.stores = stores
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
     }
 
     
@@ -289,15 +319,27 @@ extension HomeViewController: UICollectionViewDelegate {
         print("item at \(indexPath.section)/\(indexPath.item) tapped")
         
         if indexPath.section == 1 {
-            cakeTapped()
+            guard let cell = collectionView.cellForItem(at: indexPath) as? MainCakeCollectionViewCell else { return }
+            let cakeName = cell.cakeLabel.text ?? ""
+            cakeTapped(cakeName)
+        } else if indexPath.section == 2 {
+            guard let cell = collectionView.cellForItem(at: indexPath) as? StoreCollectionViewCell else { return }
+            let storeName = cell.storeLabel.text ?? ""
+            storeTapped(storeName, indexPath.item)
         }
     }
     
-    @objc func cakeTapped() {
+    @objc func cakeTapped(_ cakeName: String) {
         print("HomeVC :     Collection Cell Tapped")
         
-        let cakeVC = MainCakeViewController()
+        let cakeVC = MainCakeViewController(cakeName: cakeName)
         self.present(cakeVC, animated: true)
+    }
+    
+    @objc func storeTapped(_ storeName: String, _ storeIndex: Int) {
+        
+        let storeVC = StorePopUpViewController(storeName: storeName, storeIndex: storeIndex)
+        self.present(storeVC, animated: true)
     }
     
 }
@@ -312,9 +354,9 @@ extension HomeViewController: UICollectionViewDataSource {
         if section == 0 {
             return bannerImages.count
         } else if section == 1 {
-            return cakeImages.count
+            return cakes.count
         } else {
-            return storeImages.count
+            return stores.count
         }
     }
     
@@ -340,7 +382,9 @@ extension HomeViewController: UICollectionViewDataSource {
             }
             collectionView.showsHorizontalScrollIndicator = true
             collectionView.showsVerticalScrollIndicator = false
-            cell.cellImage.image = UIImage(named: cakeImages[indexPath.row])
+//            cell.cellImage.image = UIImage(named: cakeImages[indexPath.row])
+            let cake = cakes[indexPath.item]
+            cell.configure(with: cake)
             cell.cellImage.contentMode = .scaleAspectFill
 
             return cell
@@ -350,7 +394,9 @@ extension HomeViewController: UICollectionViewDataSource {
             }
             collectionView.showsHorizontalScrollIndicator = true
             collectionView.showsVerticalScrollIndicator = false
-            cell.cellImage.image = UIImage(named: storeImages[indexPath.row])
+            let store = stores[indexPath.item]
+            cell.storeLayout()
+            cell.configure(with: store)
             cell.cellImage.contentMode = .scaleAspectFill
             cell.cellImage.layer.cornerRadius = 0
             

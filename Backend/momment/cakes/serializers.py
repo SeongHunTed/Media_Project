@@ -137,13 +137,24 @@ class CakeSerializer(serializers.ModelSerializer):
         'size', 'flavor', 'color', 'design', 'side_deco', 'deco',
         'lettering', 'font', 'picture', 'package', 'candle', 'image']
 
+# class CakeInfoSerializer(serializers.ModelSerializer):
+
+#     image = CakeImageSerializer(many=True)
+#     info_image = CakeInfoImageSerializer()
+#     store_name = serializers.CharField(source='store.store_name')
+
+#     class Meta:
+#         model = Cake
+#         fields = ['image', 'price', 'info_image', 'name', 'store_name']
+
 class CakeOnlySerializer(serializers.ModelSerializer):
 
     image = CakeImageSerializer(many=True)
+    store_name = serializers.CharField(source='store.store_name')
 
     class Meta:
         model = Cake
-        fields = ['name', 'price', 'image']
+        fields = ['name', 'price', 'store_name', 'image']
 
 # 메인 페이지에 케이크 보내줄 때 스토어 정보는 어떻게 보낼 것인가?
 class StoreCakeSerializer(serializers.ModelSerializer):

@@ -7,7 +7,7 @@ urlpatterns = [
     path('', views.show),
     path('store', views.store),
     path('main', views.main),
-    path('detail', views.detail)
+    path('detail/', views.detail)
 ]
 
 if settings.DEBUG:

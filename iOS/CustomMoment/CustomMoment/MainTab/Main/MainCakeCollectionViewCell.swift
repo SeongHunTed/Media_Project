@@ -35,7 +35,7 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let cakeLabel: UILabel = {
+    let cakeLabel: UILabel = {
         let label = UILabel()
         label.text = "체커보드케이크"
         label.font = UIFont.myFontM.withSize(12.0)
@@ -146,6 +146,25 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         priceLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 8).isActive = true
         priceLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         
+    }
+    
+    func configure(with cake: MainCakeRequest) {
+        cakeLabel.text = cake.name
+        storeLabel.text = cake.storeName
+        
+        let numberFomatter = NumberFormatter()
+        numberFomatter.numberStyle = .decimal
+        numberFomatter.groupingSeparator = ","
+        numberFomatter.locale = Locale(identifier: "ko_KR")
+        
+        if let formatterPrice = numberFomatter.string(from: NSNumber(value: cake.price)) {
+            priceLabel.text = "\(formatterPrice)원~"
+        }
+        
+        if let firstImage = cake.mainImage {
+            let url = firstImage.fullImageURL
+            cellImage.loadImage(from: url)
+        }
     }
     
 }

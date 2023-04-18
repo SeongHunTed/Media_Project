@@ -19,6 +19,9 @@
 		7862AB3F29C824D400E501C9 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB3E29C824D400E501C9 /* UIViewExtension.swift */; };
 		7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */; };
 		786509B829C193A000B7C7F3 /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */; };
+		78C3C23E29ED13ED00405986 /* MainCakeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C23D29ED13ED00405986 /* MainCakeModel.swift */; };
+		78C3C24029ED47DD00405986 /* MainStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C23F29ED47DD00405986 /* MainStoreModel.swift */; };
+		78C3C24229ED84CE00405986 /* MainCakeInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */; };
 		78DFB05529D70F22002DC963 /* StoreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB05429D70F22002DC963 /* StoreCollectionViewCell.swift */; };
 		78DFB05729D72B69002DC963 /* StoreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB05629D72B69002DC963 /* StoreHeaderView.swift */; };
 		78DFB05B29D72E63002DC963 /* StorePopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB05A29D72E63002DC963 /* StorePopUpViewController.swift */; };
@@ -108,6 +111,9 @@
 		7862AB3E29C824D400E501C9 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeCollectionViewCell.swift; sourceTree = "<group>"; };
 		786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
+		78C3C23D29ED13ED00405986 /* MainCakeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeModel.swift; sourceTree = "<group>"; };
+		78C3C23F29ED47DD00405986 /* MainStoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainStoreModel.swift; sourceTree = "<group>"; };
+		78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeInfoModel.swift; sourceTree = "<group>"; };
 		78DFB05429D70F22002DC963 /* StoreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCollectionViewCell.swift; sourceTree = "<group>"; };
 		78DFB05629D72B69002DC963 /* StoreHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreHeaderView.swift; sourceTree = "<group>"; };
 		78DFB05A29D72E63002DC963 /* StorePopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePopUpViewController.swift; sourceTree = "<group>"; };
@@ -227,6 +233,7 @@
 			children = (
 				7862AB3B29C81BFC00E501C9 /* MainCakeViewController.swift */,
 				7858F8D829CA0EC200E20C92 /* SubCakeCollectionViewCell.swift */,
+				78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */,
 			);
 			path = MainCake;
 			sourceTree = "<group>";
@@ -410,6 +417,8 @@
 				78FD435829CCBC99006ED4F8 /* MainOption */,
 				7862AB3829C7DDC200E501C9 /* MainCake */,
 				785BFDFD29BA1EF600CBDB0C /* Main */,
+				78C3C23D29ED13ED00405986 /* MainCakeModel.swift */,
+				78C3C23F29ED47DD00405986 /* MainStoreModel.swift */,
 			);
 			path = MainTab;
 			sourceTree = "<group>";
@@ -750,6 +759,7 @@
 				78F6919B29E1FBE10037C684 /* OrderCollectionViewCell.swift in Sources */,
 				785C487C29D4AF6D00F52CFD /* CakeHeaderView.swift in Sources */,
 				78EBE59C29B600CB00E3B065 /* AppDelegate.swift in Sources */,
+				78C3C23E29ED13ED00405986 /* MainCakeModel.swift in Sources */,
 				78DFB06329D75E20002DC963 /* StorePopUpCollectionViewCell.swift in Sources */,
 				78DFB09029E19A76002DC963 /* CouponViewController.swift in Sources */,
 				78FD436229D343B4006ED4F8 /* CakeViewController.swift in Sources */,
@@ -758,6 +768,7 @@
 				78DFB07729DDF0AB002DC963 /* OrderDetailViewController.swift in Sources */,
 				783F397329E8634100D8424D /* AuthModel.swift in Sources */,
 				7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */,
+				78C3C24029ED47DD00405986 /* MainStoreModel.swift in Sources */,
 				785CC9B129C43DEF0034BD30 /* MyHeaderView.swift in Sources */,
 				78DFB05729D72B69002DC963 /* StoreHeaderView.swift in Sources */,
 				785C487E29D5F06300F52CFD /* CalendarPopUpViewController.swift in Sources */,
@@ -768,6 +779,7 @@
 				78DFB07029DD4B2E002DC963 /* MyInfoSubViewsViewController.swift in Sources */,
 				78EBE5D029B7012F00E3B065 /* SignUpViewController.swift in Sources */,
 				78DFB07D29DF1EC2002DC963 /* APIService.swift in Sources */,
+				78C3C24229ED84CE00405986 /* MainCakeInfoModel.swift in Sources */,
 				78FD435A29CCBCB6006ED4F8 /* MainOptionViewController.swift in Sources */,
 				7858F8D929CA0EC200E20C92 /* SubCakeCollectionViewCell.swift in Sources */,
 				78FD436829D3444B006ED4F8 /* MyInfoViewController.swift in Sources */,
