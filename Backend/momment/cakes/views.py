@@ -47,6 +47,15 @@ def cake_pop_up_set(request):
 
     return Response(status=status.HTTP_201_CREATED)
 
+@api_view(['GET', ])
+def cake_per_store(request):
+    store_name = request.GET.get('store_name')
+    store = Store.objects.get(store_name=store_name)
+    cakes = Cake.objects.filter(store=store)
+    print(cakes)
+    data = CakeOnlySerializer(cakes, many=True).data
+    return Response(data, status=status.HTTP_200_OK)
+
 
 
 # 판매자에게 모든 케이크 보여줌
