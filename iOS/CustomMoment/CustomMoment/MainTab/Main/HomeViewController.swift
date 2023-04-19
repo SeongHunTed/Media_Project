@@ -321,7 +321,8 @@ extension HomeViewController: UICollectionViewDelegate {
         if indexPath.section == 1 {
             guard let cell = collectionView.cellForItem(at: indexPath) as? MainCakeCollectionViewCell else { return }
             let cakeName = cell.cakeLabel.text ?? ""
-            cakeTapped(cakeName)
+            let storeName = cell.storeLabel.text ?? ""
+            cakeTapped(cakeName, storeName)
         } else if indexPath.section == 2 {
             guard let cell = collectionView.cellForItem(at: indexPath) as? StoreCollectionViewCell else { return }
             let storeName = cell.storeLabel.text ?? ""
@@ -329,10 +330,10 @@ extension HomeViewController: UICollectionViewDelegate {
         }
     }
     
-    @objc func cakeTapped(_ cakeName: String) {
+    @objc func cakeTapped(_ cakeName: String, _ storeName: String) {
         print("HomeVC :     Collection Cell Tapped")
         
-        let cakeVC = MainCakeViewController(cakeName: cakeName)
+        let cakeVC = MainCakeViewController(cakeName: cakeName, storeName: storeName)
         self.present(cakeVC, animated: true)
     }
     

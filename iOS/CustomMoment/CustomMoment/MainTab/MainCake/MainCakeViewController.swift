@@ -13,11 +13,13 @@ class MainCakeViewController: UIViewController {
     let vcIdentifier = "CakeVC"
     
     var cakeName: String
+    var storeName: String
     
     private var cakesInfo: MainCakeInfoResponse?
     
-    init(cakeName: String) {
+    init(cakeName: String, storeName: String) {
         self.cakeName = cakeName
+        self.storeName = storeName
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -348,7 +350,11 @@ class MainCakeViewController: UIViewController {
     @objc func orderButtonTapped(_ sender: UIButton) {
         print("CakeVC:      Order Button Tapped")
         
-        let optionVC = MainOptionViewController()
+        let storeName = self.storeName
+        let cakeName = self.cakeName
+        
+        let cakeOptionRequest = CakeOptionRequest(cakeName: cakeName, storeName: storeName)
+        let optionVC = MainOptionViewController(cakeOptionRequest: cakeOptionRequest)
         
         self.present(optionVC, animated: true)
     }

@@ -22,6 +22,7 @@
 		78C3C23E29ED13ED00405986 /* MainCakeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C23D29ED13ED00405986 /* MainCakeModel.swift */; };
 		78C3C24029ED47DD00405986 /* MainStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C23F29ED47DD00405986 /* MainStoreModel.swift */; };
 		78C3C24229ED84CE00405986 /* MainCakeInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */; };
+		78C3C24429EFB59C00405986 /* CakeOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C24329EFB59C00405986 /* CakeOptionModel.swift */; };
 		78DFB05529D70F22002DC963 /* StoreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB05429D70F22002DC963 /* StoreCollectionViewCell.swift */; };
 		78DFB05729D72B69002DC963 /* StoreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB05629D72B69002DC963 /* StoreHeaderView.swift */; };
 		78DFB05B29D72E63002DC963 /* StorePopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB05A29D72E63002DC963 /* StorePopUpViewController.swift */; };
@@ -114,6 +115,7 @@
 		78C3C23D29ED13ED00405986 /* MainCakeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeModel.swift; sourceTree = "<group>"; };
 		78C3C23F29ED47DD00405986 /* MainStoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainStoreModel.swift; sourceTree = "<group>"; };
 		78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeInfoModel.swift; sourceTree = "<group>"; };
+		78C3C24329EFB59C00405986 /* CakeOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CakeOptionModel.swift; sourceTree = "<group>"; };
 		78DFB05429D70F22002DC963 /* StoreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCollectionViewCell.swift; sourceTree = "<group>"; };
 		78DFB05629D72B69002DC963 /* StoreHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreHeaderView.swift; sourceTree = "<group>"; };
 		78DFB05A29D72E63002DC963 /* StorePopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePopUpViewController.swift; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 				78FD435929CCBCB6006ED4F8 /* MainOptionViewController.swift */,
 				78FD435B29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift */,
 				78FD435D29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift */,
+				78C3C24329EFB59C00405986 /* CakeOptionModel.swift */,
 			);
 			path = MainOption;
 			sourceTree = "<group>";
@@ -770,6 +773,7 @@
 				7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */,
 				78C3C24029ED47DD00405986 /* MainStoreModel.swift in Sources */,
 				785CC9B129C43DEF0034BD30 /* MyHeaderView.swift in Sources */,
+				78C3C24429EFB59C00405986 /* CakeOptionModel.swift in Sources */,
 				78DFB05729D72B69002DC963 /* StoreHeaderView.swift in Sources */,
 				785C487E29D5F06300F52CFD /* CalendarPopUpViewController.swift in Sources */,
 				78EBE59E29B600CB00E3B065 /* SceneDelegate.swift in Sources */,

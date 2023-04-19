@@ -266,6 +266,56 @@ class APIClient {
             }
             task.resume()
         }
+        
+        func fetchCakeOption(_ cakeOptionRequest: CakeOptionRequest, completion: @escaping (Result<CakeOptionResponse , Error>) -> Void) {
+            
+            guard let url = URL(string: APIClient.shared.baseURL + "cakes/order") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            do {
+                let encoder = JSONEncoder()
+                let jsonData = try encoder.encode(cakeOptionRequest)
+                request.httpBody = jsonData
+            } catch {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+                return
+            }
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(domain: "", code: -1, userInfo: nil)))
+                    }
+                    return
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let cakeOptionResponse = try decoder.decode(CakeOptionResponse.self, from: data)
+                    print(cakeOptionResponse)
+                    DispatchQueue.main.async {
+                        completion(.success(cakeOptionResponse))
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                }
+            }
+            task.resume()
+        }
     }
     
     let auth = Auth()

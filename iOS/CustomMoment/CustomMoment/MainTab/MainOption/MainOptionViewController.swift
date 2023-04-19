@@ -11,6 +11,111 @@ import DropDown
 
 class MainOptionViewController: UIViewController {
     
+    var cakeOptionResponse: CakeOptionResponse?
+    var cakeOptionRequest: CakeOptionRequest?
+    
+    init(cakeOptionRequest: CakeOptionRequest) {
+        self.cakeOptionRequest = cakeOptionRequest
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        apiCall()
+        configure()
+        setCalendarUI()
+        setCollectionView()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        let borderLayer = CALayer()
+        borderLayer.frame = CGRect(x: 0, y: calendarLabel.frame.size.height - 1, width: calendarLabel.frame.size.width - 10, height: 1)
+        borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+        calendarLabel.layer.addSublayer(borderLayer)
+    }
+    
+    // MARK: - API Call
+    
+    private func apiCall() {
+        
+        guard let cakeOptionRequest = self.cakeOptionRequest else {
+            print("Error: cakeOptionRequest is nil")
+            return
+        }
+        
+        APIClient.shared.cake.fetchCakeOption(cakeOptionRequest) { [weak self] result in
+            switch result {
+            case .success(let cakeOptions):
+                self?.cakeOptionResponse = cakeOptions
+                self?.updateView()
+                self?.collectionView.reloadData()
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func updateView() {
+        guard let cakeOptions = cakeOptionResponse else { return }
+        
+        let basicOptionTitles = [
+            (key: \CakeOptionResponse.size, title: "사이즈"),
+            (key: \CakeOptionResponse.flavor, title: "맛"),
+            (key: \CakeOptionResponse.color, title: "컬러"),
+            (key: \CakeOptionResponse.design, title: "디자인"),
+            (key: \CakeOptionResponse.package, title: "포장"),
+        ]
+        
+        let additionalOptionTitles = [
+            (key: \CakeOptionResponse.lettering, title: "레터링"),
+            (key: \CakeOptionResponse.font, title: "폰트"),
+            (key: \CakeOptionResponse.side_deco, title: "사이드데코"),
+            (key: \CakeOptionResponse.deco, title: "데코"),
+            (key: \CakeOptionResponse.picture, title: "디자인첨부"),
+            (key: \CakeOptionResponse.design, title: "초")
+        ]
+        // 예제: 각 옵션의 개수를 출력합니다.
+        for basicOptionTitle in basicOptionTitles {
+            if let optionArray = cakeOptions[keyPath: basicOptionTitle.key], !optionArray.isEmpty {
+                basicDropDownButtonTitle.append(basicOptionTitle.title)
+                basicDropDownDataSource.append(optionArray.map { "\($0.optionName) + \($0.price)원" })
+            }
+        }
+        
+        for additionalOptionTitle in additionalOptionTitles {
+            if let optionArray = cakeOptions[keyPath: additionalOptionTitle.key], !optionArray.isEmpty {
+                addtionalDropDownButtonTitle.append(additionalOptionTitle.title)
+                additionalDropDownDataSource.append(optionArray.map { $0.optionName })
+            }
+        }
+    }
+    
+    private var basicDropDownButtonTitle: [String] = []
+    private var addtionalDropDownButtonTitle: [String] = []
+    
+    private var basicDropDownDataSource: [[String]] = []
+    private var additionalDropDownDataSource: [[String]] = []
+    
+    //MARK: - Temperally DataSource (Change When API connect)
+    
+    private var dataSource: [(String, Bool)] = [
+        ("10:00", false), ("11:00", false), ("12:00", true), ("13:00", true), ("14:00", true), ("15:00", false), ("16:00", true)
+    ]
+    
+    
+
+    private var dropDownDataSource = [
+        ["미니(+0원)", "1호(+0원)", "2호(0원)", "3호(+0원)"],
+        ["바닐라(+0원)", "초코(+0원)", "블루베리(+500원)"],
+        ["선택안함(+0원)", "프린트 최대 25자 입력(+0원)", "손글씨 최대 20자 입력(+0)"],
+        ["선택안함(+0원)", "보냉포장(+500원)"],
+        ["선택안함(+0원)", "선물포장(+1,500원)"]
+    ]
+
     //MARK: - Variables
     lazy var today = calendar.today!
     
@@ -91,41 +196,6 @@ class MainOptionViewController: UIViewController {
     @objc func orderButtonTapped() {
         let orderVC = OrderDetailViewController()
         present(orderVC, animated: true)
-    }
-    
-    
-    //MARK: - Temperally DataSource (Change When API connect)
-    
-    private var dataSource: [(String, Bool)] = [
-        ("10:00", false), ("11:00", false), ("12:00", true), ("13:00", true), ("14:00", true), ("15:00", false), ("16:00", true)
-    ]
-    
-    private var dropDownButtonTitle = [
-        "사이즈", "맛(시트+크림)", "레터링(케이크)", "포장(보냉백)", "포장(쇼핑백)"
-    ]
-    
-    private var dropDownDataSource = [
-        ["미니(+0원)", "1호(+0원)", "2호(0원)", "3호(+0원)"],
-        ["바닐라(+0원)", "초코(+0원)", "블루베리(+500원)"],
-        ["선택안함(+0원)", "프린트 최대 25자 입력(+0원)", "손글씨 최대 20자 입력(+0)"],
-        ["선택안함(+0원)", "보냉포장(+500원)"],
-        ["선택안함(+0원)", "선물포장(+1,500원)"]
-    ]
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        configure()
-        setCalendarUI()
-        setCollectionView()
-        
-    }
-    
-    override func viewDidLayoutSubviews() {
-        let borderLayer = CALayer()
-        borderLayer.frame = CGRect(x: 0, y: calendarLabel.frame.size.height - 1, width: calendarLabel.frame.size.width - 10, height: 1)
-        borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
-        calendarLabel.layer.addSublayer(borderLayer)
     }
     
     //MARK: - Configure
@@ -225,8 +295,10 @@ extension MainOptionViewController {
         return UICollectionViewCompositionalLayout { sectionIndex, layoutenvironment -> NSCollectionLayoutSection? in
             if sectionIndex == 0 {
                 return self.pickUpTimeLayout()
+            } else if sectionIndex == 1 {
+                return self.basicOptionLayout()
             } else {
-                return self.optionLayout()
+                return self.addtionalOptionLayout()
             }
         }
     }
@@ -255,8 +327,30 @@ extension MainOptionViewController {
         return section
     }
 
-    private func optionLayout() -> NSCollectionLayoutSection {
+    private func basicOptionLayout() -> NSCollectionLayoutSection {
         
+        collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5))
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 0, trailing: 10)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.2))
+        
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
+        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30.0))
+        
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [header]
+        
+        return section
+    }
+    
+    private func addtionalOptionLayout() -> NSCollectionLayoutSection {
         collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5))
@@ -287,14 +381,16 @@ extension MainOptionViewController: UICollectionViewDelegate {
 extension MainOptionViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
             return dataSource.count
+        } else if section == 1 {
+            return basicDropDownButtonTitle.count
         } else {
-            return dropDownDataSource.count
+            return addtionalDropDownButtonTitle.count
         }
     }
     
@@ -306,12 +402,19 @@ extension MainOptionViewController: UICollectionViewDataSource {
             cell.timeButton.setTitle(dataSource[indexPath.item].0, for: .normal)
             cell.prepare(dataSource[indexPath.item].1)
             return cell
+        } else if indexPath.section == 1 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: OptionButtonCollectionViewCell.self), for: indexPath) as? OptionButtonCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.optionButton.setTitle(basicDropDownButtonTitle[indexPath.item], for: .normal)
+            cell.dropDown.dataSource = basicDropDownDataSource[indexPath.item]
+            return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: OptionButtonCollectionViewCell.self), for: indexPath) as? OptionButtonCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            cell.optionButton.setTitle(dropDownButtonTitle[indexPath.item], for: .normal)
-            cell.dropDown.dataSource = dropDownDataSource[indexPath.item]
+            cell.optionButton.setTitle(addtionalDropDownButtonTitle[indexPath.item], for: .normal)
+            cell.dropDown.dataSource = additionalDropDownDataSource[indexPath.item]
             return cell
         }
     }
@@ -322,7 +425,9 @@ extension MainOptionViewController: UICollectionViewDataSource {
             if indexPath.section == 0 {
                 header.prepare(text: "⏱️ 픽업 시간")
             } else if indexPath.section == 1 {
-                header.prepare(text: "🍰 옵션")
+                header.prepare(text: "🍰 기본 옵션")
+            } else {
+                header.prepare(text: "🍴 추가 옵션")
             }
             let borderLayer = CALayer()
             borderLayer.frame = CGRect(x: 10, y: header.frame.size.height - 1, width: header.frame.size.width - 20, height: 1)

@@ -160,14 +160,15 @@ extension CakeViewController: UICollectionViewDelegate {
         if indexPath.section == 0 {
             guard let cell = collectionView.cellForItem(at: indexPath) as? MainCakeCollectionViewCell else { return }
             let cakeName = cell.cakeLabel.text ?? ""
-            cakeTapped(cakeName)
+            let storeName = cell.storeLabel.text ?? ""
+            cakeTapped(cakeName, storeName)
         }
     }
     
-    @objc func cakeTapped(_ cakeName: String) {
+    @objc func cakeTapped(_ cakeName: String, _ storeName: String) {
         print("CakeVC :     Collection Cell Tapped")
         
-        let cakeVC = MainCakeViewController(cakeName: cakeName)
+        let cakeVC = MainCakeViewController(cakeName: cakeName, storeName: storeName)
         
         self.present(cakeVC, animated: true)
     }
