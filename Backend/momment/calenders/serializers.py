@@ -13,7 +13,7 @@ class CalenderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Calender
-        exclude = ('id',)
+        exclude = ('id', 'deadline', 'max_order', 'store')
 
 class TimeSerializer(serializers.ModelSerializer):
 
@@ -32,6 +32,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class CalenderOrderSerializer(serializers.ModelSerializer):
 
     group = GroupSerializer(many=True)
+    store_name = serializers.CharField(source='store.store_name')
     class Meta:
         model = Calender
-        fields = ['date', 'deadline', 'closed', 'max_order', 'store', 'group']
+        fields = (['date', 'deadline', 'closed', 'max_order', 'store_name', 'group'])
