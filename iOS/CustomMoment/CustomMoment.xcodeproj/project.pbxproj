@@ -19,6 +19,7 @@
 		7862AB3F29C824D400E501C9 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB3E29C824D400E501C9 /* UIViewExtension.swift */; };
 		7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */; };
 		786509B829C193A000B7C7F3 /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */; };
+		789ADAB929F1530D00D62292 /* CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789ADAB829F1530D00D62292 /* CalendarModel.swift */; };
 		78C3C23E29ED13ED00405986 /* MainCakeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C23D29ED13ED00405986 /* MainCakeModel.swift */; };
 		78C3C24029ED47DD00405986 /* MainStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C23F29ED47DD00405986 /* MainStoreModel.swift */; };
 		78C3C24229ED84CE00405986 /* MainCakeInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */; };
@@ -112,6 +113,7 @@
 		7862AB3E29C824D400E501C9 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeCollectionViewCell.swift; sourceTree = "<group>"; };
 		786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
+		789ADAB829F1530D00D62292 /* CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModel.swift; sourceTree = "<group>"; };
 		78C3C23D29ED13ED00405986 /* MainCakeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeModel.swift; sourceTree = "<group>"; };
 		78C3C23F29ED47DD00405986 /* MainStoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainStoreModel.swift; sourceTree = "<group>"; };
 		78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeInfoModel.swift; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 				78FD435B29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift */,
 				78FD435D29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift */,
 				78C3C24329EFB59C00405986 /* CakeOptionModel.swift */,
+				789ADAB829F1530D00D62292 /* CalendarModel.swift */,
 			);
 			path = MainOption;
 			sourceTree = "<group>";
@@ -785,6 +788,7 @@
 				78DFB07D29DF1EC2002DC963 /* APIService.swift in Sources */,
 				78C3C24229ED84CE00405986 /* MainCakeInfoModel.swift in Sources */,
 				78FD435A29CCBCB6006ED4F8 /* MainOptionViewController.swift in Sources */,
+				789ADAB929F1530D00D62292 /* CalendarModel.swift in Sources */,
 				7858F8D929CA0EC200E20C92 /* SubCakeCollectionViewCell.swift in Sources */,
 				78FD436829D3444B006ED4F8 /* MyInfoViewController.swift in Sources */,
 				78F6919E29E1FDBD0037C684 /* BillViewController.swift in Sources */,

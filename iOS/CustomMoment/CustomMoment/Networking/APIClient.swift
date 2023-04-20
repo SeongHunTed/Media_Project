@@ -178,8 +178,6 @@ class APIClient {
             request.httpMethod = "GET"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             
-            
-            
             let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
                 if let error = error {
                     DispatchQueue.main.async {
@@ -304,7 +302,6 @@ class APIClient {
                 do {
                     let decoder = JSONDecoder()
                     let cakeOptionResponse = try decoder.decode(CakeOptionResponse.self, from: data)
-                    print(cakeOptionResponse)
                     DispatchQueue.main.async {
                         completion(.success(cakeOptionResponse))
                     }
@@ -312,6 +309,99 @@ class APIClient {
                     DispatchQueue.main.async {
                         completion(.failure(error))
                     }
+                }
+            }
+            task.resume()
+        }
+        
+        func fetchTime(_ orderRequest: TimeInfoRequest, completion: @escaping (Result<TimeInfoResponse , Error>) -> Void) {
+            
+            guard let url = URL(string: APIClient.shared.baseURL + "calenders/order") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            do {
+                let encoder = JSONEncoder()
+                let jsonData = try encoder.encode(orderRequest)
+                request.httpBody = jsonData
+            } catch {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+                return
+            }
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(domain: "", code: -1, userInfo: nil)))
+                    }
+                    return
+                }
+                
+                if httpResponse.statusCode == 204 {
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(domain: "", code: 204, userInfo: ["message" : "204"])))
+                    }
+                }
+                
+                guard let data = data else {
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(domain: "", code: -1, userInfo: nil)))
+                    }
+                    return
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let orderResponse = try decoder.decode(TimeInfoResponse.self, from: data)
+                    DispatchQueue.main.async {
+                        completion(.success(orderResponse))
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                }
+            }
+            task.resume()
+        }
+        
+        func fetchCalendar(_ storeName: String, completion: @escaping (Result<[CalendarResponse], Error>) -> Void) {
+            guard let url = URL(string: APIClient.shared.baseURL + "calenders/calender/?store_name=\(storeName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")") else {
+                return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
+                    return
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let calendar = try decoder.decode([CalendarResponse].self, from: data)
+                    completion(.success(calendar))
+                } catch {
+                    completion(.failure(error))
                 }
             }
             task.resume()

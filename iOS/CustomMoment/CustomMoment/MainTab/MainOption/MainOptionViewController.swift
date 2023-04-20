@@ -11,11 +11,17 @@ import DropDown
 
 class MainOptionViewController: UIViewController {
     
+    // cake option Reqeust, Response Model
     var cakeOptionResponse: CakeOptionResponse?
     var cakeOptionRequest: CakeOptionRequest?
     
-    init(cakeOptionRequest: CakeOptionRequest) {
+    // 
+    var orderResponse: TimeInfoResponse?
+    var orderRequest: TimeInfoRequest?
+    
+    init(cakeOptionRequest: CakeOptionRequest, orderRequest: TimeInfoRequest) {
         self.cakeOptionRequest = cakeOptionRequest
+        self.orderRequest = orderRequest
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -47,6 +53,18 @@ class MainOptionViewController: UIViewController {
             return
         }
         
+        APIClient.shared.cake.fetchCalendar(self.cakeOptionRequest?.storeName ?? "") { [weak self] result in
+            
+            switch result {
+            case .success(let calendarResponses):
+                for calendarResponse in calendarResponses {
+                    self?.availableCalendar.append((String(calendarResponse.date), calendarResponse.closed))
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+        
         APIClient.shared.cake.fetchCakeOption(cakeOptionRequest) { [weak self] result in
             switch result {
             case .success(let cakeOptions):
@@ -55,6 +73,59 @@ class MainOptionViewController: UIViewController {
                 self?.collectionView.reloadData()
             case .failure(let error):
                 print("Error: \(error.localizedDescription)")
+            }
+        }
+        
+        guard let orderRequest = self.orderRequest else {
+            print("Error: cakeOptionRequest is nil")
+            return
+        }
+        
+        APIClient.shared.cake.fetchTime(orderRequest) { [weak self] result in
+            switch result {
+            case .success(let orderResponse):
+                
+                for group in orderResponse.group {
+                    for time in group.time {
+                        let timeString = time.pickupTime.prefix(5) // "10:00:00"을 "10:00"으로 변환
+                        self?.timeDataSource.append((String(timeString), time.isAvailable))
+                        DispatchQueue.main.async {
+                            self?.collectionView.reloadData()
+                        }
+                    }
+                }
+            case .failure(let error):
+                if error.localizedDescription == "204" {
+                    let errorMessage = error.localizedDescription
+                    print(errorMessage)
+                } else {
+                    print("Error: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    private func calendarApiCall(_ orderRequest: TimeInfoRequest) {
+        APIClient.shared.cake.fetchTime(orderRequest) { [weak self] result in
+            switch result {
+            case .success(let orderResponse):
+                
+                for group in orderResponse.group {
+                    for time in group.time {
+                        let timeString = time.pickupTime.prefix(5) // "10:00:00"을 "10:00"으로 변환
+                        self?.timeDataSource.append((String(timeString), time.isAvailable))
+                        DispatchQueue.main.async {
+                            self?.collectionView.reloadData()
+                        }
+                    }
+                }
+            case .failure(let error):
+                if error.localizedDescription == "204" {
+                    let errorMessage = error.localizedDescription
+                    print(errorMessage)
+                } else {
+                    print("Error: \(error.localizedDescription)")
+                }
             }
         }
     }
@@ -100,21 +171,10 @@ class MainOptionViewController: UIViewController {
     private var basicDropDownDataSource: [[String]] = []
     private var additionalDropDownDataSource: [[String]] = []
     
-    //MARK: - Temperally DataSource (Change When API connect)
+    private var timeDataSource: [(String, Bool)] = []
     
-    private var dataSource: [(String, Bool)] = [
-        ("10:00", false), ("11:00", false), ("12:00", true), ("13:00", true), ("14:00", true), ("15:00", false), ("16:00", true)
-    ]
+    private var availableCalendar: [(String, Bool)] = []
     
-    
-
-    private var dropDownDataSource = [
-        ["미니(+0원)", "1호(+0원)", "2호(0원)", "3호(+0원)"],
-        ["바닐라(+0원)", "초코(+0원)", "블루베리(+500원)"],
-        ["선택안함(+0원)", "프린트 최대 25자 입력(+0원)", "손글씨 최대 20자 입력(+0)"],
-        ["선택안함(+0원)", "보냉포장(+500원)"],
-        ["선택안함(+0원)", "선물포장(+1,500원)"]
-    ]
 
     //MARK: - Variables
     lazy var today = calendar.today!
@@ -264,14 +324,38 @@ extension MainOptionViewController: FSCalendarDelegate, FSCalendarDataSource, FS
         self.calendar.select(today)
     }
     
-    // 이전 날짜 처리
-    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
-        if (date < today) {
-            return UIColor.systemGray5
-        } else if date == today {
-            return UIColor.systemRed.withAlphaComponent(0.45)
+    // 선택 가능여부 처리
+    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let dateString = dateFormatter.string(from: date)
+        if let index = availableCalendar.firstIndex(where: { $0.0 == dateString}) {
+            return !availableCalendar[index].1
         }
-        return UIColor.white
+        return false
+    }
+    
+    // 가능한 날짜는
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: date)
+        
+        if date == today {
+            return UIColor.systemRed.withAlphaComponent(0.7)
+        } else if let index = availableCalendar.firstIndex(where: { $0.0 == dateString}) {
+            if availableCalendar[index].1 {
+                return UIColor.systemGray5
+            } else {
+                return UIColor.white
+            }
+        } else {
+            return UIColor.systemGray5
+        }
+        
     }
     
     // 선택 날짜 처리
@@ -279,6 +363,20 @@ extension MainOptionViewController: FSCalendarDelegate, FSCalendarDataSource, FS
         return UIColor.systemRed.withAlphaComponent(0.95)
     }
     
+    // 날짜 선택할 때 api 호출 하도록
+    
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        
+        let currentDate = date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let formattedDate = dateFormatter.string(from: currentDate)
+        let storeName = self.cakeOptionRequest?.storeName ?? ""
+        
+        let orderRequest = TimeInfoRequest(storeName: storeName, date: formattedDate)
+        calendarApiCall(orderRequest)
+
+    }
 }
 
 
@@ -386,7 +484,7 @@ extension MainOptionViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return dataSource.count
+            return timeDataSource.count
         } else if section == 1 {
             return basicDropDownButtonTitle.count
         } else {
@@ -399,8 +497,8 @@ extension MainOptionViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: TimeButtonCollectionViewCell.self), for: indexPath) as? TimeButtonCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            cell.timeButton.setTitle(dataSource[indexPath.item].0, for: .normal)
-            cell.prepare(dataSource[indexPath.item].1)
+            cell.timeButton.setTitle(timeDataSource[indexPath.item].0, for: .normal)
+            cell.prepare(timeDataSource[indexPath.item].1)
             return cell
         } else if indexPath.section == 1 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: OptionButtonCollectionViewCell.self), for: indexPath) as? OptionButtonCollectionViewCell else {

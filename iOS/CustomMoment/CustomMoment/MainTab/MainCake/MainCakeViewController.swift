@@ -353,8 +353,16 @@ class MainCakeViewController: UIViewController {
         let storeName = self.storeName
         let cakeName = self.cakeName
         
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let formattedDate = dateFormatter.string(from: currentDate)
+
+        // OrderRequest 모델 생성
+        let orderRequest = TimeInfoRequest(storeName: storeName, date: formattedDate)
+        
         let cakeOptionRequest = CakeOptionRequest(cakeName: cakeName, storeName: storeName)
-        let optionVC = MainOptionViewController(cakeOptionRequest: cakeOptionRequest)
+        let optionVC = MainOptionViewController(cakeOptionRequest: cakeOptionRequest, orderRequest: orderRequest)
         
         self.present(optionVC, animated: true)
     }
