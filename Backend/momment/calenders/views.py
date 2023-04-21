@@ -133,8 +133,7 @@ def calender(request):
         elif request.method == 'GET':
             
             # permission_classes = [AllowAny]
-            data = request.data
-            store_name = data['store_name']
+            store_name = request.GET.get('store_name')
             store = Store.objects.get(store_name=store_name)
             today = datetime.date.today()
             this_month_last_day = cal.monthrange(today.year, today.month)[1]
@@ -174,24 +173,20 @@ def calender(request):
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def order(request):
     try:
         data = json.loads(request.body)
         store_name = data['store_name']
-        cake_name = data['cake_name']
         date = data['date']
 
         store = Store.objects.get(store_name=store_name)
-        calender = Calender.objects.get(date=date, store=store)
-        cake = Cake.objects.get(name=cake_name)
-        # print(calender)
-        # group = Group.objects.get(calender=29)
-
-        serializer = CalenderOrderSerializer(calender)
-        # print(serializer.data)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if not Calender.objects.filter(store=store, date = date).exists():
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            calender = Calender.objects.get(store=store, date= date)
+            serializer = CalenderOrderSerializer(calender)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)

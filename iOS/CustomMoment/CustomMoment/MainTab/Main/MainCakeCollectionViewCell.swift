@@ -24,7 +24,7 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    private let storeLabel: UILabel = {
+    let storeLabel: UILabel = {
         let label = UILabel()
         label.text = "유니아 케이크"
         label.font = UIFont.myFontM.withSize(9)

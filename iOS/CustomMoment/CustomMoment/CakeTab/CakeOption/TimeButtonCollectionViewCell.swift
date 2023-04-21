@@ -9,6 +9,8 @@ import UIKit
 
 class TimeButtonCollectionViewCell: UICollectionViewCell {
     
+    var onButtonTapped: ((UIButton) -> Void)?
+    
     let timeButton: UIButton = {
         let button = UIButton(type: .roundedRect)
         button.titleLabel?.font = UIFont.myFontB.withSize(13.0)
@@ -56,21 +58,21 @@ class TimeButtonCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    
-    @objc func timeButtonTapped(_ sender: UIButton) {
-        
-        if valid {
-            if timeButton.backgroundColor == .white {
-                timeButton.backgroundColor = .systemRed
-                timeButton.tintColor = .white
-            } else {
-                timeButton.backgroundColor = .white
-                timeButton.tintColor = .systemRed
-            }
+    func setSelected(_ selected: Bool) {
+        timeButton.isSelected = selected
+        if selected {
+            timeButton.backgroundColor = .systemRed.withAlphaComponent(0.8)
+            timeButton.tintColor = .white
+            timeButton.layer.borderColor = UIColor.systemRed.cgColor
         } else {
-            print("Nothing Happened")
+            timeButton.backgroundColor = .white
+            timeButton.tintColor = .systemRed.withAlphaComponent(0.8)
+            timeButton.layer.borderColor = UIColor.systemRed.withAlphaComponent(0.8).cgColor
         }
-        
     }
     
+    
+    @objc func timeButtonTapped(_ sender: UIButton) {
+        onButtonTapped?(sender)
+    }
 }

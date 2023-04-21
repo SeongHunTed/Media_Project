@@ -110,8 +110,6 @@ extension CalendarPopUpViewController: FSCalendarDelegate, FSCalendarDataSource,
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         delegate?.didSelectDate(date)
         dismiss(animated: true, completion: nil)
-        
-        
     }
 }
 

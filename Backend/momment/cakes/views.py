@@ -343,7 +343,7 @@ def main(request, page):
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
 
 # 소비자가 주문시 보는 옵션 제공
-@api_view(['GET'])
+@api_view(['POST',])
 def order(request):
     try:
         data = json.loads(request.body)

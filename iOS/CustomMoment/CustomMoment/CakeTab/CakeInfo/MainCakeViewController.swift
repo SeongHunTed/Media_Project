@@ -13,11 +13,15 @@ class MainCakeViewController: UIViewController {
     let vcIdentifier = "CakeVC"
     
     var cakeName: String
+    var storeName: String
+    
+    var cakePrice: Int = 0
     
     private var cakesInfo: MainCakeInfoResponse?
     
-    init(cakeName: String) {
+    init(cakeName: String, storeName: String) {
         self.cakeName = cakeName
+        self.storeName = storeName
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -40,6 +44,7 @@ class MainCakeViewController: UIViewController {
             switch result {
             case .success(let info):
                 self?.cakesInfo = info
+                self?.cakePrice = info.price
                 DispatchQueue.main.async {
                     self?.collectionView.reloadData()
                     if let infoImage = info.infoImage.first {
@@ -348,7 +353,20 @@ class MainCakeViewController: UIViewController {
     @objc func orderButtonTapped(_ sender: UIButton) {
         print("CakeVC:      Order Button Tapped")
         
-        let optionVC = MainOptionViewController()
+        let storeName = self.storeName
+        let cakeName = self.cakeName
+        let cakePrice = self.cakePrice
+    
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let formattedDate = dateFormatter.string(from: currentDate)
+
+        // OrderRequest 모델 생성
+        let orderRequest = TimeInfoRequest(storeName: storeName, date: formattedDate)
+        
+        let cakeOptionRequest = CakeOptionRequest(cakeName: cakeName, storeName: storeName)
+        let optionVC = MainOptionViewController(cakeOptionRequest: cakeOptionRequest, orderRequest: orderRequest, cakePrice: cakePrice)
         
         self.present(optionVC, animated: true)
     }

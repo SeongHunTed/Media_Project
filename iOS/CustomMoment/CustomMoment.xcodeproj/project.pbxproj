@@ -19,9 +19,11 @@
 		7862AB3F29C824D400E501C9 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB3E29C824D400E501C9 /* UIViewExtension.swift */; };
 		7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */; };
 		786509B829C193A000B7C7F3 /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */; };
+		789ADAB929F1530D00D62292 /* CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789ADAB829F1530D00D62292 /* CalendarModel.swift */; };
 		78C3C23E29ED13ED00405986 /* MainCakeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C23D29ED13ED00405986 /* MainCakeModel.swift */; };
 		78C3C24029ED47DD00405986 /* MainStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C23F29ED47DD00405986 /* MainStoreModel.swift */; };
 		78C3C24229ED84CE00405986 /* MainCakeInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */; };
+		78C3C24429EFB59C00405986 /* CakeOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C24329EFB59C00405986 /* CakeOptionModel.swift */; };
 		78DFB05529D70F22002DC963 /* StoreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB05429D70F22002DC963 /* StoreCollectionViewCell.swift */; };
 		78DFB05729D72B69002DC963 /* StoreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB05629D72B69002DC963 /* StoreHeaderView.swift */; };
 		78DFB05B29D72E63002DC963 /* StorePopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFB05A29D72E63002DC963 /* StorePopUpViewController.swift */; };
@@ -111,9 +113,11 @@
 		7862AB3E29C824D400E501C9 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeCollectionViewCell.swift; sourceTree = "<group>"; };
 		786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
+		789ADAB829F1530D00D62292 /* CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModel.swift; sourceTree = "<group>"; };
 		78C3C23D29ED13ED00405986 /* MainCakeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeModel.swift; sourceTree = "<group>"; };
 		78C3C23F29ED47DD00405986 /* MainStoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainStoreModel.swift; sourceTree = "<group>"; };
 		78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeInfoModel.swift; sourceTree = "<group>"; };
+		78C3C24329EFB59C00405986 /* CakeOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CakeOptionModel.swift; sourceTree = "<group>"; };
 		78DFB05429D70F22002DC963 /* StoreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCollectionViewCell.swift; sourceTree = "<group>"; };
 		78DFB05629D72B69002DC963 /* StoreHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreHeaderView.swift; sourceTree = "<group>"; };
 		78DFB05A29D72E63002DC963 /* StorePopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePopUpViewController.swift; sourceTree = "<group>"; };
@@ -228,14 +232,14 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
-		7862AB3829C7DDC200E501C9 /* MainCake */ = {
+		7862AB3829C7DDC200E501C9 /* CakeInfo */ = {
 			isa = PBXGroup;
 			children = (
+				789ADABB29F1B24100D62292 /* Model */,
 				7862AB3B29C81BFC00E501C9 /* MainCakeViewController.swift */,
 				7858F8D829CA0EC200E20C92 /* SubCakeCollectionViewCell.swift */,
-				78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */,
 			);
-			path = MainCake;
+			path = CakeInfo;
 			sourceTree = "<group>";
 		};
 		7862AB3D29C824A400E501C9 /* Extension */ = {
@@ -244,6 +248,32 @@
 				7862AB3E29C824D400E501C9 /* UIViewExtension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		789ADABA29F1B23000D62292 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				789ADAB829F1530D00D62292 /* CalendarModel.swift */,
+				78C3C24329EFB59C00405986 /* CakeOptionModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		789ADABB29F1B24100D62292 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		789ADABC29F1B24D00D62292 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				78C3C23F29ED47DD00405986 /* MainStoreModel.swift */,
+				78C3C23D29ED13ED00405986 /* MainCakeModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		78DFB06629DB0E78002DC963 /* Subviews */ = {
@@ -401,24 +431,22 @@
 			path = Bill;
 			sourceTree = "<group>";
 		};
-		78FD435829CCBC99006ED4F8 /* MainOption */ = {
+		78FD435829CCBC99006ED4F8 /* CakeOption */ = {
 			isa = PBXGroup;
 			children = (
 				78FD435929CCBCB6006ED4F8 /* MainOptionViewController.swift */,
 				78FD435B29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift */,
 				78FD435D29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift */,
+				789ADABA29F1B23000D62292 /* Model */,
 			);
-			path = MainOption;
+			path = CakeOption;
 			sourceTree = "<group>";
 		};
 		78FD435F29D34362006ED4F8 /* MainTab */ = {
 			isa = PBXGroup;
 			children = (
-				78FD435829CCBC99006ED4F8 /* MainOption */,
-				7862AB3829C7DDC200E501C9 /* MainCake */,
 				785BFDFD29BA1EF600CBDB0C /* Main */,
-				78C3C23D29ED13ED00405986 /* MainCakeModel.swift */,
-				78C3C23F29ED47DD00405986 /* MainStoreModel.swift */,
+				789ADABC29F1B24D00D62292 /* Model */,
 			);
 			path = MainTab;
 			sourceTree = "<group>";
@@ -429,6 +457,8 @@
 				78FD436129D343B4006ED4F8 /* CakeViewController.swift */,
 				785C487B29D4AF6D00F52CFD /* CakeHeaderView.swift */,
 				785C487D29D5F06300F52CFD /* CalendarPopUpViewController.swift */,
+				7862AB3829C7DDC200E501C9 /* CakeInfo */,
+				78FD435829CCBC99006ED4F8 /* CakeOption */,
 			);
 			path = CakeTab;
 			sourceTree = "<group>";
@@ -770,6 +800,7 @@
 				7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */,
 				78C3C24029ED47DD00405986 /* MainStoreModel.swift in Sources */,
 				785CC9B129C43DEF0034BD30 /* MyHeaderView.swift in Sources */,
+				78C3C24429EFB59C00405986 /* CakeOptionModel.swift in Sources */,
 				78DFB05729D72B69002DC963 /* StoreHeaderView.swift in Sources */,
 				785C487E29D5F06300F52CFD /* CalendarPopUpViewController.swift in Sources */,
 				78EBE59E29B600CB00E3B065 /* SceneDelegate.swift in Sources */,
@@ -781,6 +812,7 @@
 				78DFB07D29DF1EC2002DC963 /* APIService.swift in Sources */,
 				78C3C24229ED84CE00405986 /* MainCakeInfoModel.swift in Sources */,
 				78FD435A29CCBCB6006ED4F8 /* MainOptionViewController.swift in Sources */,
+				789ADAB929F1530D00D62292 /* CalendarModel.swift in Sources */,
 				7858F8D929CA0EC200E20C92 /* SubCakeCollectionViewCell.swift in Sources */,
 				78FD436829D3444B006ED4F8 /* MyInfoViewController.swift in Sources */,
 				78F6919E29E1FDBD0037C684 /* BillViewController.swift in Sources */,
