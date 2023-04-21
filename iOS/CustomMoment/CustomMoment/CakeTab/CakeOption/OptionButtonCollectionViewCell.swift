@@ -8,7 +8,18 @@
 import UIKit
 import DropDown
 
+struct CakeOption {
+    let optionName: String
+    let price: Int
+}
+
 class OptionButtonCollectionViewCell: UICollectionViewCell {
+    
+    var selectedOption: CakeOption?
+    var category: String?
+    
+    // 케이크 상세 옵션들 선택한 것들
+    var onOptionSelected: ((Int, String) -> Void)?
     
     let optionButton: UIButton = {
         let button = UIButton(type: .roundedRect)
@@ -48,14 +59,6 @@ class OptionButtonCollectionViewCell: UICollectionViewCell {
         
         // 버튼을 가리지 않고 내려옴
         dropDown.bottomOffset = CGPoint(x: 0, y:optionButton.bounds.height+30)
-
-        dropDown.selectionAction = { [weak self] (index, item) in
-            self!.optionButton.setTitle(item, for: .normal)
-            self!.optionButton.titleLabel?.font = UIFont.myFontB.withSize(14)
-            self!.optionButton.backgroundColor = .systemRed.withAlphaComponent(0.8)
-            self!.optionButton.tintColor = .white
-            self!.optionButton.layer.borderColor = UIColor.systemRed.cgColor
-        }
     }
     
     required init?(coder: NSCoder) {

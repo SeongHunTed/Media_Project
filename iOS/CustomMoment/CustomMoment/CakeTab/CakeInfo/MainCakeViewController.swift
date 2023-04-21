@@ -15,6 +15,8 @@ class MainCakeViewController: UIViewController {
     var cakeName: String
     var storeName: String
     
+    var cakePrice: Int = 0
+    
     private var cakesInfo: MainCakeInfoResponse?
     
     init(cakeName: String, storeName: String) {
@@ -42,6 +44,7 @@ class MainCakeViewController: UIViewController {
             switch result {
             case .success(let info):
                 self?.cakesInfo = info
+                self?.cakePrice = info.price
                 DispatchQueue.main.async {
                     self?.collectionView.reloadData()
                     if let infoImage = info.infoImage.first {
@@ -352,7 +355,8 @@ class MainCakeViewController: UIViewController {
         
         let storeName = self.storeName
         let cakeName = self.cakeName
-        
+        let cakePrice = self.cakePrice
+    
         let currentDate = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -362,7 +366,7 @@ class MainCakeViewController: UIViewController {
         let orderRequest = TimeInfoRequest(storeName: storeName, date: formattedDate)
         
         let cakeOptionRequest = CakeOptionRequest(cakeName: cakeName, storeName: storeName)
-        let optionVC = MainOptionViewController(cakeOptionRequest: cakeOptionRequest, orderRequest: orderRequest)
+        let optionVC = MainOptionViewController(cakeOptionRequest: cakeOptionRequest, orderRequest: orderRequest, cakePrice: cakePrice)
         
         self.present(optionVC, animated: true)
     }

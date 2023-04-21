@@ -80,7 +80,9 @@ class CartCollectionViewCell: UICollectionViewCell {
     
     @objc func orderButtonTapped() {
         
-        let orderDetailVC = OrderDetailViewController()
+        let temp = ([""], 0)
+        let temp2 = [""]
+        let orderDetailVC = OrderDetailViewController(orderDetails: temp, rootDetails: temp2)
         self.window?.rootViewController?.present(orderDetailVC, animated: true)
     }
     

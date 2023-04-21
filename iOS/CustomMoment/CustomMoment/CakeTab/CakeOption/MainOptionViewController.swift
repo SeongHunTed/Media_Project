@@ -11,23 +11,30 @@ import DropDown
 
 class MainOptionViewController: UIViewController {
     
+    // MARK: - Models Var
+    
     // cake option Reqeust, Response Model
     var cakeOptionResponse: CakeOptionResponse?
     var cakeOptionRequest: CakeOptionRequest?
     
-    // 
+    // time option Request, Response Model
     var orderResponse: TimeInfoResponse?
     var orderRequest: TimeInfoRequest?
     
-    init(cakeOptionRequest: CakeOptionRequest, orderRequest: TimeInfoRequest) {
+    var cakePrice: Int
+    
+    init(cakeOptionRequest: CakeOptionRequest, orderRequest: TimeInfoRequest, cakePrice: Int) {
         self.cakeOptionRequest = cakeOptionRequest
         self.orderRequest = orderRequest
+        self.cakePrice = cakePrice
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - View
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +53,16 @@ class MainOptionViewController: UIViewController {
     
     // MARK: - API Call
     
+    private var basicDropDownButtonTitle: [String] = []
+    private var addtionalDropDownButtonTitle: [String] = []
+    
+    private var basicDropDownDataSource: [[CakeOption]] = []
+    private var additionalDropDownDataSource: [[CakeOption]] = []
+    
+    private var timeDataSource: [(String, Bool)] = []
+    
+    private var availableCalendar: [(String, Bool)] = []
+    
     private func apiCall() {
         
         guard let cakeOptionRequest = self.cakeOptionRequest else {
@@ -53,6 +70,7 @@ class MainOptionViewController: UIViewController {
             return
         }
         
+        // Available Date Call
         APIClient.shared.cake.fetchCalendar(self.cakeOptionRequest?.storeName ?? "") { [weak self] result in
             
             switch result {
@@ -65,6 +83,7 @@ class MainOptionViewController: UIViewController {
             }
         }
         
+        // Option Call
         APIClient.shared.cake.fetchCakeOption(cakeOptionRequest) { [weak self] result in
             switch result {
             case .success(let cakeOptions):
@@ -81,6 +100,7 @@ class MainOptionViewController: UIViewController {
             return
         }
         
+        // Available TIme Call
         APIClient.shared.cake.fetchTime(orderRequest) { [weak self] result in
             switch result {
             case .success(let orderResponse):
@@ -105,6 +125,7 @@ class MainOptionViewController: UIViewController {
         }
     }
     
+    // Function That works when user click a date
     private func calendarApiCall(_ orderRequest: TimeInfoRequest) {
         APIClient.shared.cake.fetchTime(orderRequest) { [weak self] result in
             switch result {
@@ -153,31 +174,22 @@ class MainOptionViewController: UIViewController {
         for basicOptionTitle in basicOptionTitles {
             if let optionArray = cakeOptions[keyPath: basicOptionTitle.key], !optionArray.isEmpty {
                 basicDropDownButtonTitle.append(basicOptionTitle.title)
-                basicDropDownDataSource.append(optionArray.map { "\($0.optionName) + \($0.price)원" })
+                basicDropDownDataSource.append(optionArray.map { CakeOption(optionName: $0.optionName, price: $0.price) })
             }
         }
         
         for additionalOptionTitle in additionalOptionTitles {
             if let optionArray = cakeOptions[keyPath: additionalOptionTitle.key], !optionArray.isEmpty {
                 addtionalDropDownButtonTitle.append(additionalOptionTitle.title)
-                additionalDropDownDataSource.append(optionArray.map { $0.optionName })
+                additionalDropDownDataSource.append(optionArray.map { CakeOption(optionName: $0.optionName, price: $0.price) })
             }
         }
     }
     
-    private var basicDropDownButtonTitle: [String] = []
-    private var addtionalDropDownButtonTitle: [String] = []
-    
-    private var basicDropDownDataSource: [[String]] = []
-    private var additionalDropDownDataSource: [[String]] = []
-    
-    private var timeDataSource: [(String, Bool)] = []
-    
-    private var availableCalendar: [(String, Bool)] = []
-    
-
-    //MARK: - Variables
+    //MARK: - Components
     lazy var today = calendar.today!
+    // timebutton
+    var selectedButton: UIButton?
     
     private let calendarLabel: UILabel = {
         let label = UILabel()
@@ -254,8 +266,25 @@ class MainOptionViewController: UIViewController {
     }()
     
     @objc func orderButtonTapped() {
-        let orderVC = OrderDetailViewController()
-        present(orderVC, animated: true)
+        
+        if areAllOptionSelected() {
+            let selectedTime: String = selectedButton?.titleLabel?.text ?? ""
+            let cake = cakeOptionRequest?.cakeName ?? ""
+            let store = cakeOptionRequest?.storeName ?? ""
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let date = dateFormatter.string(from: calendar.selectedDate ?? today)
+            let rootOption: [String] = [cake, store, date, selectedTime]
+            
+            let orderDetails = getOrderDetails()
+            let orderVC = OrderDetailViewController(orderDetails: orderDetails, rootDetails: rootOption)
+            present(orderVC, animated: true)
+        } else {
+            let alertController = UIAlertController(title: "경고", message: "모든 옵션을 선택해주세요.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "확인", style: .default)
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true)
+        }
     }
     
     //MARK: - Configure
@@ -364,7 +393,6 @@ extension MainOptionViewController: FSCalendarDelegate, FSCalendarDataSource, FS
     }
     
     // 날짜 선택할 때 api 호출 하도록
-    
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         
         let currentDate = date
@@ -375,7 +403,6 @@ extension MainOptionViewController: FSCalendarDelegate, FSCalendarDataSource, FS
         
         let orderRequest = TimeInfoRequest(storeName: storeName, date: formattedDate)
         calendarApiCall(orderRequest)
-
     }
 }
 
@@ -497,6 +524,9 @@ extension MainOptionViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: TimeButtonCollectionViewCell.self), for: indexPath) as? TimeButtonCollectionViewCell else {
                 return UICollectionViewCell()
             }
+            cell.onButtonTapped = { [weak self] button in
+                self?.optionButtonTapped(button)
+            }
             cell.timeButton.setTitle(timeDataSource[indexPath.item].0, for: .normal)
             cell.prepare(timeDataSource[indexPath.item].1)
             return cell
@@ -505,14 +535,34 @@ extension MainOptionViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             cell.optionButton.setTitle(basicDropDownButtonTitle[indexPath.item], for: .normal)
-            cell.dropDown.dataSource = basicDropDownDataSource[indexPath.item]
+            cell.category = basicDropDownButtonTitle[indexPath.item]
+            cell.dropDown.dataSource = basicDropDownDataSource[indexPath.item].map { "\($0.optionName) + \($0.price)원" }
+            cell.onOptionSelected = { [weak self] index, title in
+                cell.optionButton.setTitle(title, for: .normal)
+                cell.optionButton.titleLabel?.font = UIFont.myFontB.withSize(14)
+                cell.optionButton.backgroundColor = .systemRed.withAlphaComponent(0.8)
+                cell.optionButton.tintColor = .white
+                cell.optionButton.layer.borderColor = UIColor.systemRed.cgColor
+                cell.selectedOption = self?.basicDropDownDataSource[indexPath.item][index]
+            }
+            cell.dropDown.selectionAction = cell.onOptionSelected
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: OptionButtonCollectionViewCell.self), for: indexPath) as? OptionButtonCollectionViewCell else {
                 return UICollectionViewCell()
             }
             cell.optionButton.setTitle(addtionalDropDownButtonTitle[indexPath.item], for: .normal)
-            cell.dropDown.dataSource = additionalDropDownDataSource[indexPath.item]
+            cell.category = addtionalDropDownButtonTitle[indexPath.item]
+            cell.dropDown.dataSource = additionalDropDownDataSource[indexPath.item].map { "\($0.optionName) + \($0.price)원" }
+            cell.onOptionSelected = { [weak self] index, title in
+                cell.optionButton.setTitle(title, for: .normal)
+                cell.optionButton.titleLabel?.font = UIFont.myFontB.withSize(14)
+                cell.optionButton.backgroundColor = .systemRed.withAlphaComponent(0.8)
+                cell.optionButton.tintColor = .white
+                cell.optionButton.layer.borderColor = UIColor.systemRed.cgColor
+                cell.selectedOption = self?.additionalDropDownDataSource[indexPath.item][index]
+            }
+            cell.dropDown.selectionAction = cell.onOptionSelected
             return cell
         }
     }
@@ -537,3 +587,49 @@ extension MainOptionViewController: UICollectionViewDataSource {
         return UICollectionReusableView()
     }
 }
+
+// MARK: - 다음 주문내역을 이동시킬 정보를 위한 함수
+
+extension MainOptionViewController {
+    
+    // 모든 옵션이 선택 되었는지 체크
+    private func areAllOptionSelected ()-> Bool {
+        for cell in collectionView.visibleCells {
+            guard let optionCell = cell as? OptionButtonCollectionViewCell else { continue }
+            if optionCell.selectedOption == nil {
+                return false
+            }
+        }
+        return true
+    }
+    
+    // 모든 옵션을 가져오는 함수
+    private func getOrderDetails() -> ([String], Int) {
+        var orderDetails: [String] = []
+        var totalPrice = cakePrice
+
+        for cell in collectionView.visibleCells {
+            guard let optionCell = cell as? OptionButtonCollectionViewCell else { continue }
+            if let selectedOption = optionCell.selectedOption {
+                orderDetails.append("\(optionCell.category ?? "") : \(selectedOption.optionName) + \(selectedOption.price)원")
+                totalPrice += selectedOption.price
+            }
+        }
+        return (orderDetails, totalPrice)
+    }
+    
+    // 시간 옵션에 관련된 함수
+    func optionButtonTapped(_ sender: UIButton) {
+        if let previousSelectedButton = selectedButton {
+            // 이전에 선택된 버튼의 상태 업데이트
+            previousSelectedButton.backgroundColor = .white
+            previousSelectedButton.tintColor = .systemRed.withAlphaComponent(0.8)
+        }
+        
+        // 새로 선택된 버튼의 상태를 변경하고 selectedButton을 업데이트
+        sender.backgroundColor = .systemRed
+        sender.tintColor = .white
+        selectedButton = sender
+    }
+}
+

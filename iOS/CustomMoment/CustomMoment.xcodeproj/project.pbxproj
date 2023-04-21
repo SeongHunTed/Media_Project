@@ -232,14 +232,14 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
-		7862AB3829C7DDC200E501C9 /* MainCake */ = {
+		7862AB3829C7DDC200E501C9 /* CakeInfo */ = {
 			isa = PBXGroup;
 			children = (
+				789ADABB29F1B24100D62292 /* Model */,
 				7862AB3B29C81BFC00E501C9 /* MainCakeViewController.swift */,
 				7858F8D829CA0EC200E20C92 /* SubCakeCollectionViewCell.swift */,
-				78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */,
 			);
-			path = MainCake;
+			path = CakeInfo;
 			sourceTree = "<group>";
 		};
 		7862AB3D29C824A400E501C9 /* Extension */ = {
@@ -248,6 +248,32 @@
 				7862AB3E29C824D400E501C9 /* UIViewExtension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		789ADABA29F1B23000D62292 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				789ADAB829F1530D00D62292 /* CalendarModel.swift */,
+				78C3C24329EFB59C00405986 /* CakeOptionModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		789ADABB29F1B24100D62292 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		789ADABC29F1B24D00D62292 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				78C3C23F29ED47DD00405986 /* MainStoreModel.swift */,
+				78C3C23D29ED13ED00405986 /* MainCakeModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		78DFB06629DB0E78002DC963 /* Subviews */ = {
@@ -405,26 +431,22 @@
 			path = Bill;
 			sourceTree = "<group>";
 		};
-		78FD435829CCBC99006ED4F8 /* MainOption */ = {
+		78FD435829CCBC99006ED4F8 /* CakeOption */ = {
 			isa = PBXGroup;
 			children = (
 				78FD435929CCBCB6006ED4F8 /* MainOptionViewController.swift */,
 				78FD435B29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift */,
 				78FD435D29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift */,
-				78C3C24329EFB59C00405986 /* CakeOptionModel.swift */,
-				789ADAB829F1530D00D62292 /* CalendarModel.swift */,
+				789ADABA29F1B23000D62292 /* Model */,
 			);
-			path = MainOption;
+			path = CakeOption;
 			sourceTree = "<group>";
 		};
 		78FD435F29D34362006ED4F8 /* MainTab */ = {
 			isa = PBXGroup;
 			children = (
-				78FD435829CCBC99006ED4F8 /* MainOption */,
-				7862AB3829C7DDC200E501C9 /* MainCake */,
 				785BFDFD29BA1EF600CBDB0C /* Main */,
-				78C3C23D29ED13ED00405986 /* MainCakeModel.swift */,
-				78C3C23F29ED47DD00405986 /* MainStoreModel.swift */,
+				789ADABC29F1B24D00D62292 /* Model */,
 			);
 			path = MainTab;
 			sourceTree = "<group>";
@@ -435,6 +457,8 @@
 				78FD436129D343B4006ED4F8 /* CakeViewController.swift */,
 				785C487B29D4AF6D00F52CFD /* CakeHeaderView.swift */,
 				785C487D29D5F06300F52CFD /* CalendarPopUpViewController.swift */,
+				7862AB3829C7DDC200E501C9 /* CakeInfo */,
+				78FD435829CCBC99006ED4F8 /* CakeOption */,
 			);
 			path = CakeTab;
 			sourceTree = "<group>";
