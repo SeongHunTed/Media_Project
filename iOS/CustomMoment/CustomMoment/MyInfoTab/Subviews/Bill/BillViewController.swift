@@ -8,16 +8,30 @@
 import UIKit
 
 class BillViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .clear
         configure()
     }
     
+    init(orderDetails: ([String] ,Int), rootDetails: [String]) {
+        self.rootDetails = rootDetails
+        self.orderDetails = orderDetails
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //MARK: - Variables
     
-    private let tableModel = [["🍰 케이크","테스트 케이크"], ["🏠 스토어","테스트 가게"], ["📅 픽업날짜", "0000-00-00"], ["⏰ 픽업시간","00:00"], ["🍴 옵션","케이크 사이즈 : 도시락\n케이크 맛 : 바닐라\n케이크 색상 : 기본\n케이크 디자인 : 동물\n케이크 사이드 데코레이션 : 사이드 데코\n케이크 데코레이션 : 악세시리\n케이크 레터링 : 케이크\n케이크 폰트 : 궁서체\n케이크 사진 : 예\n케이크 포장 : 기본\n초 : 숫자초 "]]
+    private let tableTitle = ["🍰 케이크", "🏠 스토어", "📅 픽업날짜", "⏰ 픽업시간", "🍴 옵션"]
+    private var option: String = ""
+    
+    var rootDetails: [String]
+    var orderDetails: ([String] ,Int)
     
     //MARK: - Components
     
@@ -113,7 +127,7 @@ extension BillViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableModel.count
+        return tableTitle.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -124,19 +138,24 @@ extension BillViewController: UITableViewDataSource {
             }
         switch indexPath.row {
             case 0:
-                cell.configure(tableModel[0][0], tableModel[0][1])
+            cell.configure(tableTitle[0], rootDetails[0])
             case 1:
-                cell.configure(tableModel[1][0], tableModel[1][1])
+                cell.configure(tableTitle[1], rootDetails[1])
             case 2:
-                cell.configure(tableModel[2][0], tableModel[2][1])
+                cell.configure(tableTitle[2], rootDetails[2])
             case 3:
-                cell.configure(tableModel[3][0], tableModel[3][1])
+                cell.configure(tableTitle[3], rootDetails[3])
             case 4:
-                cell.configure(tableModel[4][0], tableModel[4][1])
+                cell.configure(tableTitle[4], optionParsing())
             default:
                 break
             }
         return cell
+    }
+    
+    func optionParsing() -> String {
+        let optionString = orderDetails.0.joined(separator: "\n") + "\n"
+        return optionString
     }
     
 }

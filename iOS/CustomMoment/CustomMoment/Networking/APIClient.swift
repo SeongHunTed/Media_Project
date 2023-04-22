@@ -106,6 +106,43 @@ class APIClient {
             task.resume()
         }
         
+        func fetchInfo(completion: @escaping (Result<MyInfoResponse, Error>) -> Void) {
+            guard let url = URL(string: APIClient.shared.baseURL + "accounts/info") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            guard let token = APIClient.shared.authToken else {
+                completion(.failure(NSError(domain: "Authorization", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token is missing"])))
+                return
+            }
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
+                    return
+                }
+
+                do {
+                    let decoder = JSONDecoder()
+                    let info = try decoder.decode(MyInfoResponse.self, from: data)
+                    completion(.success(info))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+        
     }
     
     class Main {
@@ -363,7 +400,6 @@ class APIClient {
                 do {
                     let decoder = JSONDecoder()
                     let orderResponse = try decoder.decode(TimeInfoResponse.self, from: data)
-                    print(orderResponse)
                     DispatchQueue.main.async {
                         completion(.success(orderResponse))
                     }
@@ -512,7 +548,7 @@ class APIClient {
                     completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
                     return
                 }
-                print(String(data: data, encoding: .utf8) ?? "")
+                
                 do {
                     let decoder = JSONDecoder()
                     let cart = try decoder.decode([CartResponse].self, from: data)

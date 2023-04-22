@@ -72,8 +72,6 @@ class OrderDetailViewController: UIViewController{
     
     private let tableTitle = ["🍰 케이크", "🏠 스토어", "📅 픽업날짜", "⏰ 픽업시간", "🍴 옵션"]
     
-    private var option: String = ""
-    
     //MARK: - Components
     
     let optionView: UIView = {

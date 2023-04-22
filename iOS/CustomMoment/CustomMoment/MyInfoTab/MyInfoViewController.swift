@@ -8,6 +8,8 @@
 import UIKit
 
 class MyInfoViewController: UIViewController {
+    
+    var myInfo: MyInfoResponse?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,9 +22,9 @@ class MyInfoViewController: UIViewController {
     
     @objc func handleLoginSuccessNotification(_ notification: Notification) {
         self.loginSuccess = true
-        cartApiCall()
-        collectionView.reloadData()
         updateUIBaseOnLoginStatus()
+        cartApiCall()
+        infoApiCall()
     }
     
     deinit {
@@ -30,6 +32,25 @@ class MyInfoViewController: UIViewController {
     }
     
     // MARK: - API Call
+    
+    private func infoApiCall() {
+        APIClient.shared.auth.fetchInfo { [weak self] result in
+            switch result {
+            case .success(let info):
+                self?.myInfo = info
+                DispatchQueue.main.async {
+                    if let myInfo =  self?.myInfo {
+                        print(myInfo)
+                        self?.nameLabel.text = myInfo.name
+                        self?.idLabel.text = myInfo.email
+                        self?.collectionView.reloadData()
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
     
     private func cartApiCall() {
         APIClient.shared.order.fetchCart { [weak self] result in
@@ -49,25 +70,20 @@ class MyInfoViewController: UIViewController {
     
     // MARK: - Variables
     
-    var loginSuccess = false
-    var cart: [CartResponse]?
-    let profile = "ted"
-    let userName = "김성훈"
-    let userEmail = "4047ksh@naver.com"
-    let data = ["장바구니", "구매내역", "회원정보", "test"]
-    let cellImage = ["cart", "creditcard", "person", "pencil"]
+    private var loginSuccess = false
+    private var cart: [CartResponse]?
+    private var userName: String?
+    private var userEmail: String?
+    private let cellImage = ["cart", "creditcard", "person", "pencil"]
     
-    let collectionImages = ["newspaper", "gift", "wonsign.circle", "ticket"]
-    let collectionTitle = ["공지사항", "이벤트", "구매내역", "쿠폰"]
-    
-    let cake = ["cake6"]
+    private let collectionImages = ["newspaper", "gift", "wonsign.circle", "ticket"]
+    private let collectionTitle = ["공지사항", "이벤트", "구매내역", "쿠폰"]
     
     // MARK: - Profile
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.myFontM.withSize(17.0)
-        label.text = userName + " 님"
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -76,7 +92,6 @@ class MyInfoViewController: UIViewController {
     private lazy var idLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.myFontR.withSize(15.0)
-        label.text = userEmail
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -96,9 +111,11 @@ class MyInfoViewController: UIViewController {
     }()
     
     @objc func profileButtonTapped() {
-        let memberInfoVC = MemberInfoViewController()
         
-        self.present(memberInfoVC, animated: true)
+        if let info = myInfo {
+            let memberInfoVC = MemberInfoViewController(info)
+            self.present(memberInfoVC, animated: true)
+        }
     }
 
     private lazy var profileView: UIView = {
