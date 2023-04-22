@@ -102,9 +102,11 @@ class MainOptionViewController: UIViewController {
         
         // Available TIme Call
         APIClient.shared.cake.fetchTime(orderRequest) { [weak self] result in
+            
+            self?.timeDataSource.removeAll()
+            
             switch result {
             case .success(let orderResponse):
-                
                 for group in orderResponse.group {
                     for time in group.time {
                         let timeString = time.pickupTime.prefix(5) // "10:00:00"을 "10:00"으로 변환
@@ -128,6 +130,7 @@ class MainOptionViewController: UIViewController {
     // Function That works when user click a date
     private func calendarApiCall(_ orderRequest: TimeInfoRequest) {
         APIClient.shared.cake.fetchTime(orderRequest) { [weak self] result in
+            self?.timeDataSource.removeAll()
             switch result {
             case .success(let orderResponse):
                 
@@ -247,10 +250,41 @@ class MainOptionViewController: UIViewController {
     }()
     
     @objc func cartButtonTapped() {
-        let alertController = UIAlertController(title: "확인", message: "장바구니에 상품을 담았습니다!", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-        self.present(alertController, animated: true)
+        
+        let pickUpTime: String = selectedButton?.titleLabel?.text ?? ""
+        let cakeName = cakeOptionRequest?.cakeName ?? ""
+        let storeName = cakeOptionRequest?.storeName ?? ""
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let pickUpDate = dateFormatter.string(from: calendar.selectedDate ?? today)
+        let option = getOrderDetails().0.joined(separator: "\n") + "\n"
+        
+        let orderRequest = OrderRequest(storeName: storeName, cakeName: cakeName, cakePrice: cakePrice, pickupDate: pickUpDate, pickupTime: pickUpTime, option: option)
+        
+        APIClient.shared.order.registerCart(orderRequest) { [weak self] result in
+            switch result {
+            case .success(let message):
+                print(message)
+                let alertController = UIAlertController(title: "확인", message: "장바구니에 상품을 담았습니다!", preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+                alertController.addAction(cancelAction)
+                DispatchQueue.main.async {
+                    self?.present(alertController, animated: true)
+                    guard let presentingViewController = self?.presentingViewController else { return }
+                    presentingViewController.dismiss(animated: true) {
+                        presentingViewController.presentingViewController?.dismiss(animated: true, completion: nil)
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+                let alertController = UIAlertController(title: "확인", message: "로그인을 먼저 해주세요!", preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+                alertController.addAction(cancelAction)
+                DispatchQueue.main.async {
+                    self?.present(alertController, animated: true)
+                }
+            }
+        }
     }
     
     private lazy var orderButton: UIButton = {
@@ -267,6 +301,13 @@ class MainOptionViewController: UIViewController {
     
     @objc func orderButtonTapped() {
         
+        if APIClient.shared.authToken == nil {
+            let alertController = UIAlertController(title: "확인", message: "로그인을 먼저 해주세요!", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            self.present(alertController, animated: true)
+        }
+        
         if areAllOptionSelected() {
             let selectedTime: String = selectedButton?.titleLabel?.text ?? ""
             let cake = cakeOptionRequest?.cakeName ?? ""
@@ -280,7 +321,7 @@ class MainOptionViewController: UIViewController {
             let orderVC = OrderDetailViewController(orderDetails: orderDetails, rootDetails: rootOption)
             present(orderVC, animated: true)
         } else {
-            let alertController = UIAlertController(title: "경고", message: "모든 옵션을 선택해주세요.", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "확인", message: "모든 옵션을 선택해주세요.", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "확인", style: .default)
             alertController.addAction(okAction)
             self.present(alertController, animated: true)
@@ -359,6 +400,10 @@ extension MainOptionViewController: FSCalendarDelegate, FSCalendarDataSource, FS
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
+        if date < today {
+            return false
+        }
+        
         let dateString = dateFormatter.string(from: date)
         if let index = availableCalendar.firstIndex(where: { $0.0 == dateString}) {
             return !availableCalendar[index].1
@@ -375,6 +420,8 @@ extension MainOptionViewController: FSCalendarDelegate, FSCalendarDataSource, FS
         
         if date == today {
             return UIColor.systemRed.withAlphaComponent(0.7)
+        } else if date < today {
+            return UIColor.systemGray5
         } else if let index = availableCalendar.firstIndex(where: { $0.0 == dateString}) {
             if availableCalendar[index].1 {
                 return UIColor.systemGray5
@@ -617,7 +664,8 @@ extension MainOptionViewController {
         }
         return (orderDetails, totalPrice)
     }
-    
+
+
     // 시간 옵션에 관련된 함수
     func optionButtonTapped(_ sender: UIButton) {
         if let previousSelectedButton = selectedButton {

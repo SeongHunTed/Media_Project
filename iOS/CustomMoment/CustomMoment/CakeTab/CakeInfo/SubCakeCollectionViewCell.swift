@@ -47,7 +47,6 @@ class SubCakeCollectionViewCell: UICollectionViewCell {
     func configure(with info: MainCakeInfoResponse, item: Int) {
         
         let url = info.images[item].fullImageURL
-        print(url)
         cellImage.loadImage(from: url)
     }
 }

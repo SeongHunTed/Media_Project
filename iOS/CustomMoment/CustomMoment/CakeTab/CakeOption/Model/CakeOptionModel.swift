@@ -35,38 +35,6 @@ struct CakeOptionResponse: Codable {
     let image: [CakeImage]?
 }
 
-//struct Option: Codable {
-//    let optionName: String
-//    let price: Int
-//
-//    private enum CodingKeys: String, CodingKey {
-//        case size, flavor, color, design, side_deco, deco, lettering, font, picture, package, candle
-//    }
-//
-//    init(from decoder: Decoder) throws {
-//        let container = try decoder.container(keyedBy: CodingKeys.self)
-//        let codingPath = decoder.codingPath
-//        guard let optionKey = codingPath.first?.stringValue,
-//              let optionCodingKey = CodingKeys(rawValue: optionKey) else {
-//            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Unable to decode option name"))
-//        }
-//        optionName = try container.decode(String.self, forKey: optionCodingKey)
-//        if let priceKey = CodingKeys(rawValue: "\(optionKey)_price") {
-//            price = try container.decodeIfPresent(Int.self, forKey: priceKey) ?? 0
-//        } else {
-//            price = 0
-//        }
-//    }
-//
-//    func encode(to encoder: Encoder) throws {
-//        var container = encoder.container(keyedBy: CodingKeys.self)
-//        try container.encode(optionName, forKey: CodingKeys(rawValue: optionName)!)
-//        if let priceKey = CodingKeys(rawValue: "\(optionName)_price") {
-//            try container.encode(price, forKey: priceKey)
-//        }
-//    }
-//}
-
 struct Option: Codable {
     let optionName: String
     let price: Int

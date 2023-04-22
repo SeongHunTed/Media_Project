@@ -15,6 +15,45 @@ class OrderDetailViewController: UIViewController{
         configure()
     }
     
+    // MARK: API Call
+    
+    private func apiCall() {
+        let cakeName = rootDetails[0]
+        let storeName = rootDetails[1]
+        let cakePrice = orderDetails.1
+        let pickUpDate = rootDetails[2]
+        let pickUpTime = rootDetails[3]
+        let option = optionParsing()
+        
+        let orderRequest = OrderRequest(storeName: storeName, cakeName: cakeName, cakePrice: cakePrice, pickupDate: pickUpDate, pickupTime: pickUpTime, option: option)
+        
+        APIClient.shared.order.requestOrder(orderRequest) { [weak self] result in
+            switch result {
+            case .success(let message):
+                print(message)
+                let alertController = UIAlertController(title: "확인", message: "주문을 완료했습니다!", preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+                alertController.addAction(cancelAction)
+                DispatchQueue.main.async {
+                    self?.present(alertController, animated: true)
+                    // 상위 옵션 뷰, info 뷰 dissmiss
+                    guard let presentingViewController = self?.presentingViewController else { return }
+                    presentingViewController.dismiss(animated: true) {
+                        if let presentingVC = presentingViewController.presentingViewController {
+                            presentingVC.dismiss(animated: true, completion: {
+                                presentingVC.presentingViewController?.dismiss(animated: true, completion: nil)
+                            })
+                        } else {
+                            presentingViewController.presentingViewController?.dismiss(animated: true, completion: nil)
+                        }
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     // MARK: - init
     var rootDetails: [String]
     var orderDetails: ([String] ,Int)
@@ -109,7 +148,16 @@ extension OrderDetailViewController: UITableViewDelegate {
         footerView.backgroundColor = .white
         
         let totalPriceLabel = UILabel(frame: CGRect(x: 16.0, y: 0, width: tableView.frame.width - 32.0, height: 30.0))
-        totalPriceLabel.text = "총 가격: \(orderDetails.1)"
+        
+        let numberFomatter = NumberFormatter()
+        numberFomatter.numberStyle = .decimal
+        numberFomatter.groupingSeparator = ","
+        numberFomatter.locale = Locale(identifier: "ko_KR")
+        
+        if let formatterPrice = numberFomatter.string(from: NSNumber(value: orderDetails.1)) {
+            totalPriceLabel.text = "총 가격: \(formatterPrice)원"
+        }
+        
         totalPriceLabel.font = .systemFont(ofSize: 16.0, weight: .medium)
         totalPriceLabel.textColor = .black
         footerView.addSubview(totalPriceLabel)
@@ -130,7 +178,7 @@ extension OrderDetailViewController: UITableViewDelegate {
         print("Final Order Tapped")
         // 주문 정보 서버에 전송
         // 주문 완료 화면으로 이동
-        self.dismiss(animated: true)
+        apiCall()
     }
 }
 

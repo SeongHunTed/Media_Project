@@ -93,7 +93,6 @@ class MainCakeViewController: UIViewController {
         infoImage.widthAnchor.constraint(equalToConstant: scrollView.frame.width-40).isActive = true
         guard let image = infoImage.image else { return }
         let aspectRatio = image.size.height / image.size.width
-        print("infoImage : \(infoImage.frame.width)")
         let contentHeight = 350 * aspectRatio + infoImage.frame.origin.y
         scrollView.contentSize = CGSize(width: scrollView.frame.width, height: contentHeight)
         
@@ -200,7 +199,8 @@ class MainCakeViewController: UIViewController {
     
     private let infoImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "infoview")
+//        imageView.image = UIImage(named: "infoview")
+        imageView.backgroundColor = .systemRed.withAlphaComponent(0.8)
         imageView.contentMode = .scaleAspectFit
 //        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -299,6 +299,7 @@ class MainCakeViewController: UIViewController {
         infoImage.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20).isActive = true
         infoImage.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20).isActive = true
         infoImage.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        infoImage.contentMode = .scaleAspectFit
         
         
         // OrderView Layout
@@ -439,7 +440,7 @@ extension MainCakeViewController: UICollectionViewDataSource {
         } else {
             print("Nothing")
         }
-        
+        cell.cellImage.contentMode = .scaleAspectFill
         cell.layer.cornerRadius = 4.0
         cell.clipsToBounds = true
         
