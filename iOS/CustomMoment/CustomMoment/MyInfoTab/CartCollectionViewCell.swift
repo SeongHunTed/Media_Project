@@ -9,6 +9,8 @@ import UIKit
 
 class CartCollectionViewCell: UICollectionViewCell {
     
+    weak var delegate: CartCellDelegate?
+    
     private var rootOption: [String]?
     private var detailOption: ([String], Int)?
     
@@ -98,15 +100,42 @@ class CartCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    private func deleteApiCall(completion: @escaping () -> Void) {
+        if let rootOption = rootOption {
+            let deleteRequest = OrderRequest(storeName: rootOption[1], cakeName: rootOption[0], cakePrice: 0, pickupDate: rootOption[2], pickupTime: rootOption[3], option: "")
+            APIClient.shared.order.deleteCart(deleteRequest) { result in
+                switch result {
+                case .success(let message):
+                    print(message)
+                    completion()
+                case . failure(let error):
+                    print("Error: \(error.localizedDescription)")
+                    completion()
+                }
+            }
+        }
+    }
+    
     @objc func deleteButtonTapped() {
         let alertController = UIAlertController(title: "삭제", message: "해당 상품을 삭제하시겠습니까?", preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        let deleteAction = UIAlertAction(title: "삭제", style: .destructive)
+        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
+            self?.deleteApiCall {
+                DispatchQueue.main.async {
+                    if let strongSelf = self {
+                        strongSelf.delegate?.cartCollectionViewCellDidDeleteItem(strongSelf)
+                        strongSelf.delegate?.reloadData()
+                    }
+                }
+            }
+        }
 //        { [weak self] (action) in
 //            self?.deleteCell()}
         alertController.addAction(cancelAction)
         alertController.addAction(deleteAction)
         self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+        // 여기 이후에 이 쏄을 소유하고 있는 collectionView.reloadData()
+        
     }
     
     override init(frame: CGRect) {
@@ -185,4 +214,10 @@ class CartCollectionViewCell: UICollectionViewCell {
         self.rootOption = [cart.cakeName, cart.storeName, cart.pickUpDate, cart.pickUpTime]
         self.detailOption = ([cart.option], cart.price)
     }
+}
+
+protocol CartCellDelegate: AnyObject {
+    func reloadData()
+    
+    func cartCollectionViewCellDidDeleteItem(_ cell: CartCollectionViewCell)
 }

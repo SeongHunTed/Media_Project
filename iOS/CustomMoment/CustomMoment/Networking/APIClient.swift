@@ -560,6 +560,44 @@ class APIClient {
             }
             task.resume()
         }
+        
+        func deleteCart(_ orderRequest: OrderRequest, completion: @escaping (Result<String, Error>) -> Void) {
+            
+            guard let url = URL(string: APIClient.shared.baseURL + "orders/cart") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "DELETE"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            guard let token = APIClient.shared.authToken else {
+                completion(.failure(NSError(domain: "Authorization", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token is missing"])))
+                return
+            }
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+            
+            do {
+                let encoder = JSONEncoder()
+                let jsonData = try encoder.encode(orderRequest)
+                request.httpBody = jsonData
+            } catch {
+                completion(.failure(error))
+                return
+            }
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+
+                // 응답 처리
+                if let _ = data, let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                    completion(.success("Cart deleted successfully"))
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error"])))
+                }
+            }
+            task.resume()
+        }
     }
     
     let auth = Auth()

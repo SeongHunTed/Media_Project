@@ -20,7 +20,7 @@ class MyInfoViewController: UIViewController {
     
     @objc func handleLoginSuccessNotification(_ notification: Notification) {
         self.loginSuccess = true
-        apiCall()
+        cartApiCall()
         collectionView.reloadData()
         updateUIBaseOnLoginStatus()
     }
@@ -31,7 +31,7 @@ class MyInfoViewController: UIViewController {
     
     // MARK: - API Call
     
-    private func apiCall() {
+    private func cartApiCall() {
         APIClient.shared.order.fetchCart { [weak self] result in
             switch result {
             case .success(let cart):
@@ -44,7 +44,6 @@ class MyInfoViewController: UIViewController {
             case .failure(let error):
                 print("Error: \(error.localizedDescription)")
             }
-            
         }
     }
     
@@ -180,7 +179,7 @@ class MyInfoViewController: UIViewController {
     // MARK: - Collection Vieww
     
     // 컬렉션뷰 생성
-    private lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: getLayout())
         collectionView.isScrollEnabled = false
         collectionView.clipsToBounds = true
@@ -400,7 +399,7 @@ extension MyInfoViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CartCollectionViewCell.self), for: indexPath) as? CartCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            
+            cell.delegate = self
             if let cartItem = cart?[indexPath.row] {
                 cell.configure(with: cartItem)
             }
@@ -437,6 +436,20 @@ extension MyInfoViewController: UICollectionViewDataSource {
             return footer
         default:
             return UICollectionReusableView()
+        }
+    }
+}
+
+
+extension MyInfoViewController: CartCellDelegate {
+    func reloadData() {
+        collectionView.reloadData()
+    }
+        
+    func cartCollectionViewCellDidDeleteItem(_ cell: CartCollectionViewCell) {
+        if let indexPath = collectionView.indexPath(for: cell) {
+            cart?.remove(at: indexPath.row)
+            collectionView.deleteItems(at: [indexPath])
         }
     }
 }
