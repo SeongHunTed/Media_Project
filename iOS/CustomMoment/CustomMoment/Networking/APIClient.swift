@@ -486,9 +486,9 @@ class APIClient {
             task.resume()
         }
         
-        func fetchCart(completion: @escaping (Result<[OrderRequest], Error>) -> Void) {
+        func fetchCart(completion: @escaping (Result<[CartResponse], Error>) -> Void) {
             
-            guard let url = URL(string: APIClient.shared.baseURL + "orders/order") else { return }
+            guard let url = URL(string: APIClient.shared.baseURL + "orders/cart") else { return }
             var request = URLRequest(url: url)
             request.httpMethod = "GET"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -499,7 +499,8 @@ class APIClient {
             }
             request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
             
-            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                
                 if let error = error {
                     DispatchQueue.main.async {
                         completion(.failure(error))
@@ -511,10 +512,10 @@ class APIClient {
                     completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
                     return
                 }
-                
+                print(String(data: data, encoding: .utf8) ?? "")
                 do {
                     let decoder = JSONDecoder()
-                    let cart = try decoder.decode([OrderRequest].self, from: data)
+                    let cart = try decoder.decode([CartResponse].self, from: data)
                     completion(.success(cart))
                 } catch {
                     completion(.failure(error))
@@ -523,7 +524,7 @@ class APIClient {
             task.resume()
         }
         
-        func fetchOrder(completion: @escaping (Result<[OrderRequest], Error>) -> Void) {
+        func fetchOrder(completion: @escaping (Result<[OrderResponse], Error>) -> Void) {
             
             guard let url = URL(string: APIClient.shared.baseURL + "orders/order") else { return }
             var request = URLRequest(url: url)
@@ -536,7 +537,7 @@ class APIClient {
             }
             request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
             
-            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 if let error = error {
                     DispatchQueue.main.async {
                         completion(.failure(error))
@@ -551,8 +552,8 @@ class APIClient {
                 
                 do {
                     let decoder = JSONDecoder()
-                    let cart = try decoder.decode([OrderRequest].self, from: data)
-                    completion(.success(cart))
+                    let order = try decoder.decode([OrderResponse].self, from: data)
+                    completion(.success(order))
                 } catch {
                     completion(.failure(error))
                 }

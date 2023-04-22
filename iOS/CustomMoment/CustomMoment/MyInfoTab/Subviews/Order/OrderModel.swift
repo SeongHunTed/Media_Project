@@ -38,6 +38,10 @@ struct OrderResponse: Codable {
     let status: String
     let price: Int
     
+    var fullImageURL: String {
+        return MEDIA_URL + cakeImage
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case option
@@ -60,6 +64,10 @@ struct CartResponse: Codable {
     let pickUpDate: String
     let pickUpTime: String
     let price: Int
+    
+    var fullImageURL: String {
+        return MEDIA_URL + cakeImage
+    }
     
     enum CodingKeys: String, CodingKey {
         case storeName = "store_name"

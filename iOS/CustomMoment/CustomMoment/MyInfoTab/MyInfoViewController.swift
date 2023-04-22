@@ -15,11 +15,13 @@ class MyInfoViewController: UIViewController {
         imageSetUp()
         configure()
         collectionViewSetUp()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(handleLoginSuccessNotification), name: .didLoginSuccess, object: nil)
     }
     
     @objc func handleLoginSuccessNotification(_ notification: Notification) {
+        self.loginSuccess = true
+        apiCall()
+        collectionView.reloadData()
         updateUIBaseOnLoginStatus()
     }
     
@@ -27,11 +29,29 @@ class MyInfoViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: .didLoginSuccess, object: nil)
     }
     
+    // MARK: - API Call
+    
+    private func apiCall() {
+        APIClient.shared.order.fetchCart { [weak self] result in
+            switch result {
+            case .success(let cart):
+                if !cart.isEmpty {
+                    self?.cart = cart
+                    DispatchQueue.main.async {
+                        self?.collectionView.reloadData()
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+            
+        }
+    }
     
     // MARK: - Variables
     
-    let loginSuccess = APIClient.shared.authToken?.isEmpty
-    
+    var loginSuccess = false
+    var cart: [CartResponse]?
     let profile = "ted"
     let userName = "김성훈"
     let userEmail = "4047ksh@naver.com"
@@ -349,7 +369,7 @@ extension MyInfoViewController: UICollectionViewDataSource {
         if section == 0 {
             return collectionImages.count
         } else {
-            return cake.count
+            return cart?.count ?? 0
         }
     }
     
@@ -381,7 +401,10 @@ extension MyInfoViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             
-            cell.cellImage.image = UIImage(named: cake[indexPath.row])
+            if let cartItem = cart?[indexPath.row] {
+                cell.configure(with: cartItem)
+            }
+            
             cell.cartLayout()
             cell.layer.cornerRadius = 8
             cell.layer.shadowColor = UIColor.gray.cgColor
