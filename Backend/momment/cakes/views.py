@@ -35,13 +35,17 @@ def cake_pop_up(request):
     data = DetailCakeSerializer(cake).data
     return Response(data, status=status.HTTP_200_OK)
 
-@api_view(['POST',])
+@api_view(['POST', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def cake_pop_up_set(request):
     data = request.data
     info_image = request.FILES.get('images')
     cake_name = data['cake_name']
     cake = Cake.objects.get(name=cake_name)
+
+    if request.method == 'DELETE':
+        CakeInfoImage.objects.filter(cake=cake).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
     CakeInfoImage.objects.create(cake=cake, info_image=info_image)
 
@@ -415,7 +419,7 @@ def filter(request, page):
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
     
-@api_view(['POST'])
+@api_view(['POST', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def cake_image(request):
     try:
@@ -423,17 +427,16 @@ def cake_image(request):
         user = request.user
         images_data = request.FILES.getlist('images')
 
-        print(images_data)
-
         cake_name = data['cake_name']
-
         cake = Cake.objects.get(name=cake_name)
+
+        if request.method == 'DELETE':
+            CakeImage.objects.filter(cake=cake).delete()
 
         for image_data in images_data:
             CakeImage.objects.create(cake=cake, image=image_data)
 
         return Response(status=201)
-
-
+    
     except KeyError:
         return JsonResponse({'message' : 'KEY_ERROR'}, status=400)
