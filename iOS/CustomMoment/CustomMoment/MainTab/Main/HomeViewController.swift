@@ -18,8 +18,8 @@ class HomeViewController: UIViewController {
     
     let vcIdentifier = "HomeVC"
     
-    private var timer: Timer?
-    private let bannerImages = ["banner1", "banner2", "banner3", "banner4"]
+    private var footerView: MyFooterView?
+    private let bannerImages = ["banner1", "banner2", "banner3"]
     
     private var cakes: [MainCakeRequest] = []
     private var stores: [MainStoreRequest] = []
@@ -31,18 +31,6 @@ class HomeViewController: UIViewController {
         apiCall()
         logoLayout()
         bannerLayout()
-//        startTimer()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        print("VDA Content offset x: \(collectionView.contentOffset.x)")
-//        print("Content size: \(collectionView.contentSize)")
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-//        print("VDLS Content offset x: \(collectionView.contentOffset.x)")
     }
     
     // MARK: - API Call
@@ -190,6 +178,9 @@ extension HomeViewController {
 
         section.boundarySupplementaryItems = [footer]
         section.orthogonalScrollingBehavior = .paging
+        section.visibleItemsInvalidationHandler = { [weak self] visibleItems, point, environment in
+            self?.footerView?.bannerPageControl.currentPage = visibleItems.last?.indexPath.row ?? 0
+        }
         
         return section
     }
@@ -252,64 +243,6 @@ extension HomeViewController {
         
         return section
     }
-    
-//    // Return Current Page
-//    private func getCurrentPage() -> Int {
-//        let currentPage = Int(collectionView.contentOffset.x / collectionView.bounds.width)
-////            print("Current page: \(currentPage)")
-//            return currentPage
-//
-//    }
-//
-//    // Banner Timer action()
-//    private func startTimer() {
-//        timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
-//    }
-//
-//    private func stopTimer() {
-//        timer?.invalidate()
-//        timer = nil
-//    }
-//
-//    @objc private func moveToNextPage() {
-//        let currentPage = getCurPage()
-//        let nextPage = currentPage + 1
-//
-//        if nextPage < getTotalPages() {
-//            let indexPath = IndexPath(item: nextPage, section: 0)
-//            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-//            updatePageControl(currentPage: nextPage)
-//        } else {
-//            let indexPath = IndexPath(item: 0, section: 0)
-//            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-//            updatePageControl(currentPage: 0)
-//        }
-//    }
-//
-//    private func getCurPage() -> Int {
-//        if let footerView = getFooterView() {
-//            return footerView.bannerPageControl.currentPage
-//        }
-//        return 0
-//    }
-//
-//    private func getTotalPages() -> Int {
-//        if let footerView = getFooterView() {
-//            return footerView.bannerPageControl.numberOfPages
-//        }
-//        return 0
-//    }
-//
-//    private func updatePageControl(currentPage: Int) {
-//        if let footerView = getFooterView() {
-//            footerView.bannerPageControl.currentPage = currentPage
-//        }
-//    }
-//
-//    private func getFooterView() -> MyFooterView? {
-//        return collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: 0)) as? MyFooterView
-//    }
-
 }
 
 // MARK: - 콜렉션뷰 델리겟 - 액션과 관련된 것들
@@ -383,11 +316,9 @@ extension HomeViewController: UICollectionViewDataSource {
             }
             collectionView.showsHorizontalScrollIndicator = true
             collectionView.showsVerticalScrollIndicator = false
-//            cell.cellImage.image = UIImage(named: cakeImages[indexPath.row])
             let cake = cakes[indexPath.item]
             cell.configure(with: cake)
             cell.cellImage.contentMode = .scaleAspectFill
-
             return cell
         } else {
             guard let cell: StoreCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: StoreCollectionViewCell.self), for: indexPath) as? StoreCollectionViewCell else {
@@ -423,43 +354,11 @@ extension HomeViewController: UICollectionViewDataSource {
             return header
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyFooterView
-            footer.configure(delegate: self)
+            footer.bannerPageControl.numberOfPages = bannerImages.count
+            footerView = footer
             return footer
         default:
             return UICollectionReusableView()
         }
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        print("didEndDisplaying")
-        let pageWidth = collectionView.frame.width
-        let currentPage = Int(collectionView.contentOffset.x / pageWidth)
-//        print("pageWidth : ", pageWidth)
-//        print("collectionView.offset.x : ", collectionView.contentOffset.x)
-//        print("currentPage : ", currentPage)
-        if let footerView = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: 0)) as? MyFooterView {
-            footerView.updateCurrentPage(currentPage)
-        }
-    }
 }
-
-//extension HomeViewController: UICollectionViewDelegateFlowLayout {
-//
-//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//        print("Hi")
-//        stopTimer()
-//    }
-//
-//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//        print("Hi")
-//        startTimer()
-//    }
-//
-//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        let pageWidth = scrollView.frame.width
-//        let currentPage = Int(scrollView.contentOffset.x / pageWidth)
-//        if let footerView = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: 0, section: 0)) as? MyFooterView {
-//            footerView.updateCurrentPage(currentPage)
-//        }
-//    }
-//}

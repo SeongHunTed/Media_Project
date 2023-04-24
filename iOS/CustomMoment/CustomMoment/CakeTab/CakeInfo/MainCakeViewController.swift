@@ -245,7 +245,7 @@ class MainCakeViewController: UIViewController {
         scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         
         scrollView.addSubview(storeLabel)
-        scrollView.addSubview(pageControl)
+//        scrollView.addSubview(pageControl)
         
         storeLabel.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         storeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -257,10 +257,10 @@ class MainCakeViewController: UIViewController {
         collectionView.heightAnchor.constraint(equalTo: collectionView.widthAnchor, multiplier: 1.0).isActive = true
         collectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         
-        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -10).isActive = true
-        pageControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        pageControl.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -10).isActive = true
+//        pageControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+//        pageControl.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+//        pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         scrollView.addSubview(nameLabel)
         scrollView.addSubview(priceLabel)
@@ -268,7 +268,7 @@ class MainCakeViewController: UIViewController {
         scrollView.addSubview(reviewButton)
         
         nameLabel.topAnchor.constraint(
-            equalTo: pageControl.bottomAnchor, constant: 20).isActive = true
+            equalTo: collectionView.bottomAnchor, constant: 40).isActive = true
         nameLabel.leadingAnchor.constraint(
             equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         nameLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -393,7 +393,7 @@ class MainCakeViewController: UIViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 30, bottom: 30, trailing: 30)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
@@ -418,7 +418,7 @@ class MainCakeViewController: UIViewController {
 
 // MARK: extension
 extension MainCakeViewController: UICollectionViewDelegate {
-    
+
 }
 
 extension MainCakeViewController: UICollectionViewDataSource {

@@ -47,8 +47,6 @@ class MyHeaderView: UICollectionReusableView {
 
 class MyFooterView: UICollectionReusableView {
     
-    weak var homeVC: HomeViewController?
-    
     let bannerPageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.pageIndicatorTintColor = .systemGray5
@@ -60,21 +58,18 @@ class MyFooterView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        configure()
+        configure()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(delegate: UIScrollViewDelegate) {
+    func configure() {
         self.addSubview(bannerPageControl)
         bannerPageControl.currentPage = 0
         bannerPageControl.numberOfPages = 4
         
-        if let homeVC = delegate as? HomeViewController {
-            self.homeVC = homeVC
-        }
         NSLayoutConstraint.activate([
             bannerPageControl.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             bannerPageControl.centerYAnchor.constraint(equalTo: self.centerYAnchor),
@@ -82,11 +77,10 @@ class MyFooterView: UICollectionReusableView {
             bannerPageControl.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
-}
-
-
-extension MyFooterView {
-    func updateCurrentPage(_ page: Int) {
-        bannerPageControl.currentPage = page
+    
+    func updatePageControl(numberOfPages: Int, currentPage: Int) {
+        bannerPageControl.numberOfPages = numberOfPages
+        bannerPageControl.currentPage = currentPage
     }
 }
+
