@@ -78,10 +78,12 @@ class MainCakeViewController: UIViewController {
         storeBottomLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
         storeLabel.layer.addSublayer(storeBottomLayer)
         
-//        let cakeTopLayer = CALayer()
-//        cakeTopLayer.frame = CGRect(x:0, y: pageControl.frame.height+1, width: view.frame.size.width, height: 1)
-//        cakeTopLayer.backgroundColor = UIColor.systemGray4.cgColor
-//        pageControl.layer.addSublayer(cakeTopLayer)
+        lazy var cakeTopLayer = CALayer()
+        if pageControl.frame.height !=  0.0 {
+            cakeTopLayer.frame = CGRect(x:0, y: pageControl.frame.height+1, width: view.frame.size.width, height: 1)
+            cakeTopLayer.backgroundColor = UIColor.systemGray4.cgColor
+            pageControl.layer.addSublayer(cakeTopLayer)
+        }
         
         let buttonBottomLayer = CALayer()
         buttonBottomLayer.frame = CGRect(x: 0, y: 32, width: view.frame.size.width-40, height: 1)
@@ -93,9 +95,10 @@ class MainCakeViewController: UIViewController {
         infoImage.widthAnchor.constraint(equalToConstant: scrollView.frame.width-40).isActive = true
         guard let image = infoImage.image else { return }
         let aspectRatio = image.size.height / image.size.width
-        let contentHeight = 350 * aspectRatio + infoImage.frame.origin.y
+        print(self.scrollView.frame.width)
+        let contentHeight = 320 * aspectRatio + infoImage.frame.origin.y
         scrollView.contentSize = CGSize(width: scrollView.frame.width, height: contentHeight)
-        
+        infoImage.widthAnchor.constraint(equalToConstant: 350).isActive = true
         infoImage.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
     }
     
@@ -199,10 +202,8 @@ class MainCakeViewController: UIViewController {
     
     private let infoImage: UIImageView = {
         let imageView = UIImageView()
-//        imageView.image = UIImage(named: "infoview")
         imageView.backgroundColor = .systemRed.withAlphaComponent(0.8)
         imageView.contentMode = .scaleAspectFit
-//        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -386,10 +387,6 @@ class MainCakeViewController: UIViewController {
     // 따라서 컬렉션 뷰는 정말 쎌 이미지만 보여주는 역할로 써 정의됨
     private func cakeBannerCompositionalLayout() -> NSCollectionLayoutSection {
         
-        // header 구현 -> 기존 헤더 사용
-//        collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
-//        collectionView.register(MyFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
-        
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -404,14 +401,6 @@ class MainCakeViewController: UIViewController {
         section.visibleItemsInvalidationHandler = { [weak self] visibleItems, point, environment in
             self?.pageControl.currentPage = visibleItems.last?.indexPath.row ?? 0
         }
-//        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.13))
-//        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.13))
-        
-//        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-//        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
-
-        
-//        section.boundarySupplementaryItems = [header]
         return section
     }
     
