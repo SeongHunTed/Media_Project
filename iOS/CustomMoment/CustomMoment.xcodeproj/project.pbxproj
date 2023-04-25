@@ -20,6 +20,8 @@
 		7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */; };
 		786509B829C193A000B7C7F3 /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */; };
 		789ADAB929F1530D00D62292 /* CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789ADAB829F1530D00D62292 /* CalendarModel.swift */; };
+		789ADABE29F3BD4600D62292 /* OrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789ADABD29F3BD4600D62292 /* OrderModel.swift */; };
+		789ADAC029F6C06000D62292 /* DrawCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789ADABF29F6C06000D62292 /* DrawCollectionViewCell.swift */; };
 		78C3C23E29ED13ED00405986 /* MainCakeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C23D29ED13ED00405986 /* MainCakeModel.swift */; };
 		78C3C24029ED47DD00405986 /* MainStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C23F29ED47DD00405986 /* MainStoreModel.swift */; };
 		78C3C24229ED84CE00405986 /* MainCakeInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */; };
@@ -114,6 +116,8 @@
 		7862AB4029C8262800E501C9 /* MainCakeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeCollectionViewCell.swift; sourceTree = "<group>"; };
 		786509B729C193A000B7C7F3 /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
 		789ADAB829F1530D00D62292 /* CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModel.swift; sourceTree = "<group>"; };
+		789ADABD29F3BD4600D62292 /* OrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModel.swift; sourceTree = "<group>"; };
+		789ADABF29F6C06000D62292 /* DrawCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawCollectionViewCell.swift; sourceTree = "<group>"; };
 		78C3C23D29ED13ED00405986 /* MainCakeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeModel.swift; sourceTree = "<group>"; };
 		78C3C23F29ED47DD00405986 /* MainStoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainStoreModel.swift; sourceTree = "<group>"; };
 		78C3C24129ED84CE00405986 /* MainCakeInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCakeInfoModel.swift; sourceTree = "<group>"; };
@@ -295,6 +299,7 @@
 			children = (
 				78DFB07629DDF0AB002DC963 /* OrderDetailViewController.swift */,
 				78DFB09529E1EBE5002DC963 /* OrderDetailTableViewCell.swift */,
+				789ADABD29F3BD4600D62292 /* OrderModel.swift */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -312,6 +317,7 @@
 			children = (
 				78DFB07B29DF1E2A002DC963 /* DALLE_API */,
 				78DFB07929DF1872002DC963 /* DrawViewController.swift */,
+				789ADABF29F6C06000D62292 /* DrawCollectionViewCell.swift */,
 			);
 			path = DrawTab;
 			sourceTree = "<group>";
@@ -795,11 +801,13 @@
 				78FD436229D343B4006ED4F8 /* CakeViewController.swift in Sources */,
 				78DFB06E29DC7BE6002DC963 /* MemberInfoViewController.swift in Sources */,
 				78FD436A29D349DA006ED4F8 /* TabBarViewController.swift in Sources */,
+				789ADABE29F3BD4600D62292 /* OrderModel.swift in Sources */,
 				78DFB07729DDF0AB002DC963 /* OrderDetailViewController.swift in Sources */,
 				783F397329E8634100D8424D /* AuthModel.swift in Sources */,
 				7862AB4129C8262800E501C9 /* MainCakeCollectionViewCell.swift in Sources */,
 				78C3C24029ED47DD00405986 /* MainStoreModel.swift in Sources */,
 				785CC9B129C43DEF0034BD30 /* MyHeaderView.swift in Sources */,
+				789ADAC029F6C06000D62292 /* DrawCollectionViewCell.swift in Sources */,
 				78C3C24429EFB59C00405986 /* CakeOptionModel.swift in Sources */,
 				78DFB05729D72B69002DC963 /* StoreHeaderView.swift in Sources */,
 				785C487E29D5F06300F52CFD /* CalendarPopUpViewController.swift in Sources */,

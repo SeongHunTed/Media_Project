@@ -27,7 +27,7 @@ class StorePopUpHeaderView: UICollectionReusableView {
             self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             self.label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
         ])
-        addBottomBorder()
+//        addBottomBorder()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -93,6 +93,17 @@ class StorePopUpSecondHeaderView: UICollectionReusableView {
 
 class StorePopUpFooterView: UICollectionReusableView {
     
+    let pageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        pageControl.pageIndicatorTintColor = .systemGray5
+        pageControl.currentPageIndicatorTintColor = .systemGray
+        pageControl.isUserInteractionEnabled = false
+        pageControl.numberOfPages = 5
+        pageControl.currentPage = 0
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        return pageControl
+    }()
+    
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.myFontR.withSize(15.0)
@@ -129,12 +140,11 @@ class StorePopUpFooterView: UICollectionReusableView {
         return map
     }()
     
-    
-    
         
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.addSubview(pageControl)
         self.addSubview(timeLabel)
         self.addSubview(digitLabel)
         self.addSubview(addressLabel)
@@ -143,7 +153,12 @@ class StorePopUpFooterView: UICollectionReusableView {
 
         NSLayoutConstraint.activate([
             
-            timeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 30),
+            pageControl.widthAnchor.constraint(equalToConstant: 200),
+            pageControl.heightAnchor.constraint(equalToConstant: 30),
+            pageControl.topAnchor.constraint(equalTo: self.topAnchor, constant: -2),
+            pageControl.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
+            timeLabel.topAnchor.constraint(equalTo: self.pageControl.bottomAnchor, constant: 30),
             timeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             digitLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 10),
             digitLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
@@ -169,13 +184,13 @@ class StorePopUpFooterView: UICollectionReusableView {
     }
     
     func addBottomBorder() {
-        let bottomBorderLayer = CALayer()
-        bottomBorderLayer.frame = CGRect(x: 0, y: frame.size.height - 1, width: frame.size.width, height: 1)
-        bottomBorderLayer.backgroundColor = UIColor.lightGray.cgColor
+//        let bottomBorderLayer = CALayer()
+//        bottomBorderLayer.frame = CGRect(x: 0, y: frame.size.height - 1, width: frame.size.width, height: 1)
+//        bottomBorderLayer.backgroundColor = UIColor.lightGray.cgColor
         let topBorderLayer = CALayer()
-        topBorderLayer.frame = CGRect(x: 0, y: 20, width: frame.size.width, height: 1)
+        topBorderLayer.frame = CGRect(x: 0, y: 30, width: frame.size.width, height: 1)
         topBorderLayer.backgroundColor = UIColor.lightGray.cgColor
-        layer.addSublayer(bottomBorderLayer)
+//        layer.addSublayer(bottomBorderLayer)
         layer.addSublayer(topBorderLayer)
     }
     

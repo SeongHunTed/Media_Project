@@ -39,3 +39,22 @@ struct LoginResponse: Codable {
         case isSeller = "is_seller"
     }
 }
+
+
+struct MyInfoResponse: Codable {
+    let id: Int
+    let email: String
+    let name: String
+    let digit: String
+    let birth: String
+    let address: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case email
+        case name
+        case digit
+        case birth
+        case address
+    }
+}

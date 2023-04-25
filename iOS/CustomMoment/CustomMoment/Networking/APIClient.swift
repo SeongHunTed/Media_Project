@@ -106,6 +106,43 @@ class APIClient {
             task.resume()
         }
         
+        func fetchInfo(completion: @escaping (Result<MyInfoResponse, Error>) -> Void) {
+            guard let url = URL(string: APIClient.shared.baseURL + "accounts/info") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            guard let token = APIClient.shared.authToken else {
+                completion(.failure(NSError(domain: "Authorization", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token is missing"])))
+                return
+            }
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
+                    return
+                }
+
+                do {
+                    let decoder = JSONDecoder()
+                    let info = try decoder.decode(MyInfoResponse.self, from: data)
+                    completion(.success(info))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+        
     }
     
     class Main {
@@ -333,7 +370,6 @@ class APIClient {
             }
             
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-                
                 if let error = error {
                     DispatchQueue.main.async {
                         completion(.failure(error))
@@ -408,7 +444,200 @@ class APIClient {
         }
     }
     
+    class Order {
+        
+        func registerCart(_ order: OrderRequest, completion: @escaping (Result<String, Error>) -> Void) {
+            
+            guard let url = URL(string: APIClient.shared.baseURL + "orders/cart") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            guard let token = APIClient.shared.authToken else {
+                completion(.failure(NSError(domain: "Authorization", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token is missing"])))
+                return
+            }
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+            
+            do {
+                let encoder = JSONEncoder()
+                let jsonData = try encoder.encode(order)
+                request.httpBody = jsonData
+            } catch {
+                completion(.failure(error))
+                return
+            }
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+
+                // 응답 처리
+                if let _ = data, let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
+                    completion(.success("Order registered successfully"))
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error"])))
+                }
+            }
+            task.resume()
+        }
+        
+        func requestOrder(_ order: OrderRequest, completion: @escaping (Result<String, Error>) -> Void) {
+            
+            guard let url = URL(string: APIClient.shared.baseURL + "orders/order") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            guard let token = APIClient.shared.authToken else {
+                completion(.failure(NSError(domain: "Authorization", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token is missing"])))
+                return
+            }
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+            
+            do {
+                let encoder = JSONEncoder()
+                let jsonData = try encoder.encode(order)
+                request.httpBody = jsonData
+            } catch {
+                completion(.failure(error))
+                return
+            }
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+
+                // 응답 처리
+                if let _ = data, let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
+                    completion(.success("Order registered successfully"))
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error"])))
+                }
+            }
+            task.resume()
+        }
+        
+        func fetchCart(completion: @escaping (Result<[CartResponse], Error>) -> Void) {
+            
+            guard let url = URL(string: APIClient.shared.baseURL + "orders/cart") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            guard let token = APIClient.shared.authToken else {
+                completion(.failure(NSError(domain: "Authorization", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token is missing"])))
+                return
+            }
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
+                    return
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let cart = try decoder.decode([CartResponse].self, from: data)
+                    completion(.success(cart))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+        
+        func fetchOrder(completion: @escaping (Result<[OrderResponse], Error>) -> Void) {
+            
+            guard let url = URL(string: APIClient.shared.baseURL + "orders/order") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            guard let token = APIClient.shared.authToken else {
+                completion(.failure(NSError(domain: "Authorization", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token is missing"])))
+                return
+            }
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
+                    return
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let order = try decoder.decode([OrderResponse].self, from: data)
+                    completion(.success(order))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+        
+        func deleteCart(_ orderRequest: OrderRequest, completion: @escaping (Result<String, Error>) -> Void) {
+            
+            guard let url = URL(string: APIClient.shared.baseURL + "orders/cart") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "DELETE"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            guard let token = APIClient.shared.authToken else {
+                completion(.failure(NSError(domain: "Authorization", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token is missing"])))
+                return
+            }
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+            
+            do {
+                let encoder = JSONEncoder()
+                let jsonData = try encoder.encode(orderRequest)
+                request.httpBody = jsonData
+            } catch {
+                completion(.failure(error))
+                return
+            }
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+
+                // 응답 처리
+                if let _ = data, let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                    completion(.success("Cart deleted successfully"))
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error"])))
+                }
+            }
+            task.resume()
+        }
+    }
+    
     let auth = Auth()
     let main = Main()
     let cake = Cake()
+    let order = Order()
 }

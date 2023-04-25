@@ -24,7 +24,28 @@ class DrawViewController: UIViewController {
         dalleImageView.layer.borderColor = UIColor.black.withAlphaComponent(0.9).cgColor
     }
     
+    // MARK: - Variable
+    
+    private let buttonTitles = ["빈센트 반 고흐", "파블로 피카소", "클로드 모네", "폴 고갱","마르쉘 뒤샹", "램브란트", "키스 해링", "장 미셸 바스키아", "앤디 워홀", "직접 입력"]
+    
     // MARK: - Components
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 10
+        layout.minimumInteritemSpacing = 10
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .white
+        collectionView.register(DrawCollectionViewCell.self, forCellWithReuseIdentifier: "DrawCollectionViewCell")
+        return collectionView
+    }()
+    
     private let dalleImageView: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "gogh")
@@ -76,6 +97,7 @@ class DrawViewController: UIViewController {
         self.view.addSubview(sendButton)
         self.view.addSubview(saveButton)
         self.view.addSubview(dallePrompt)
+        self.view.addSubview(collectionView)
         self.view.addSubview(dalleImageView)
         
         sendButton.topAnchor.constraint(equalTo: bottomBoarder.bottomAnchor, constant: 10).isActive = true
@@ -93,6 +115,11 @@ class DrawViewController: UIViewController {
         dallePrompt.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
         dallePrompt.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -10).isActive = true
         dallePrompt.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        collectionView.topAnchor.constraint(equalTo: dallePrompt.bottomAnchor, constant: 20).isActive = true
+        collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        collectionView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        collectionView.heightAnchor.constraint(equalToConstant: 160).isActive = true
         
 ////        dalleImageView.topAnchor.constraint(greaterThanOrEqualTo: dallePrompt.bottomAnchor, constant: 10).isActive = true
 ////        dalleImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -149,22 +176,6 @@ class DrawViewController: UIViewController {
 
 extension DrawViewController: UITextFieldDelegate {
     
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        guard let inputText = textField.text else {
-//            print("nothing")
-//            return
-//        }
-//
-//        let words = inputText.split(separator: " ")
-//
-//        if words.count < 7 {
-//            let alertController = UIAlertController(title: "경고", message: "정확한 케이크 이미지 생성을 위해 7단어 이상 입력하세요!", preferredStyle: .alert)
-//            let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
-//            alertController.addAction(cancelAction)
-//            self.present(alertController, animated: true)
-//        }
-//    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
         self.view.endEditing(true)
     }
@@ -175,15 +186,21 @@ extension DrawViewController: UITextFieldDelegate {
     }
     
     @objc func sendButtonTapped() {
-        print("send Button Tapped")
         
         guard let inputText = dallePrompt.text else {
             print("nothing")
             return
         }
+        
+        var promptText: String = inputText
+        
+        if getSelectedButtonTitle() != nil && getSelectedButtonTitle() != "직접 입력" {
+           promptText = inputText + "를 그린 " + getSelectedButtonTitle()! + "의 그림풍의 그림"
+        }
+        
         let words = inputText.split(separator: " ")
         
-        if words.count < 7 {
+        if words.count < 2 {
             let alertController = UIAlertController(title: "경고", message: "정확한 케이크 이미지 생성을 위해 7글자 이상 입력하세요!", preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
             alertController.addAction(cancelAction)
@@ -202,7 +219,7 @@ extension DrawViewController: UITextFieldDelegate {
 
                 Task {
                        do {
-                           let translatedText = try await tranlator.translate(source: "ko", target: "en", text: inputText)
+                           let translatedText = try await tranlator.translate(source: "ko", target: "en", text: promptText)
                            print(translatedText)
 
                            let image = try await DalleAPIService().fetchImageForPrompt(translatedText)
@@ -248,3 +265,44 @@ extension DrawViewController: UITextFieldDelegate {
 }
 
 
+extension DrawViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return buttonTitles.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DrawCollectionViewCell", for: indexPath) as! DrawCollectionViewCell
+        cell.configure(with: buttonTitles[indexPath.item])
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let buttonTitle = buttonTitles[indexPath.item]
+        let buttonSize = (buttonTitle as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: 16)])
+        return CGSize(width: buttonSize.width + 20, height: 40)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! DrawCollectionViewCell
+        cell.isSelectedCell.toggle()
+        for index in 0..<buttonTitles.count {
+            if index != indexPath.item {
+                if let otherCell = collectionView.cellForItem(at: IndexPath(item: index, section: indexPath.section)) as? DrawCollectionViewCell {
+                    otherCell.isSelectedCell = false
+                }
+            }
+        }
+    }
+    
+    func getSelectedButtonTitle() -> String? {
+        for index in 0..<buttonTitles.count {
+            if let cell = collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? DrawCollectionViewCell {
+                if cell.isSelectedCell {
+                    return buttonTitles[index]
+                }
+            }
+        }
+        return nil
+    }
+}

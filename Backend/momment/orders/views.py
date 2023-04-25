@@ -23,63 +23,62 @@ def order(request):
 
             store_name = data['store_name']
             cake_name = data['cake_name']
-            basic_options = data['cake_basic_option'].keys()
-            additional_options = data['cake_additional_option'].keys()
+            # basic_options = data['cake_basic_option'].keys()
+            # additional_options = data['cake_additional_option'].keys()
             total_price = int(data['cake_price'])
             pickup_date = data['pickup_date']
             pickup_time = data['pickup_time']
+            options = data['option']
 
-            
             store = Store.objects.get(store_name=store_name)
             cake = Cake.objects.get(name=cake_name)
             
-            options = []
-            certi_prices = []
+            # certi_prices = []
 
-            certi_prices.append(cake.price)
+            # certi_prices.append(cake.price)
 
-            # 유효성 검증
-            for basic_option in basic_options:
-                option = data['cake_basic_option'][basic_option]['option']
-                price = data['cake_basic_option'][basic_option]['price']
+            # # 유효성 검증
+            # for basic_option in basic_options:
+            #     option = data['cake_basic_option'][basic_option]['option']
+            #     price = data['cake_basic_option'][basic_option]['price']
 
-                if basic_option == 'cake_size':
-                    certi_prices.append(CakeSize.objects.get(size=option, cake=cake).price)
-                elif basic_option == 'cake_flavor':
-                    certi_prices.append(CakeFlavor.objects.get(flavor=option, cake=cake).price)
-                elif basic_option == 'cake_color':
-                    certi_prices.append(CakeColor.objects.get(color=option, cake=cake).price)
-                elif basic_option == 'cake_design':
-                    certi_prices.append(CakeDesign.objects.get(design=option, cake=cake).price)
+            #     if basic_option == 'cake_size':
+            #         certi_prices.append(CakeSize.objects.get(size=option, cake=cake).price)
+            #     elif basic_option == 'cake_flavor':
+            #         certi_prices.append(CakeFlavor.objects.get(flavor=option, cake=cake).price)
+            #     elif basic_option == 'cake_color':
+            #         certi_prices.append(CakeColor.objects.get(color=option, cake=cake).price)
+            #     elif basic_option == 'cake_design':
+            #         certi_prices.append(CakeDesign.objects.get(design=option, cake=cake).price)
 
-                options.append(basic_option + " : " + option)
+            #     options.append(basic_option + " : " + option)
 
-            for additional_option in additional_options:
-                option = data['cake_additional_option'][additional_option]['option']
-                price = data['cake_additional_option'][additional_option]['price']
+            # for additional_option in additional_options:
+            #     option = data['cake_additional_option'][additional_option]['option']
+            #     price = data['cake_additional_option'][additional_option]['price']
 
-                if additional_option == 'cake_sidedeco':
-                    certi_prices.append(CakeSideDeco.objects.get(side_deco=option, cake=cake).price)
-                elif additional_option == 'cake_deco':
-                    certi_prices.append(CakeDeco.objects.get(deco=option, cake=cake).price)
-                elif additional_option == 'cake_lettering':
-                    certi_prices.append(CakeLettering.objects.get(lettering=option, cake=cake).price)
-                elif additional_option == 'cake_font':
-                    certi_prices.append(CakeFont.objects.get(font=option, cake=cake).price)
-                elif additional_option == 'cake_picture':
-                    certi_prices.append(CakePicture.objects.get(picture=option, cake=cake).price)
-                elif additional_option == 'cake_package':
-                    certi_prices.append(CakePackage.objects.get(package=option, cake=cake).price)
-                elif additional_option == 'cake_candle':
-                    # quantity = data['cake_addtional_option'][basic_option]['quantity']
-                    certi_prices.append(CakeCandle.objects.get(candle=option, cake=cake).price)
+            #     if additional_option == 'cake_sidedeco':
+            #         certi_prices.append(CakeSideDeco.objects.get(side_deco=option, cake=cake).price)
+            #     elif additional_option == 'cake_deco':
+            #         certi_prices.append(CakeDeco.objects.get(deco=option, cake=cake).price)
+            #     elif additional_option == 'cake_lettering':
+            #         certi_prices.append(CakeLettering.objects.get(lettering=option, cake=cake).price)
+            #     elif additional_option == 'cake_font':
+            #         certi_prices.append(CakeFont.objects.get(font=option, cake=cake).price)
+            #     elif additional_option == 'cake_picture':
+            #         certi_prices.append(CakePicture.objects.get(picture=option, cake=cake).price)
+            #     elif additional_option == 'cake_package':
+            #         certi_prices.append(CakePackage.objects.get(package=option, cake=cake).price)
+            #     elif additional_option == 'cake_candle':
+            #         # quantity = data['cake_addtional_option'][basic_option]['quantity']
+            #         certi_prices.append(CakeCandle.objects.get(candle=option, cake=cake).price)
 
-                options.append(additional_option + " : " + option)
+            #     options.append(additional_option + " : " + option)
 
-            certi_price = sum(certi_prices)
+            # certi_price = sum(certi_prices)
             
-            if certi_price != total_price:
-                return JsonResponse({'message' : 'PRICE_SUM_ERROR'}, status=400)
+            # if certi_price != total_price:
+            #     return JsonResponse({'message' : 'PRICE_SUM_ERROR'}, status=400)
 
             today = datetime.date.today()
             year = str(today.year)[2:]
@@ -152,7 +151,6 @@ def order(request):
 
         elif request.method == 'GET':
             data = request.data
-
             user = request.user
 
             # 판매자가 주문확인
@@ -190,61 +188,61 @@ def cart(request):
 
             store_name = data['store_name']
             cake_name = data['cake_name']
-            basic_options = data['cake_basic_option'].keys()
-            additional_options = data['cake_additional_option'].keys()
+            # basic_options = data['cake_basic_option'].keys()
+            # additional_options = data['cake_additional_option'].keys()
             total_price = int(data['cake_price'])
             pickup_date = data['pickup_date']
             pickup_time = data['pickup_time']
-
+            options = data['option']
             store = Store.objects.get(store_name=store_name)
             cake = Cake.objects.get(name=cake_name)
             
-            options = []
-            certi_prices = []
-            certi_prices.append(cake.price)
-
-             # 유효성 검증
-            for basic_option in basic_options:
-                option = data['cake_basic_option'][basic_option]['option']
-                price = data['cake_basic_option'][basic_option]['price']
-
-                if basic_option == 'cake_size':
-                    certi_prices.append(CakeSize.objects.get(size=option, cake=cake).price)
-                elif basic_option == 'cake_flavor':
-                    certi_prices.append(CakeFlavor.objects.get(flavor=option, cake=cake).price)
-                elif basic_option == 'cake_color':
-                    certi_prices.append(CakeColor.objects.get(color=option, cake=cake).price)
-                elif basic_option == 'cake_design':
-                    certi_prices.append(CakeDesign.objects.get(design=option, cake=cake).price)
-
-                options.append(basic_option + " : " + option)
-
-            for additional_option in additional_options:
-                option = data['cake_additional_option'][additional_option]['option']
-                price = data['cake_additional_option'][additional_option]['price']
-
-                if additional_option == 'cake_sidedeco':
-                    certi_prices.append(CakeSideDeco.objects.get(side_deco=option, cake=cake).price)
-                elif additional_option == 'cake_deco':
-                    certi_prices.append(CakeDeco.objects.get(deco=option, cake=cake).price)
-                elif additional_option == 'cake_lettering':
-                    certi_prices.append(CakeLettering.objects.get(lettering=option, cake=cake).price)
-                elif additional_option == 'cake_font':
-                    certi_prices.append(CakeFont.objects.get(font=option, cake=cake).price)
-                elif additional_option == 'cake_picture':
-                    certi_prices.append(CakePicture.objects.get(picture=option, cake=cake).price)
-                elif additional_option == 'cake_package':
-                    certi_prices.append(CakePackage.objects.get(package=option, cake=cake).price)
-                elif additional_option == 'cake_candle':
-                    # quantity = data['cake_addtional_option'][basic_option]['quantity']
-                    certi_prices.append(CakeCandle.objects.get(candle=option, cake=cake).price)
-
-                options.append(additional_option + " : " + option)
-
-            certi_price = sum(certi_prices)
             
-            if certi_price != total_price:
-                return JsonResponse({'message' : 'PRICE_SUM_ERROR'}, status=400)
+            # certi_prices = []
+            # certi_prices.append(cake.price)
+
+            #  # 유효성 검증
+            # for basic_option in basic_options:
+            #     option = data['cake_basic_option'][basic_option]['option']
+            #     price = data['cake_basic_option'][basic_option]['price']
+
+            #     if basic_option == 'cake_size':
+            #         certi_prices.append(CakeSize.objects.get(size=option, cake=cake).price)
+            #     elif basic_option == 'cake_flavor':
+            #         certi_prices.append(CakeFlavor.objects.get(flavor=option, cake=cake).price)
+            #     elif basic_option == 'cake_color':
+            #         certi_prices.append(CakeColor.objects.get(color=option, cake=cake).price)
+            #     elif basic_option == 'cake_design':
+            #         certi_prices.append(CakeDesign.objects.get(design=option, cake=cake).price)
+
+            #     options.append(basic_option + " : " + option)
+
+            # for additional_option in additional_options:
+            #     option = data['cake_additional_option'][additional_option]['option']
+            #     price = data['cake_additional_option'][additional_option]['price']
+
+            #     if additional_option == 'cake_sidedeco':
+            #         certi_prices.append(CakeSideDeco.objects.get(side_deco=option, cake=cake).price)
+            #     elif additional_option == 'cake_deco':
+            #         certi_prices.append(CakeDeco.objects.get(deco=option, cake=cake).price)
+            #     elif additional_option == 'cake_lettering':
+            #         certi_prices.append(CakeLettering.objects.get(lettering=option, cake=cake).price)
+            #     elif additional_option == 'cake_font':
+            #         certi_prices.append(CakeFont.objects.get(font=option, cake=cake).price)
+            #     elif additional_option == 'cake_picture':
+            #         certi_prices.append(CakePicture.objects.get(picture=option, cake=cake).price)
+            #     elif additional_option == 'cake_package':
+            #         certi_prices.append(CakePackage.objects.get(package=option, cake=cake).price)
+            #     elif additional_option == 'cake_candle':
+            #         # quantity = data['cake_addtional_option'][basic_option]['quantity']
+            #         certi_prices.append(CakeCandle.objects.get(candle=option, cake=cake).price)
+
+            #     options.append(additional_option + " : " + option)
+
+            # certi_price = sum(certi_prices)
+            
+            # if certi_price != total_price:
+            #     return JsonResponse({'message' : 'PRICE_SUM_ERROR'}, status=400)
 
             Cart.objects.create(user=user, store=store, cake=cake, 
             option=options, price=total_price, pickup_date=pickup_date, pickup_time=pickup_time)

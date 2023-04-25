@@ -9,7 +9,12 @@ import UIKit
 
 class CartCollectionViewCell: UICollectionViewCell {
     
-    let cellImage: UIImageView = {
+    weak var delegate: CartCellDelegate?
+    
+    private var rootOption: [String]?
+    private var detailOption: ([String], Int)?
+    
+    private var cellImage: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 8
@@ -18,7 +23,7 @@ class CartCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    let storeName: UILabel = {
+    private var storeName: UILabel = {
         let label = UILabel()
         label.text = "딥 다이브"
         label.font = UIFont.myFontM.withSize(16.0)
@@ -28,7 +33,7 @@ class CartCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    let cakeName: UILabel = {
+    private var cakeName: UILabel = {
         let label = UILabel()
         label.text = "반쪽 레터링 케이크"
         label.font = UIFont.myFontB.withSize(14.0)
@@ -38,7 +43,7 @@ class CartCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    let pickUpDate: UILabel = {
+    private var pickUpDate: UILabel = {
         let label = UILabel()
         label.text = "픽업 날짜 : " + "2023-04-26"
         label.font = UIFont.myFontR.withSize(12.0)
@@ -48,7 +53,7 @@ class CartCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    let pickUpTime: UILabel = {
+    private var pickUpTime: UILabel = {
         let label = UILabel()
         label.text = "픽업 시간 : " + "17:30"
         label.font = UIFont.myFontR.withSize(12.0)
@@ -79,10 +84,7 @@ class CartCollectionViewCell: UICollectionViewCell {
     }()
     
     @objc func orderButtonTapped() {
-        
-        let temp = ([""], 0)
-        let temp2 = [""]
-        let orderDetailVC = OrderDetailViewController(orderDetails: temp, rootDetails: temp2)
+        let orderDetailVC = OrderDetailViewController(orderDetails: self.detailOption ?? (["nil"], 0) , rootDetails: self.rootOption ?? ["nil"])
         self.window?.rootViewController?.present(orderDetailVC, animated: true)
     }
     
@@ -98,15 +100,41 @@ class CartCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    private func deleteApiCall(completion: @escaping () -> Void) {
+        if let rootOption = rootOption {
+            let deleteRequest = OrderRequest(storeName: rootOption[1], cakeName: rootOption[0], cakePrice: 0, pickupDate: rootOption[2], pickupTime: rootOption[3], option: "")
+            APIClient.shared.order.deleteCart(deleteRequest) { result in
+                switch result {
+                case .success(let message):
+                    print(message)
+                    completion()
+                case . failure(let error):
+                    print("Error: \(error.localizedDescription)")
+                    completion()
+                }
+            }
+        }
+    }
+    
     @objc func deleteButtonTapped() {
         let alertController = UIAlertController(title: "삭제", message: "해당 상품을 삭제하시겠습니까?", preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        let deleteAction = UIAlertAction(title: "삭제", style: .destructive)
+        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
+            self?.deleteApiCall {
+                DispatchQueue.main.async {
+                    if let strongSelf = self {
+                        strongSelf.delegate?.cartCollectionViewCellDidDeleteItem(strongSelf)
+                        strongSelf.delegate?.reloadData()
+                    }
+                }
+            }
+        }
 //        { [weak self] (action) in
 //            self?.deleteCell()}
         alertController.addAction(cancelAction)
         alertController.addAction(deleteAction)
         self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+        // 여기 이후에 이 쏄을 소유하고 있는 collectionView.reloadData()
     }
     
     override init(frame: CGRect) {
@@ -173,4 +201,22 @@ class CartCollectionViewCell: UICollectionViewCell {
         deleteButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -10).isActive = true
         
     }
+    
+    func configure(with cart: CartResponse) {
+        let url = cart.fullImageURL
+        self.storeName.text = cart.storeName
+        self.cakeName.text = cart.cakeName
+        self.pickUpDate.text = "픽업 날짜 : " + cart.pickUpDate
+        self.pickUpTime.text = "픽업 시간 : " + cart.pickUpTime
+        cellImage.loadImage(from: url)
+        
+        self.rootOption = [cart.cakeName, cart.storeName, cart.pickUpDate, cart.pickUpTime]
+        self.detailOption = ([cart.option], cart.price)
+    }
+}
+
+protocol CartCellDelegate: AnyObject {
+    func reloadData()
+    
+    func cartCollectionViewCellDidDeleteItem(_ cell: CartCollectionViewCell)
 }

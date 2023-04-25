@@ -9,6 +9,9 @@ import UIKit
 
 class OrderCollectionViewCell: UICollectionViewCell {
     
+    private var rootOption: [String]?
+    private var detailOption: ([String], Int)?
+    
     let cellImage: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
@@ -103,7 +106,7 @@ class OrderCollectionViewCell: UICollectionViewCell {
         
         guard let vc = self.findViewController() else { return }
         
-        let billVC = BillViewController()
+        let billVC = BillViewController(orderDetails: self.detailOption ?? (["nil"], 0), rootDetails: self.rootOption ?? ["nil"])
         vc.present(billVC, animated: true, completion: nil)
     }
     
@@ -169,6 +172,18 @@ class OrderCollectionViewCell: UICollectionViewCell {
         detailButton.heightAnchor.constraint(equalTo: statusLabel.heightAnchor).isActive = true
         detailButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -10).isActive = true
         
+    }
+    
+    func configure(with order: OrderResponse) {
+        let url = order.fullImageURL
+        self.storeName.text = order.storeName
+        self.cakeName.text = order.cakeName
+        self.pickUpDate.text = "픽업 날짜 : " + order.pickUpDate
+        self.pickUpTime.text = "픽업 시간 : " + order.pickUpTime
+        cellImage.loadImage(from: url)
+        
+        self.rootOption = [order.cakeName, order.storeName, order.pickUpDate, order.pickUpTime]
+        self.detailOption = ([order.option], order.price)
     }
     
 

@@ -17,9 +17,21 @@ class OptionButtonCollectionViewCell: UICollectionViewCell {
     
     var selectedOption: CakeOption?
     var category: String?
+    var isLetteringOptionSelected = false
     
     // 케이크 상세 옵션들 선택한 것들
     var onOptionSelected: ((Int, String) -> Void)?
+    
+    // 케이크 상세 옵션 -> String
+    var selectedOptionTitle: String?
+    
+    let textField: UITextField = {
+        let textField = UITextField()
+        textField.borderStyle = .roundedRect
+        textField.isHidden = true
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
     
     let optionButton: UIButton = {
         let button = UIButton(type: .roundedRect)
@@ -47,11 +59,16 @@ class OptionButtonCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(optionButton)
+        contentView.addSubview(textField)
         NSLayoutConstraint.activate([
             optionButton.topAnchor.constraint(equalTo: contentView.topAnchor),
             optionButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             optionButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            optionButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            optionButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            textField.topAnchor.constraint(equalTo: optionButton.bottomAnchor, constant: 8),
+            textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            textField.heightAnchor.constraint(equalToConstant: 30)
         ])
         optionButton.addTarget(self, action: #selector(optionButtonTapped), for: .touchUpInside)
         // 버튼에 할당

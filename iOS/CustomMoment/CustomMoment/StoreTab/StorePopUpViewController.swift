@@ -10,6 +10,8 @@ import NMapsMap
 
 class StorePopUpViewController: UIViewController {
     
+    private var footerView: StorePopUpFooterView?
+    
     var storeName: String
     var storeIndex: Int
     
@@ -27,7 +29,6 @@ class StorePopUpViewController: UIViewController {
         self.collectionView.dataSource = self
         apiCall()
         configure()
-//        startAutoScroll()
     }
     
     init(storeName: String, storeIndex: Int) {
@@ -39,11 +40,6 @@ class StorePopUpViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        timer?.invalidate()
-//    }
     
     // MARK: - API Call
     private func apiCall() {
@@ -121,7 +117,7 @@ class StorePopUpViewController: UIViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.45))
         
@@ -130,12 +126,15 @@ class StorePopUpViewController: UIViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .paging
         
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.07))
-        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.45))
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.06))
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5))
         
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
         let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
         section.boundarySupplementaryItems = [header, footer]
+        section.visibleItemsInvalidationHandler = { [weak self] visibleItems, point, environment in
+            self?.footerView?.pageControl.currentPage = visibleItems.last?.indexPath.row ?? 0
+        }
         return section
     }
     
@@ -200,48 +199,6 @@ extension StorePopUpViewController: UICollectionViewDelegate, UICollectionViewDe
         return size
     }
     
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let pageIndex = round(collectionView.contentOffset.x / collectionView.frame.width)
-////        print("scrollVDidScroll collectionView.contentOffset", collectionView.contentOffset)
-//        print("What the fuck?")
-//        pageControl.currentPage = Int(pageIndex)
-//    }
-//
-//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//        timer?.invalidate()
-//    }
-//
-//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        startAutoScroll()
-//    }
-    
-//    private func startAutoScroll() {
-//        timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in
-//            guard let self = self else { return }
-//
-//            var newIndex = self.pageControl.currentPage + 1
-//
-//            if newIndex == self.storeDetailImages.count {
-//                newIndex = 0
-//            }
-//
-//            let indexPath = IndexPath(item: newIndex, section: 0)
-//
-//            let previousContentOffset = self.collectionView.contentOffset.y
-//
-//            self.collectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: true)
-//
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-//                self.collectionView.contentOffset.y = previousContentOffset
-//            }
-//
-//            print("newIndex : ", newIndex)
-//            print("prev offset.y", previousContentOffset)
-//            print("collectionview.contentoffset", collectionView.contentOffset)
-//
-//        }
-//    }
-    
 }
 
 extension StorePopUpViewController: UICollectionViewDataSource {
@@ -270,8 +227,8 @@ extension StorePopUpViewController: UICollectionViewDataSource {
             if let storeInfo = storeInfo {
                 cell.storePopUpLayout()
                 cell.configure(with: storeInfo, item: indexPath.item)
-                cell.pageControl.numberOfPages = 5
-                cell.pageControl.currentPage = 0
+//                cell.pageControl.numberOfPages = 5
+//                cell.pageControl.currentPage = 0
             } else {
                 print("Nothing")
             }
@@ -300,7 +257,7 @@ extension StorePopUpViewController: UICollectionViewDataSource {
         case UICollectionView.elementKindSectionHeader:
             if indexPath.section == 0 {
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "StorePopUpHeaderView", for: indexPath) as! StorePopUpHeaderView
-                header.prepare(text: "🍰 \(storeInfo?.storeName ?? "Unknown Store") " )
+                header.prepare(text: "\(storeInfo?.storeName ?? "Unknown Store") " )
                 return header
             } else {
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "StorePopUpSecondHeaderView", for: indexPath) as! StorePopUpSecondHeaderView
@@ -311,6 +268,7 @@ extension StorePopUpViewController: UICollectionViewDataSource {
             if let storeInfo = storeInfo {
                 footer.configure(with: storeInfo, lat[storeIndex], long[storeIndex])
             }
+            footerView = footer
             return footer
         default:
             return UICollectionReusableView()

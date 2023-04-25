@@ -9,15 +9,31 @@ import UIKit
 
 class OrderViewController: UIViewController {
     
-    private let orderCake = ["cake6"]
+    private var myOrder: [OrderResponse]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        apiCall()
         collectionViewSetUp()
     }
     
-    // MARK: - Collection Vieww
+    // MARK: - API Call
+    private func apiCall() {
+        APIClient.shared.order.fetchOrder { [weak self] result in
+            switch result {
+            case .success(let order):
+                self?.myOrder = order
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    // MARK: - Collection View
     
     // 컬렉션뷰 생성
     private lazy var collectionView: UICollectionView = {
@@ -92,7 +108,7 @@ extension OrderViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return orderCake.count
+        return myOrder?.count ?? 0
     }
     
     
@@ -102,7 +118,9 @@ extension OrderViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.cellImage.image = UIImage(named: orderCake[indexPath.row])
+        if let orderItem = myOrder?[indexPath.row] {
+            cell.configure(with: orderItem)
+        }
         cell.orderLayout()
         cell.layer.cornerRadius = 8
         cell.layer.borderWidth = 0.5

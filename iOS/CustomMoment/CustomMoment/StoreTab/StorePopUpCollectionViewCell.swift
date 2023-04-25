@@ -16,15 +16,15 @@ class StorePopUpCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    let pageControl: UIPageControl = {
-        let pageControl = UIPageControl()
-        pageControl.pageIndicatorTintColor = .systemGray6
-        pageControl.currentPageIndicatorTintColor = .systemGray
-        pageControl.isUserInteractionEnabled = false
-        pageControl.currentPage = 0
-        pageControl.translatesAutoresizingMaskIntoConstraints = false
-        return pageControl
-    }()
+//    let pageControl: UIPageControl = {
+//        let pageControl = UIPageControl()
+//        pageControl.pageIndicatorTintColor = .systemGray6
+//        pageControl.currentPageIndicatorTintColor = .systemGray
+//        pageControl.isUserInteractionEnabled = false
+//        pageControl.currentPage = 0
+//        pageControl.translatesAutoresizingMaskIntoConstraints = false
+//        return pageControl
+//    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,7 +38,7 @@ class StorePopUpCollectionViewCell: UICollectionViewCell {
     
     func storePopUpLayout() {
         self.contentView.addSubview(cellImage)
-        self.contentView.addSubview(pageControl)
+//        self.contentView.addSubview(pageControl)
         
         cellImage.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
         cellImage.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
@@ -48,10 +48,10 @@ class StorePopUpCollectionViewCell: UICollectionViewCell {
         cellImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
         cellImage.contentMode = .scaleAspectFill
         
-        pageControl.topAnchor.constraint(equalTo: cellImage.bottomAnchor).isActive = true
-        pageControl.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
-        pageControl.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        pageControl.heightAnchor.constraint(equalToConstant: 30).isActive = true
+//        pageControl.topAnchor.constraint(equalTo: cellImage.bottomAnchor).isActive = true
+//        pageControl.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
+//        pageControl.widthAnchor.constraint(equalToConstant: 200).isActive = true
+//        pageControl.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
     func configure(with store: MainStorePopUpRequest, item: Int) {

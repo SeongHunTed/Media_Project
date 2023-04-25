@@ -51,7 +51,7 @@ class MainCakeViewController: UIViewController {
                         let imageURL = infoImage.fullInfoImageURL
                         self?.infoImage.loadImage(from: imageURL)
                     }
-                    self?.storeLabel.text = "   ⭐️ " +  info.storeName  + " > " + info.name
+                    self?.storeLabel.text = info.storeName  + " > " + info.name
                     self?.nameLabel.text = info.name
                     self?.pageControl.numberOfPages = info.images.count
                     let numberFomatter = NumberFormatter()
@@ -73,15 +73,17 @@ class MainCakeViewController: UIViewController {
         super.viewDidLayoutSubviews()
         setupContentSize()
         
-        let storeBottomLayer = CALayer()
-        storeBottomLayer.frame = CGRect(x: 0, y: 39, width: self.view.frame.size.width, height: 1)
-        storeBottomLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
-        storeLabel.layer.addSublayer(storeBottomLayer)
+//        let storeBottomLayer = CALayer()
+//        storeBottomLayer.frame = CGRect(x: 0, y: 39, width: self.view.frame.size.width, height: 1)
+//        storeBottomLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+//        storeLabel.layer.addSublayer(storeBottomLayer)
         
-//        let cakeTopLayer = CALayer()
-//        cakeTopLayer.frame = CGRect(x:0, y: pageControl.frame.height+1, width: view.frame.size.width, height: 1)
-//        cakeTopLayer.backgroundColor = UIColor.systemGray4.cgColor
-//        pageControl.layer.addSublayer(cakeTopLayer)
+        lazy var cakeTopLayer = CALayer()
+        if pageControl.frame.height !=  0.0 {
+            cakeTopLayer.frame = CGRect(x:0, y: pageControl.frame.height+15, width: view.frame.size.width, height: 1)
+            cakeTopLayer.backgroundColor = UIColor.systemGray4.cgColor
+            pageControl.layer.addSublayer(cakeTopLayer)
+        }
         
         let buttonBottomLayer = CALayer()
         buttonBottomLayer.frame = CGRect(x: 0, y: 32, width: view.frame.size.width-40, height: 1)
@@ -93,10 +95,9 @@ class MainCakeViewController: UIViewController {
         infoImage.widthAnchor.constraint(equalToConstant: scrollView.frame.width-40).isActive = true
         guard let image = infoImage.image else { return }
         let aspectRatio = image.size.height / image.size.width
-        print("infoImage : \(infoImage.frame.width)")
-        let contentHeight = 350 * aspectRatio + infoImage.frame.origin.y
-        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: contentHeight)
-        
+        let contentHeight = (scrollView.frame.width-40) * aspectRatio
+        scrollView.contentSize = CGSize(width: scrollView.frame.width-40, height: contentHeight)
+        infoImage.widthAnchor.constraint(equalToConstant: 350).isActive = true
         infoImage.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
     }
     
@@ -141,7 +142,7 @@ class MainCakeViewController: UIViewController {
     
     private let storeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.myFontB.withSize(15)
+        label.font = UIFont.myFontB.withSize(17)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -200,9 +201,8 @@ class MainCakeViewController: UIViewController {
     
     private let infoImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "infoview")
+        imageView.backgroundColor = .systemRed.withAlphaComponent(0.8)
         imageView.contentMode = .scaleAspectFit
-//        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -231,6 +231,14 @@ class MainCakeViewController: UIViewController {
         return button
     }()
     
+    private let dismissIndicator: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.systemGray
+        view.layer.cornerRadius = 2.5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     // MARK: - 하단 뷰 Layout
     private func configure() {
         
@@ -244,20 +252,26 @@ class MainCakeViewController: UIViewController {
         scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         
-        scrollView.addSubview(storeLabel)
+//        scrollView.addSubview(storeLabel)
         scrollView.addSubview(pageControl)
+        scrollView.addSubview(dismissIndicator)
         
-        storeLabel.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        storeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        storeLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        storeLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -10).isActive = true
+        dismissIndicator.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        dismissIndicator.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 8).isActive = true
+        dismissIndicator.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        dismissIndicator.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        
+//        storeLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 5).isActive = true
+//        storeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        storeLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 25).isActive = true
+//        storeLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -10).isActive = true
 
-        collectionView.topAnchor.constraint(equalTo: self.storeLabel.bottomAnchor).isActive = true
-        collectionView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor, multiplier: 0.8).isActive = true
+        collectionView.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 25).isActive = true
+        collectionView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor, multiplier: 1.0).isActive = true
         collectionView.heightAnchor.constraint(equalTo: collectionView.widthAnchor, multiplier: 1.0).isActive = true
         collectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         
-        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -10).isActive = true
+        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -5).isActive = true
         pageControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         pageControl.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -268,7 +282,7 @@ class MainCakeViewController: UIViewController {
         scrollView.addSubview(reviewButton)
         
         nameLabel.topAnchor.constraint(
-            equalTo: pageControl.bottomAnchor, constant: 20).isActive = true
+            equalTo: collectionView.bottomAnchor, constant: 40).isActive = true
         nameLabel.leadingAnchor.constraint(
             equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         nameLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -299,6 +313,7 @@ class MainCakeViewController: UIViewController {
         infoImage.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20).isActive = true
         infoImage.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20).isActive = true
         infoImage.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        infoImage.contentMode = .scaleAspectFit
         
         
         // OrderView Layout
@@ -385,14 +400,10 @@ class MainCakeViewController: UIViewController {
     // 따라서 컬렉션 뷰는 정말 쎌 이미지만 보여주는 역할로 써 정의됨
     private func cakeBannerCompositionalLayout() -> NSCollectionLayoutSection {
         
-        // header 구현 -> 기존 헤더 사용
-//        collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
-//        collectionView.register(MyFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "MyFooterView")
-        
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 30, bottom: 30, trailing: 30)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 25, bottom: 10, trailing: 25)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
@@ -400,15 +411,9 @@ class MainCakeViewController: UIViewController {
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .paging
-        
-//        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.13))
-//        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.13))
-        
-//        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-//        let footer = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
-
-        
-//        section.boundarySupplementaryItems = [header]
+        section.visibleItemsInvalidationHandler = { [weak self] visibleItems, point, environment in
+            self?.pageControl.currentPage = visibleItems.last?.indexPath.row ?? 0
+        }
         return section
     }
     
@@ -417,7 +422,7 @@ class MainCakeViewController: UIViewController {
 
 // MARK: extension
 extension MainCakeViewController: UICollectionViewDelegate {
-    
+
 }
 
 extension MainCakeViewController: UICollectionViewDataSource {
@@ -439,8 +444,7 @@ extension MainCakeViewController: UICollectionViewDataSource {
         } else {
             print("Nothing")
         }
-        
-        cell.layer.cornerRadius = 4.0
+        cell.cellImage.contentMode = .scaleAspectFill
         cell.clipsToBounds = true
         
         return cell
