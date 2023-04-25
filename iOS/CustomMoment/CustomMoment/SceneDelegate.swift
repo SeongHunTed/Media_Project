@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, UITabBarControllerDelegate {
 
     var window: UIWindow?
 
@@ -22,7 +22,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
         window?.rootViewController = TabBarViewController()
         window?.makeKeyAndVisible()
+        if let tabBarController = window?.rootViewController as? UITabBarController {
+            tabBarController.delegate = self
+        }
         
+        let defaults = UserDefaults.standard
+        if let email = defaults.string(forKey: "email"), let password = defaults.string(forKey: "password") {
+            autoLogin(email: email, password: password)
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -52,7 +59,37 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if let myInfoViewController = viewController as? MyInfoViewController {
+            myInfoViewController.updateData()
+            
+        }
+    }
 
+    func autoLogin(email: String, password: String) {
+        let loginRequest = LoginRequest(email: email, password: password)
+            
+        APIClient.shared.auth.login(loginRequest) { result in
+            switch result {
+            case .success(let loginResponse):
+                // 로그인 성공 처리
+                APIClient.shared.authToken = loginResponse.token
+                APIClient.shared.isSeller = loginResponse.isSeller
+//                NotificationCenter.default.post(name: .didLoginSuccess, object: nil)
+                
+//                if let myInfoVC = UIApplication.shared.windows.first?.rootViewController as? MyInfoViewController {
+//                    myInfoVC.handleLoginSuccessNotification(Notification(name: .didLoginSuccess))
+//                }
+                print("자동로그인 성공")
+                
+                
+            case .failure(let error):
+                // 실패 처리
+                print("자동 로그인 실패: \(error)")
+            }
+        }
+    }
 
 }
 

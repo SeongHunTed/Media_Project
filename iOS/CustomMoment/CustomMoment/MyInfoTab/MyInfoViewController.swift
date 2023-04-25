@@ -10,18 +10,27 @@ import UIKit
 class MyInfoViewController: UIViewController {
     
     var myInfo: MyInfoResponse?
+    var isLoginned: Bool?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        isLoginned = !(APIClient.shared.authToken?.isEmpty ?? true)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLoginSuccessNotification), name: .didLoginSuccess, object: nil)
         imageSetUp()
         configure()
         collectionViewSetUp()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleLoginSuccessNotification), name: .didLoginSuccess, object: nil)
+        updateUIBaseOnLoginStatus()
     }
     
-    @objc func handleLoginSuccessNotification(_ notification: Notification) {
-        self.loginSuccess = true
+    func updateData() {
+        print("Reloading")
+        cartApiCall()
+    }
+    
+    @objc func handleLoginSuccessNotification(_ notification: Notification?) {
+        print("handle")
+        self.isLoginned = true
         updateUIBaseOnLoginStatus()
         cartApiCall()
         infoApiCall()
@@ -70,7 +79,6 @@ class MyInfoViewController: UIViewController {
     
     // MARK: - Variables
     
-    private var loginSuccess = false
     private var cart: [CartResponse]?
     private var userName: String?
     private var userEmail: String?
@@ -198,7 +206,7 @@ class MyInfoViewController: UIViewController {
     // 컬렉션뷰 생성
     lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: getLayout())
-        collectionView.isScrollEnabled = false
+        collectionView.isScrollEnabled = true
         collectionView.clipsToBounds = true
         collectionView.backgroundColor = .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -236,15 +244,23 @@ class MyInfoViewController: UIViewController {
     }
     
     private func updateUIBaseOnLoginStatus() {
-        if let _ = APIClient.shared.authToken {
-            loginSuceesConfigure()
-            loginButton.isHidden = true
+        
+        if let loginSuccess = isLoginned {
+            if loginSuccess == true {
+                print("Here")
+                loginSucessConfigure()
+                infoApiCall()
+                loginButton.isHidden = true
+            } else {
+                print("What?")
+            }
         } else {
+            print("this is error point")
             loginFailedConfigure()
         }
     }
     
-    private func loginSuceesConfigure() {
+    private func loginSucessConfigure() {
         
         profileView.addSubview(nameLabel)
         profileView.addSubview(idLabel)
@@ -390,11 +406,14 @@ extension MyInfoViewController: UICollectionViewDataSource {
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        if loginSuccess == false {
-            return 1
-        } else {
-            return 2
+        if let loginSuccess = isLoginned {
+            if loginSuccess == false {
+                return 1
+            } else {
+                return 2
+            }
         }
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

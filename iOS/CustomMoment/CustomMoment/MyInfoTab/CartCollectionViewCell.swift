@@ -135,7 +135,6 @@ class CartCollectionViewCell: UICollectionViewCell {
         alertController.addAction(deleteAction)
         self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
         // 여기 이후에 이 쏄을 소유하고 있는 collectionView.reloadData()
-        
     }
     
     override init(frame: CGRect) {

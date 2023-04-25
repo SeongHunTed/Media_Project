@@ -183,6 +183,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 APIClient.shared.isSeller = loginResponse.isSeller
                 self?.killKeyboardObserver()
                 NotificationCenter.default.post(name: .didLoginSuccess, object: nil)
+                
+                let defualts = UserDefaults.standard
+                defualts.set(true, forKey: "isLoggedIn")
+                defualts.set(email, forKey: "email")
+                defualts.set(password, forKey: "password")
                 self?.dismiss(animated: true)
             case .failure:
                 DispatchQueue.main.async {
