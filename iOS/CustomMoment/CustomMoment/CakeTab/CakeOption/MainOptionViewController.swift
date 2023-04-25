@@ -23,6 +23,9 @@ class MainOptionViewController: UIViewController {
     
     var cakePrice: Int
     
+    // imagePicker에서 가져온 사진의 이름을 위한 변수
+    var selectedCell: OptionButtonCollectionViewCell?
+    
     init(cakeOptionRequest: CakeOptionRequest, orderRequest: TimeInfoRequest, cakePrice: Int) {
         self.cakeOptionRequest = cakeOptionRequest
         self.orderRequest = orderRequest
@@ -168,7 +171,7 @@ class MainOptionViewController: UIViewController {
         let additionalOptionTitles = [
             (key: \CakeOptionResponse.lettering, title: "레터링"),
             (key: \CakeOptionResponse.font, title: "폰트"),
-            (key: \CakeOptionResponse.side_deco, title: "사이드데코"),
+            (key: \CakeOptionResponse.side_deco, title: "하판레터링"),
             (key: \CakeOptionResponse.deco, title: "데코"),
             (key: \CakeOptionResponse.picture, title: "디자인첨부"),
             (key: \CakeOptionResponse.design, title: "초")
@@ -318,6 +321,7 @@ class MainOptionViewController: UIViewController {
             let rootOption: [String] = [cake, store, date, selectedTime]
             
             let orderDetails = getOrderDetails()
+            print(orderDetails)
             let orderVC = OrderDetailViewController(orderDetails: orderDetails, rootDetails: rootOption)
             present(orderVC, animated: true)
         } else {
@@ -382,7 +386,6 @@ class MainOptionViewController: UIViewController {
 // MARK: - Calendar UI/Action SetUp
 extension MainOptionViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
     
-    //
     func setCalendarUI() {
         self.calendar.delegate = self
         self.calendar.dataSource = self
@@ -607,7 +610,39 @@ extension MainOptionViewController: UICollectionViewDataSource {
                 cell.optionButton.backgroundColor = .systemRed.withAlphaComponent(0.8)
                 cell.optionButton.tintColor = .white
                 cell.optionButton.layer.borderColor = UIColor.systemRed.cgColor
+                cell.selectedOptionTitle = title
                 cell.selectedOption = self?.additionalDropDownDataSource[indexPath.item][index]
+                
+                if (cell.category == "레터링" || cell.category == "하판레터링") && (title != "선택 안함 + 0원" && title != "선택안함 + 0원" ){
+                    let alertController = UIAlertController(title: "레터링 입력", message: "레터링 내용을 입력하세요.", preferredStyle: .alert)
+                    
+                    alertController.addTextField { textField in
+                        textField.placeholder = "레터링 내용"
+                    }
+
+                    let submitAction = UIAlertAction(title: "확인", style: .default) { _ in
+                        if let inputText = alertController.textFields?.first?.text {
+                            // 사용자가 입력한 레터링 내용을 처리합니다.
+                            cell.selectedOptionTitle = inputText
+                            cell.optionButton.setTitle("레터링 : " + inputText, for: .normal)
+                        }
+                    }
+                    alertController.addAction(submitAction)
+
+                    let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+                    alertController.addAction(cancelAction)
+
+                    self?.present(alertController, animated: true, completion: nil)
+                }
+                
+                if cell.category == "디자인첨부" {
+                    self?.selectedCell = cell
+                    let imagePickerController = UIImagePickerController()
+                    imagePickerController.delegate = self
+                    imagePickerController.sourceType = .photoLibrary
+
+                    self?.present(imagePickerController, animated: true, completion: nil)
+                }
             }
             cell.dropDown.selectionAction = cell.onOptionSelected
             return cell
@@ -635,12 +670,30 @@ extension MainOptionViewController: UICollectionViewDataSource {
     }
 }
 
+extension MainOptionViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[.originalImage] as? UIImage {
+            print("사용자가 선택한 이미지\(image)")
+            selectedCell?.optionButton.setTitle("이미지 첨부완료", for: .normal)
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+}
+
 // MARK: - 다음 주문내역을 이동시킬 정보를 위한 함수
 
 extension MainOptionViewController {
     
+    // 시간 선택 되었는지 체크
+    // 나중에 처리
+    
     // 모든 옵션이 선택 되었는지 체크
-    private func areAllOptionSelected ()-> Bool {
+    private func areAllOptionSelected()-> Bool {
         for cell in collectionView.visibleCells {
             guard let optionCell = cell as? OptionButtonCollectionViewCell else { continue }
             if optionCell.selectedOption == nil {
@@ -658,7 +711,14 @@ extension MainOptionViewController {
         for cell in collectionView.visibleCells {
             guard let optionCell = cell as? OptionButtonCollectionViewCell else { continue }
             if let selectedOption = optionCell.selectedOption {
-                orderDetails.append("\(optionCell.category ?? "") : \(selectedOption.optionName) + \(selectedOption.price)원")
+                
+                if let selectedOptionTitle = optionCell.selectedOptionTitle {
+                    if optionCell.category == "레터링" || optionCell.category == "하판레터링" {
+                        orderDetails.append("\(optionCell.category ?? "") : \(selectedOptionTitle) + \(selectedOption.price)원")
+                    }
+                } else {
+                    orderDetails.append("\(optionCell.category ?? "") : \(selectedOption.optionName) + \(selectedOption.price)원")
+                }
                 totalPrice += selectedOption.price
             }
         }

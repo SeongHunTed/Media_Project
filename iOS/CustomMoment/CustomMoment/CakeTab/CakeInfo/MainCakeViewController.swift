@@ -51,7 +51,7 @@ class MainCakeViewController: UIViewController {
                         let imageURL = infoImage.fullInfoImageURL
                         self?.infoImage.loadImage(from: imageURL)
                     }
-                    self?.storeLabel.text = "   ⭐️ " +  info.storeName  + " > " + info.name
+                    self?.storeLabel.text = info.storeName  + " > " + info.name
                     self?.nameLabel.text = info.name
                     self?.pageControl.numberOfPages = info.images.count
                     let numberFomatter = NumberFormatter()
@@ -73,14 +73,14 @@ class MainCakeViewController: UIViewController {
         super.viewDidLayoutSubviews()
         setupContentSize()
         
-        let storeBottomLayer = CALayer()
-        storeBottomLayer.frame = CGRect(x: 0, y: 39, width: self.view.frame.size.width, height: 1)
-        storeBottomLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
-        storeLabel.layer.addSublayer(storeBottomLayer)
+//        let storeBottomLayer = CALayer()
+//        storeBottomLayer.frame = CGRect(x: 0, y: 39, width: self.view.frame.size.width, height: 1)
+//        storeBottomLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+//        storeLabel.layer.addSublayer(storeBottomLayer)
         
         lazy var cakeTopLayer = CALayer()
         if pageControl.frame.height !=  0.0 {
-            cakeTopLayer.frame = CGRect(x:0, y: pageControl.frame.height+1, width: view.frame.size.width, height: 1)
+            cakeTopLayer.frame = CGRect(x:0, y: pageControl.frame.height+15, width: view.frame.size.width, height: 1)
             cakeTopLayer.backgroundColor = UIColor.systemGray4.cgColor
             pageControl.layer.addSublayer(cakeTopLayer)
         }
@@ -95,9 +95,8 @@ class MainCakeViewController: UIViewController {
         infoImage.widthAnchor.constraint(equalToConstant: scrollView.frame.width-40).isActive = true
         guard let image = infoImage.image else { return }
         let aspectRatio = image.size.height / image.size.width
-        print(self.scrollView.frame.width)
-        let contentHeight = 320 * aspectRatio + infoImage.frame.origin.y
-        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: contentHeight)
+        let contentHeight = (scrollView.frame.width-40) * aspectRatio
+        scrollView.contentSize = CGSize(width: scrollView.frame.width-40, height: contentHeight)
         infoImage.widthAnchor.constraint(equalToConstant: 350).isActive = true
         infoImage.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
     }
@@ -143,7 +142,7 @@ class MainCakeViewController: UIViewController {
     
     private let storeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.myFontB.withSize(15)
+        label.font = UIFont.myFontB.withSize(17)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -232,6 +231,14 @@ class MainCakeViewController: UIViewController {
         return button
     }()
     
+    private let dismissIndicator: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.systemGray
+        view.layer.cornerRadius = 2.5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     // MARK: - 하단 뷰 Layout
     private func configure() {
         
@@ -245,20 +252,26 @@ class MainCakeViewController: UIViewController {
         scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         
-        scrollView.addSubview(storeLabel)
+//        scrollView.addSubview(storeLabel)
         scrollView.addSubview(pageControl)
+        scrollView.addSubview(dismissIndicator)
         
-        storeLabel.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        storeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        storeLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        storeLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -10).isActive = true
+        dismissIndicator.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        dismissIndicator.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 8).isActive = true
+        dismissIndicator.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        dismissIndicator.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        
+//        storeLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 5).isActive = true
+//        storeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        storeLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 25).isActive = true
+//        storeLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -10).isActive = true
 
-        collectionView.topAnchor.constraint(equalTo: self.storeLabel.bottomAnchor).isActive = true
-        collectionView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor, multiplier: 0.8).isActive = true
+        collectionView.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 25).isActive = true
+        collectionView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor, multiplier: 1.0).isActive = true
         collectionView.heightAnchor.constraint(equalTo: collectionView.widthAnchor, multiplier: 1.0).isActive = true
         collectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         
-        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -10).isActive = true
+        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -5).isActive = true
         pageControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         pageControl.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -390,7 +403,7 @@ class MainCakeViewController: UIViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 25, bottom: 10, trailing: 25)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
@@ -432,7 +445,6 @@ extension MainCakeViewController: UICollectionViewDataSource {
             print("Nothing")
         }
         cell.cellImage.contentMode = .scaleAspectFill
-        cell.layer.cornerRadius = 4.0
         cell.clipsToBounds = true
         
         return cell

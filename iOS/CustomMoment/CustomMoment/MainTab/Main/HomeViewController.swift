@@ -191,14 +191,14 @@ extension HomeViewController {
         collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
         
         // item size - absolute : 고정값, estimated : 추측, fraction : 퍼센트
-        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .fractionalHeight(0.7))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .fractionalHeight(0.85))
         
         // making item with above size
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 2, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 2, trailing: 10)
         
         // group size
-        let groupSize = NSCollectionLayoutSize(widthDimension: itemSize.widthDimension, heightDimension: .fractionalHeight(0.4))
+        let groupSize = NSCollectionLayoutSize(widthDimension: itemSize.widthDimension, heightDimension: .fractionalHeight(0.3))
         
         // making group
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
@@ -220,14 +220,14 @@ extension HomeViewController {
         collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
         
         // item size - absolute : 고정값, estimated : 추측, fraction : 퍼센트
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(1.0))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         // making item with above size
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 20, trailing: 10)
         
         // group size
-        let groupSize = NSCollectionLayoutSize(widthDimension: itemSize.widthDimension, heightDimension: .fractionalHeight(0.4))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.85), heightDimension: .fractionalHeight(0.4))
         
         // making group
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
@@ -330,7 +330,7 @@ extension HomeViewController: UICollectionViewDataSource {
             cell.storeLayout()
             cell.configure(with: store)
             cell.cellImage.contentMode = .scaleAspectFill
-            cell.cellImage.layer.cornerRadius = 0
+//            cell.cellImage.layer.cornerRadius = 0
             
             return cell
         }
@@ -343,14 +343,14 @@ extension HomeViewController: UICollectionViewDataSource {
             
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderView
             if indexPath.section == 1 {
-                header.prepare(text: "🍰 오늘의 추천 케이크")
+                header.prepare(text: "오늘의 추천 케이크")
             } else if indexPath.section == 2 {
-                header.prepare(text: "🏡 지금 HOT한 스토어")
+                header.prepare(text: "지금 HOT한 스토어")
             }
-            let borderLayer = CALayer()
-            borderLayer.frame = CGRect(x: 0, y: header.frame.size.height - 1, width: header.frame.size.width, height: 1)
-            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
-            header.layer.addSublayer(borderLayer)
+//            let borderLayer = CALayer()
+//            borderLayer.frame = CGRect(x: 0, y: header.frame.size.height - 1, width: header.frame.size.width, height: 0.7)
+//            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+//            header.layer.addSublayer(borderLayer)
             return header
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyFooterView

@@ -27,7 +27,7 @@ class StorePopUpHeaderView: UICollectionReusableView {
             self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             self.label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
         ])
-        addBottomBorder()
+//        addBottomBorder()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -155,7 +155,7 @@ class StorePopUpFooterView: UICollectionReusableView {
             
             pageControl.widthAnchor.constraint(equalToConstant: 200),
             pageControl.heightAnchor.constraint(equalToConstant: 30),
-            pageControl.topAnchor.constraint(equalTo: self.topAnchor),
+            pageControl.topAnchor.constraint(equalTo: self.topAnchor, constant: -2),
             pageControl.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             timeLabel.topAnchor.constraint(equalTo: self.pageControl.bottomAnchor, constant: 30),
@@ -188,7 +188,7 @@ class StorePopUpFooterView: UICollectionReusableView {
 //        bottomBorderLayer.frame = CGRect(x: 0, y: frame.size.height - 1, width: frame.size.width, height: 1)
 //        bottomBorderLayer.backgroundColor = UIColor.lightGray.cgColor
         let topBorderLayer = CALayer()
-        topBorderLayer.frame = CGRect(x: 0, y: 40, width: frame.size.width, height: 1)
+        topBorderLayer.frame = CGRect(x: 0, y: 30, width: frame.size.width, height: 1)
         topBorderLayer.backgroundColor = UIColor.lightGray.cgColor
 //        layer.addSublayer(bottomBorderLayer)
         layer.addSublayer(topBorderLayer)
