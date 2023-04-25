@@ -16,9 +16,11 @@ from django.shortcuts import get_object_or_404
 
 @api_view(['GET'])
 def main_menu_cake_list(request):
-    cakes = Cake.objects.all().order_by('?')[:10]
+    cakes_fixed = Cake.objects.filter(name__in=['원터치아트케이크', '원터치뷰케이크'])
+    cakes_random = Cake.objects.exclude(name__in=['원터치아트케이크', '원터치뷰케이크']).order_by('?')[:8]
+    cakes = list(cakes_fixed) + list(cakes_random)
     data = CakeOnlySerializer(cakes, many=True).data
-    return Response(data, status=status.HTTP_200_OK)
+    return Response(data, status=status.HTTP_200_OK)    
 
 # 10개씩 끊어서 케이크 주는 API
 @api_view(['GET',])
