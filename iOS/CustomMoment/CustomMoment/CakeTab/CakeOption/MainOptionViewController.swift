@@ -95,6 +95,7 @@ class MainOptionViewController: UIViewController {
                 self?.collectionView.reloadData()
             case .failure(let error):
                 print("Error: \(error.localizedDescription)")
+                print("Here")
             }
         }
         
@@ -125,6 +126,7 @@ class MainOptionViewController: UIViewController {
                     print(errorMessage)
                 } else {
                     print("Error: \(error.localizedDescription)")
+                    print("Or")
                 }
             }
         }

@@ -17,9 +17,9 @@ class DrawCollectionViewCell: UICollectionViewCell {
     }
     
     private let button: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .roundedRect)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.myFontR.withSize(16.0)
+        button.titleLabel?.font = UIFont.myFontM.withSize(14.0)
         button.setTitleColor(.systemRed, for: .normal)
         button.setTitleColor(.white, for: .selected)
         button.isUserInteractionEnabled = false

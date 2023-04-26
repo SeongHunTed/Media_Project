@@ -30,7 +30,7 @@ final class DalleAPIService: ObservableObject {
         let fetchImageURL = "https://api.openai.com/v1/images/generations"
         let urlRequest = try createURLRequestFor(httpMethod: "POST", url: fetchImageURL, prompt: prompt)
         
-        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        let (data, _) = try await URLSession.shared.data(for: urlRequest)
         
         let decoder = JSONDecoder()
         let results = try decoder.decode(Reponse.self, from: data)
