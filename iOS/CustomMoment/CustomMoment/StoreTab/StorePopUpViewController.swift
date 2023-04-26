@@ -55,7 +55,7 @@ class StorePopUpViewController: UIViewController {
             }
         }
         
-        APIClient.shared.cake.fetchCakeTapCake(0) { [weak self] result in
+        APIClient.shared.cake.fetchCakePerStore(self.storeName) { [weak self] result in
             switch result {
             case .success(let cakes):
                 self?.cakes = cakes
@@ -243,8 +243,8 @@ extension StorePopUpViewController: UICollectionViewDataSource {
             cell.configure(with: cake)
             cell.cellImage.contentMode = .scaleAspectFill
             cell.layer.cornerRadius = 8
-            cell.layer.borderWidth = 0.1
-            cell.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
+//            cell.layer.borderWidth = 0.1
+//            cell.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
             
             return cell
         }

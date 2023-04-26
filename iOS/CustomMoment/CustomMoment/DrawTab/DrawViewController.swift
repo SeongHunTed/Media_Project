@@ -48,7 +48,7 @@ class DrawViewController: UIViewController {
     
     private let dalleImageView: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "gogh")
+        image.image = UIImage(named: "gogh2")
         image.contentMode = .scaleAspectFill
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
@@ -201,7 +201,7 @@ extension DrawViewController: UITextFieldDelegate {
         let words = inputText.split(separator: " ")
         
         if words.count < 2 {
-            let alertController = UIAlertController(title: "경고", message: "정확한 케이크 이미지 생성을 위해 7글자 이상 입력하세요!", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "경고", message: "정확한 케이크 이미지 생성을 위해 2글자 이상 입력하세요!", preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
             alertController.addAction(cancelAction)
             self.present(alertController, animated: true)
