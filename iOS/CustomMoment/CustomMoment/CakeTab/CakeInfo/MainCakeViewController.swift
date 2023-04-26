@@ -97,7 +97,7 @@ class MainCakeViewController: UIViewController {
         let aspectRatio = image.size.height / image.size.width
         let contentHeight = (scrollView.frame.width-40) * aspectRatio
         scrollView.contentSize = CGSize(width: scrollView.frame.width-40, height: contentHeight)
-        infoImage.widthAnchor.constraint(equalToConstant: 350).isActive = true
+        infoImage.widthAnchor.constraint(equalToConstant: scrollView.frame.width-40).isActive = true
         infoImage.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
     }
     
