@@ -12,7 +12,6 @@ protocol CalendarPopUpDelegate: AnyObject {
     func didSelectDate(_ data: Date)
 }
 
-
 class CalendarPopUpViewController: UIViewController {
     
     weak var delegate: CalendarPopUpDelegate?

@@ -202,7 +202,7 @@ extension CakeViewController: UICollectionViewDataSource {
     
     // dataSource Header, Footer
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CakeStoreHeaderView", for: indexPath) as! CakeHeaderView
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CakeHeaderView", for: indexPath) as! CakeHeaderView
         header.delegate = self
         return header
     }
@@ -220,8 +220,6 @@ extension CakeViewController: CalendarPopUpDelegate {
             headerView.calendarButton.setTitle(dateString, for: .normal)
         }
     }
-    
-    
 }
 
 extension CakeViewController: CakeHeaderViewDelegate {

@@ -26,7 +26,7 @@ class DrawViewController: UIViewController {
     
     // MARK: - Variable
     
-    private let buttonTitles = ["빈센트 반 고흐", "클로드 모네", "폴 고갱", "파블로 피카소", "마르쉘 뒤샹", "램브란트", "키스 해링", "장 미셸 바스키아", "앤디 워홀", "직접 입력"]
+    private let buttonTitles = ["빈센트 반 고흐", "클로드 모네", "폴 고갱", "파블로 피카소", "마르쉘 뒤샹", "램브란트", "키스 해링", "앤디 워홀", "직접 입력"]
     
     // MARK: - Components
     private lazy var collectionView: UICollectionView = {
@@ -168,15 +168,6 @@ class DrawViewController: UIViewController {
         collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         collectionView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         collectionView.heightAnchor.constraint(equalToConstant: 160).isActive = true
-        
-////        dalleImageView.topAnchor.constraint(greaterThanOrEqualTo: dallePrompt.bottomAnchor, constant: 10).isActive = true
-////        dalleImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-//        dalleImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
-//        dalleImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
-////        dalleImageView.widthAnchor.constraint(lessThanOrEqualTo: self.view.widthAnchor, multiplier: 0.9).isActive = true
-//        dalleImageView.heightAnchor.constraint(equalTo: dalleImageView.widthAnchor).isActive = true
-////        dalleImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-////        dalleImageView.bottomAnchor.constraint(lessThanOrEqualTo: self.saveButton.topAnchor, constant: -10).isActive = true
   
         dalleImageView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
         dalleImageView.heightAnchor.constraint(equalTo: dalleImageView.widthAnchor, multiplier: 1.0).isActive = true
