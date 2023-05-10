@@ -11,14 +11,14 @@
 import Foundation
 
 // 나중에 NetworkModel에서 통합
-public enum Result<Value> {
-    case failure(Error)
-    case success(Value)
-}
+//public enum Result<Value> {
+//    case failure(Error)
+//    case success(Value)
+//}
 
 public protocol Dispatchable {
     
-    var componetns: URLComponents?{ get }
+    var components: URLComponents?{ get }
     
     var session: URLSessionProtocol { get }
     

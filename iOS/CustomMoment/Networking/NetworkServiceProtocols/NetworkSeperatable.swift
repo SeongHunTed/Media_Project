@@ -6,7 +6,8 @@
 //
 
 /// NetworkSeperatable은 다양한 HTTPMethod를 3개의 메서드로 추상화 하여 구분하는 프로토콜
-
+/// 아마도 나한테는 필요 없을 메서드
+/// firebase를 쓴다면 필요할듯
 import Foundation
 
 public protocol NetworkSeperatable {
