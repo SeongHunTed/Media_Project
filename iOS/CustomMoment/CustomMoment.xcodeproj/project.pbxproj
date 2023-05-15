@@ -239,9 +239,6 @@
 			children = (
 				78BF0EA32A0938BF00A35A7C /* NetworkService */,
 				78BF0E912A092D1A00A35A7C /* NetworkServiceProtocols */,
-				783F397029E862D100D8424D /* APIClient.swift */,
-				78BF0EA42A0B5F8000A35A7C /* Dispatcher.swift */,
-				78BF0EA62A0B940500A35A7C /* Error.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -338,6 +335,7 @@
 		78BF0EA32A0938BF00A35A7C /* NetworkService */ = {
 			isa = PBXGroup;
 			children = (
+				78BF0EB32A0BBA2000A35A7C /* APIService */,
 				78BF0EB02A0BB18800A35A7C /* RequestMaker */,
 				78BF0EAB2A0BAEE400A35A7C /* Extension */,
 				78BF0EA82A0B982000A35A7C /* JsonParser */,
@@ -368,6 +366,16 @@
 				78BF0EB12A0BB19A00A35A7C /* RequestMaker.swift */,
 			);
 			path = RequestMaker;
+			sourceTree = "<group>";
+		};
+		78BF0EB32A0BBA2000A35A7C /* APIService */ = {
+			isa = PBXGroup;
+			children = (
+				783F397029E862D100D8424D /* APIClient.swift */,
+				78BF0EA42A0B5F8000A35A7C /* Dispatcher.swift */,
+				78BF0EA62A0B940500A35A7C /* Error.swift */,
+			);
+			path = APIService;
 			sourceTree = "<group>";
 		};
 		78DFB06629DB0E78002DC963 /* Subviews */ = {

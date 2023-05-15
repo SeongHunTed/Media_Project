@@ -28,3 +28,13 @@ public enum APIError: Error {
         }
     }
 }
+
+public enum AuthError: Error {
+    case tokenError
+    
+    var localizedDescription: String {
+        switch self {
+        case .tokenError: return "Token Error"
+        }
+    }
+}

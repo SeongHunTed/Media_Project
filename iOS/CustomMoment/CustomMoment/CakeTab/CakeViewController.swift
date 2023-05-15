@@ -114,6 +114,11 @@ class CakeViewController: UIViewController {
         return indicator
     }()
     
+    private func loadingIndicatorSetUp() {
+        loadingIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        loadingIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+    }
+    
 }
 
 
@@ -202,7 +207,7 @@ extension CakeViewController: UICollectionViewDataSource {
     
     // dataSource Header, Footer
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CakeHeaderView", for: indexPath) as! CakeHeaderView
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CakeStoreHeaderView", for: indexPath) as! CakeHeaderView
         header.delegate = self
         return header
     }

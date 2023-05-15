@@ -14,13 +14,10 @@ public struct RequestMaker: RequestMakable {
     
     public init() {}
     
-    public func makeRequest(url: URL?,
+    public func makeRequest(url: URL,
                             method: HTTPMethod,
                             headers: [String : String],
                             body: Data?) -> URLRequest? {
-        guard let url = url else {
-            return nil
-        }
         
         var request = URLRequest(url: url)
         for (key, value) in headers {
@@ -45,4 +42,5 @@ public struct RequestMaker: RequestMakable {
             return request
         }
     }
+
 }

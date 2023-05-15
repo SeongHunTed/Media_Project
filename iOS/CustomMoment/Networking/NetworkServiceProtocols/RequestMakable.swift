@@ -11,6 +11,7 @@ import Foundation
 
 public protocol RequestMakable {
     
-    func makeRequest(url: URL?, method: HTTPMethod, headers: [String: String],
+    func makeRequest(url: URL, method: HTTPMethod, headers: [String: String],
                      body: Data?) -> URLRequest?
+    
 }
