@@ -86,17 +86,27 @@ class APIClient {
         func fetchInfo(completion: @escaping (Result<MyInfoResponse>) -> Void) {
             guard let url = URL(string: APIClient.shared.baseURL + "accounts/info") else { return }
             
-            guard let token = APIClient.shared.authToken else {
-                completion(.failure(AuthError.tokenError))
-                return
-            }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             
-            guard let request = requestMaker.makeRequest(url: url,
-                                                         method: .get,
-                                                         headers: ["Content-Type" : "application/json", "Token \(token)" : "Authorization"], body: nil) else {
-                completion(.failure(APIError.requestFailed))
+            guard let token = APIClient.shared.authToken else {
+                completion(.failure(NSError(domain: "Authorization", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token is missing"])))
                 return
             }
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+            
+//            guard let token = APIClient.shared.authToken else {
+//                completion(.failure(AuthError.tokenError))
+//                return
+//            }
+//
+//            guard let request = requestMaker.makeRequest(url: url,
+//                                                         method: .get,
+//                                                         headers: ["Content-Type" : "application/json", "Token \(token)" : "Authorization"], body: nil) else {
+//                completion(.failure(APIError.requestFailed))
+//                return
+//            }
             
             dispatcher.dispatch(request: request) { (result, response) in
                 switch result {
@@ -108,9 +118,32 @@ class APIClient {
                         return
                     }
                     completion(.success(responseData))
-                            
+
                 }
             }
+//            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+//
+//                if let error = error {
+//                    DispatchQueue.main.async {
+//                        completion(.failure(error))
+//                    }
+//                    return
+//                }
+//
+//                guard let data = data else {
+//                    completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
+//                    return
+//                }
+//
+//                do {
+//                    let decoder = JSONDecoder()
+//                    let info = try decoder.decode(MyInfoResponse.self, from: data)
+//                    completion(.success(info))
+//                } catch {
+//                    completion(.failure(error))
+//                }
+//            }
+//            task.resume()
             
         }
         
@@ -318,13 +351,25 @@ class APIClient {
             let jsonData = jsonParser.extractEncodedJsonData(data: orderRequest)
             
             guard let request = requestMaker.makeRequest(url: url,
-                                                         method: .get,
+                                                         method: .post,
                                                          headers: ["Content-Type": "application/json"],
                                                          body: jsonData) else {
                 completion(.failure(APIError.requestFailed))
                 return
             }
             
+//            dispatcher.dispatch(request: request) { (result, response) in
+//                switch result {
+//                case .failure(let error):
+//                    completion(.failure(error))
+//                case .success(let data):
+//                    guard let responseData = self.jsonParser.extractDecodedJsonData(decodeType: TimeInfoResponse.self, binaryData: data) else {
+//                        completion(.failure(APIError.jsonParsingFailure))
+//                        return
+//                    }
+//                    completion(.success(responseData))
+//                }
+//            }
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 if let error = error {
                     DispatchQueue.main.async {
@@ -404,22 +449,51 @@ class APIClient {
         func registerCart(_ orderRequest: OrderRequest, completion: @escaping (Result<String>) -> Void) {
             
             guard let url = URL(string: APIClient.shared.baseURL + "orders/cart") else { return }
+//            guard let token = APIClient.shared.authToken else {
+//                completion(.failure(AuthError.tokenError))
+//                return
+//            }
+//
+//            let jsonData = jsonParser.extractEncodedJsonData(data: orderRequest)
+//
+//            guard let request = requestMaker.makeRequest(url: url,
+//                                                         method: .post,
+//                                                         headers: ["Content-Type" : "application/json",
+//                                                                   "Token \(token)" : "Authorization"],
+//                                                         body: jsonData) else {
+//                completion(.failure(APIError.requestFailed))
+//                return
+//            }
+//
+//            dispatcher.dispatch(request: request) { (result, response) in
+//                switch result {
+//                case .failure(let error):
+//                    completion(.failure(error))
+//                case .success(_):
+//                    completion(.success(""))
+//                }
+//
+//            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
             guard let token = APIClient.shared.authToken else {
-                completion(.failure(AuthError.tokenError))
+                completion(.failure(NSError(domain: "Authorization", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token is missing"])))
                 return
             }
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
             
-            let jsonData = jsonParser.extractEncodedJsonData(data: orderRequest)
-            
-            guard let request = requestMaker.makeRequest(url: url,
-                                                         method: .post,
-                                                         headers: ["Content-Type" : "application/json",
-                                                                   "Token \(token)" : "Authorization"],
-                                                         body: jsonData) else {
-                completion(.failure(APIError.requestFailed))
+            do {
+                let encoder = JSONEncoder()
+                let jsonData = try encoder.encode(orderRequest)
+                request.httpBody = jsonData
+            } catch {
+                completion(.failure(error))
                 return
             }
-            
+
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 if let error = error {
                     completion(.failure(error))
@@ -438,22 +512,45 @@ class APIClient {
         func requestOrder(_ orderRequest: OrderRequest, completion: @escaping (Result<String>) -> Void) {
             
             guard let url = URL(string: APIClient.shared.baseURL + "orders/order") else { return }
-            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
             guard let token = APIClient.shared.authToken else {
                 completion(.failure(AuthError.tokenError))
                 return
             }
-            
-            let jsonData = jsonParser.extractEncodedJsonData(data: orderRequest)
-            
-            guard let request = requestMaker.makeRequest(url: url,
-                                                         method: .post,
-                                                         headers: ["Content-Type" : "application/json",
-                                                                   "Token \(token)" : "Authorization"],
-                                                         body: jsonData) else {
-                completion(.failure(APIError.requestFailed))
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
+                        
+            do {
+                let encoder = JSONEncoder()
+                let jsonData = try encoder.encode(orderRequest)
+                request.httpBody = jsonData
+            } catch {
+                completion(.failure(error))
                 return
             }
+            
+//            let jsonData = jsonParser.extractEncodedJsonData(data: orderRequest)
+            
+//            guard let request = requestMaker.makeRequest(url: url,
+//                                                         method: .post,
+//                                                         headers: ["Content-Type" : "application/json",
+//                                                                   "Token \(token)" : "Authorization"],
+//                                                         body: jsonData) else {
+//                completion(.failure(APIError.requestFailed))
+//                return
+//            }
+
+//            dispatcher.dispatch(request: request) { (result, response) in
+//                switch result {
+//                case .failure(let error):
+//                    completion(.failure(error))
+//                case .success(_):
+//                    completion(.success(""))
+//                }
+//
+//            }
             
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 if let error = error {
@@ -473,86 +570,182 @@ class APIClient {
         
         func fetchCart(completion: @escaping (Result<[CartResponse]>) -> Void) {
             
+//            guard let url = URL(string: APIClient.shared.baseURL + "orders/cart") else { return }
+//
+//            guard let token = APIClient.shared.authToken else {
+//                completion(.failure(AuthError.tokenError))
+//                return
+//            }
+//
+//            guard let request = requestMaker.makeRequest(url: url,
+//                                                         method: .post,
+//                                                         headers: ["Content-Type" : "application/json",
+//                                                                   "Token \(token)" : "Authorization"],
+//                                                         body: nil) else {
+//                completion(.failure(APIError.requestFailed))
+//                return
+//            }
+//
+//
+//            dispatcher.dispatch(request: request) { (result, response) in
+//                switch result {
+//                case .failure(let error):
+//                    completion(.failure(error))
+//                case .success(let data):
+//                    guard let responseData = self.jsonParser.extractDecodedJsonData(decodeType: [CartResponse].self, binaryData: data) else {
+//                        completion(.failure(APIError.jsonParsingFailure))
+//                        return
+//                    }
+//                    completion(.success(responseData))
+//                }
+//            }
             guard let url = URL(string: APIClient.shared.baseURL + "orders/cart") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             
             guard let token = APIClient.shared.authToken else {
-                completion(.failure(AuthError.tokenError))
+                completion(.failure(NSError(domain: "Authorization", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token is missing"])))
                 return
             }
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
             
-            guard let request = requestMaker.makeRequest(url: url,
-                                                         method: .post,
-                                                         headers: ["Content-Type" : "application/json",
-                                                                   "Token \(token)" : "Authorization"],
-                                                         body: nil) else {
-                completion(.failure(APIError.requestFailed))
-                return
-            }
-               
-            
-            dispatcher.dispatch(request: request) { (result, response) in
-                switch result {
-                case .failure(let error):
-                    completion(.failure(error))
-                case .success(let data):
-                    guard let responseData = self.jsonParser.extractDecodedJsonData(decodeType: [CartResponse].self, binaryData: data) else {
-                        completion(.failure(APIError.jsonParsingFailure))
-                        return
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
                     }
-                    completion(.success(responseData))
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
+                    return
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let cart = try decoder.decode([CartResponse].self, from: data)
+                    completion(.success(cart))
+                } catch {
+                    completion(.failure(error))
                 }
             }
+            task.resume()
         }
         
         func fetchOrder(completion: @escaping (Result<[OrderResponse]>) -> Void) {
             
+//            guard let url = URL(string: APIClient.shared.baseURL + "orders/order") else { return }
+//
+//            guard let token = APIClient.shared.authToken else {
+//                completion(.failure(AuthError.tokenError))
+//                return
+//            }
+//
+//            guard let request = requestMaker.makeRequest(url: url,
+//                                                         method: .post,
+//                                                         headers: ["Content-Type" : "application/json",
+//                                                                   "Token \(token)" : "Authorization"],
+//                                                         body: nil) else {
+//                completion(.failure(APIError.requestFailed))
+//                return
+//            }
+//
+//            dispatcher.dispatch(request: request) { (result, response) in
+//                switch result {
+//                case .failure(let error):
+//                    completion(.failure(error))
+//                case .success(let data):
+//                    guard let responseData = self.jsonParser.extractDecodedJsonData(decodeType: [OrderResponse].self, binaryData: data) else {
+//                        completion(.failure(APIError.jsonParsingFailure))
+//                        return
+//                    }
+//                    completion(.success(responseData))
+//                }
+//            }
             guard let url = URL(string: APIClient.shared.baseURL + "orders/order") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             
             guard let token = APIClient.shared.authToken else {
-                completion(.failure(AuthError.tokenError))
+                completion(.failure(NSError(domain: "Authorization", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token is missing"])))
                 return
             }
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
             
-            guard let request = requestMaker.makeRequest(url: url,
-                                                         method: .post,
-                                                         headers: ["Content-Type" : "application/json",
-                                                                   "Token \(token)" : "Authorization"],
-                                                         body: nil) else {
-                completion(.failure(APIError.requestFailed))
-                return
-            }
-            
-            dispatcher.dispatch(request: request) { (result, response) in
-                switch result {
-                case .failure(let error):
-                    completion(.failure(error))
-                case .success(let data):
-                    guard let responseData = self.jsonParser.extractDecodedJsonData(decodeType: [OrderResponse].self, binaryData: data) else {
-                        completion(.failure(APIError.jsonParsingFailure))
-                        return
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
                     }
-                    completion(.success(responseData))
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "API", code: -1, userInfo: [NSLocalizedDescriptionKey : "No Data Received"])))
+                    return
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let order = try decoder.decode([OrderResponse].self, from: data)
+                    completion(.success(order))
+                } catch {
+                    completion(.failure(error))
                 }
             }
+            task.resume()
         }
         
         func deleteCart(_ orderRequest: OrderRequest, completion: @escaping (Result<String>) -> Void) {
             
+//            guard let url = URL(string: APIClient.shared.baseURL + "orders/cart") else { return }
+//
+//            guard let token = APIClient.shared.authToken else {
+//                completion(.failure(AuthError.tokenError))
+//                return
+//            }
+//
+//            let jsonData = jsonParser.extractEncodedJsonData(data: orderRequest)
+//
+//            guard let request = requestMaker.makeRequest(url: url,
+//                                                         method: .delete,
+//                                                         headers: ["Content-Type" : "application/json",
+//                                                                   "Token \(token)" : "Authorization"],
+//                                                         body: jsonData) else {
+//                completion(.failure(APIError.requestFailed))
+//                return
+//            }
+//
+//            dispatcher.dispatch(request: request) { (result, response) in
+//                switch result {
+//                case .failure(let error):
+//                    completion(.failure(error))
+//                case .success(_):
+//                    completion(.success(""))
+//                }
+//            }
+            
             guard let url = URL(string: APIClient.shared.baseURL + "orders/cart") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "DELETE"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             
             guard let token = APIClient.shared.authToken else {
-                completion(.failure(AuthError.tokenError))
+                completion(.failure(NSError(domain: "Authorization", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token is missing"])))
                 return
             }
+            request.addValue("Token \(token)", forHTTPHeaderField: "Authorization")
             
-            let jsonData = jsonParser.extractEncodedJsonData(data: orderRequest)
-            
-            guard let request = requestMaker.makeRequest(url: url,
-                                                         method: .delete,
-                                                         headers: ["Content-Type" : "application/json",
-                                                                   "Token \(token)" : "Authorization"],
-                                                         body: jsonData) else {
-                completion(.failure(APIError.requestFailed))
+            do {
+                let encoder = JSONEncoder()
+                let jsonData = try encoder.encode(orderRequest)
+                request.httpBody = jsonData
+            } catch {
+                completion(.failure(error))
                 return
             }
             

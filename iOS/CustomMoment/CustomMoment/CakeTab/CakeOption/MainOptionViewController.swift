@@ -90,12 +90,13 @@ class MainOptionViewController: UIViewController {
         APIClient.shared.cake.fetchCakeOption(cakeOptionRequest) { [weak self] result in
             switch result {
             case .success(let cakeOptions):
-                self?.cakeOptionResponse = cakeOptions
-                self?.updateView()
-                self?.collectionView.reloadData()
+                DispatchQueue.main.async {
+                    self?.cakeOptionResponse = cakeOptions
+                    self?.updateView()
+                    self?.collectionView.reloadData()
+                }
             case .failure(let error):
                 print("Error: \(error.localizedDescription)")
-                print("Here")
             }
         }
         
@@ -126,7 +127,6 @@ class MainOptionViewController: UIViewController {
                     print(errorMessage)
                 } else {
                     print("Error: \(error.localizedDescription)")
-                    print("Or")
                 }
             }
         }
