@@ -323,13 +323,18 @@ class MainCakeViewController: UIViewController {
         orderView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         orderView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         orderView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        orderView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.08).isActive = true
+        orderView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        let buttonLayer = CALayer()
+        buttonLayer.frame = CGRect(x: 0, y: orderView.frame.origin.y, width: view.frame.width, height: 0.7)
+        buttonLayer.backgroundColor = UIColor.systemGray.cgColor
+        orderView.layer.addSublayer(buttonLayer)
         
         // OrderButton
         orderButton.leadingAnchor.constraint(equalTo: orderView.leadingAnchor, constant: 20).isActive = true
         orderButton.trailingAnchor.constraint(equalTo: orderView.trailingAnchor, constant: -20).isActive = true
-        orderButton.centerXAnchor.constraint(equalTo: orderView.centerXAnchor).isActive = true
-        orderButton.centerYAnchor.constraint(equalTo: orderView.centerYAnchor).isActive = true
+        orderButton.topAnchor.constraint(equalTo: orderView.topAnchor, constant: 10).isActive = true
+        orderButton.bottomAnchor.constraint(equalTo: orderView.bottomAnchor, constant: -20).isActive = true
         
         // Button Tapped
         infoButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)

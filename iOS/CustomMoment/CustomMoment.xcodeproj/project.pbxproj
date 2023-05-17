@@ -87,6 +87,7 @@
 		78EBE5CC29B613E400E3B065 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE5CB29B613E400E3B065 /* HomeViewController.swift */; };
 		78EBE5CE29B620B900E3B065 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE5CD29B620B900E3B065 /* LoginViewController.swift */; };
 		78EBE5D029B7012F00E3B065 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBE5CF29B7012F00E3B065 /* SignUpViewController.swift */; };
+		78F1176C2A13F3BC00779B83 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F1176B2A13F3BC00779B83 /* CalendarCollectionViewCell.swift */; };
 		78F6919B29E1FBE10037C684 /* OrderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F6919A29E1FBE10037C684 /* OrderCollectionViewCell.swift */; };
 		78F6919E29E1FDBD0037C684 /* BillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F6919D29E1FDBD0037C684 /* BillViewController.swift */; };
 		78FD435A29CCBCB6006ED4F8 /* MainOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FD435929CCBCB6006ED4F8 /* MainOptionViewController.swift */; };
@@ -188,6 +189,7 @@
 		78EBE5CB29B613E400E3B065 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		78EBE5CD29B620B900E3B065 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		78EBE5CF29B7012F00E3B065 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		78F1176B2A13F3BC00779B83 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		78F6919A29E1FBE10037C684 /* OrderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCollectionViewCell.swift; sourceTree = "<group>"; };
 		78F6919D29E1FDBD0037C684 /* BillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillViewController.swift; sourceTree = "<group>"; };
 		78FD435929CCBCB6006ED4F8 /* MainOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainOptionViewController.swift; sourceTree = "<group>"; };
@@ -539,6 +541,7 @@
 			isa = PBXGroup;
 			children = (
 				78FD435929CCBCB6006ED4F8 /* MainOptionViewController.swift */,
+				78F1176B2A13F3BC00779B83 /* CalendarCollectionViewCell.swift */,
 				78FD435B29CF36AC006ED4F8 /* TimeButtonCollectionViewCell.swift */,
 				78FD435D29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift */,
 				789ADABA29F1B23000D62292 /* Model */,
@@ -892,6 +895,7 @@
 				78BF0EAF2A0BB02800A35A7C /* URLResponse+.swift in Sources */,
 				78DFB06529D87FBD002DC963 /* StorePopUpHeaderView.swift in Sources */,
 				78FD435E29D1EA19006ED4F8 /* OptionButtonCollectionViewCell.swift in Sources */,
+				78F1176C2A13F3BC00779B83 /* CalendarCollectionViewCell.swift in Sources */,
 				78FD436629D34435006ED4F8 /* StoreViewController.swift in Sources */,
 				78DFB06C29DC7B83002DC963 /* OrderViewController.swift in Sources */,
 				78DFB07529DD686E002DC963 /* CartCollectionViewCell.swift in Sources */,

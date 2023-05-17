@@ -34,16 +34,17 @@ class OptionButtonCollectionViewCell: UICollectionViewCell {
     }()
     
     let optionButton: UIButton = {
-        let button = UIButton(type: .roundedRect)
+        let button = UIButton(type: .custom)
         button.tintColor = .systemGray2
         button.titleLabel?.font = UIFont.myFontB.withSize(14)
+        button.contentHorizontalAlignment = .left   // 내용을 왼쪽으로 정렬
+        button.setTitleColor(.systemGray2, for: .normal)
         button.backgroundColor = .white
         button.layer.borderColor = UIColor.systemGray2.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 4
         button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+        return button    }()
     
     let dropDown: DropDown = {
         let dropDown = DropDown()
@@ -68,7 +69,7 @@ class OptionButtonCollectionViewCell: UICollectionViewCell {
             textField.topAnchor.constraint(equalTo: optionButton.bottomAnchor, constant: 8),
             textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            textField.heightAnchor.constraint(equalToConstant: 30)
+            textField.heightAnchor.constraint(equalToConstant: 40)
         ])
         optionButton.addTarget(self, action: #selector(optionButtonTapped), for: .touchUpInside)
         // 버튼에 할당
