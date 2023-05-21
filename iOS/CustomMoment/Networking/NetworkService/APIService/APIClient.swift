@@ -291,6 +291,31 @@ class APIClient {
             }
         }
         
+        func fetchFilterCake(_ page: Int, completion: @escaping (Result<[MainCakeRequest]>) -> Void) {
+            guard let url = URL(string: APIClient.shared.baseURL + "cakes/cake-filter/\(page)") else { return }
+            
+            guard let request = requestMaker.makeRequest(url: url,
+                                                         method: .get,
+                                                         headers: ["Content-Type": "application/json"],
+                                                         body: nil) else {
+                completion(.failure(APIError.requestFailed))
+                return
+            }
+            
+            dispatcher.dispatch(request: request) { (result, response) in
+                switch result {
+                case .failure(let error):
+                    completion(.failure(error))
+                case .success(let data):
+                    guard let responseData = self.jsonParser.extractDecodedJsonData(decodeType: [MainCakeRequest].self, binaryData: data) else {
+                        completion(.failure(APIError.jsonParsingFailure))
+                        return
+                    }
+                    completion(.success(responseData))
+                }
+            }
+        }
+        
         func fetchCakePerStore(_ targetStore: String, completion: @escaping (Result<[MainCakeRequest]>) -> Void) {
             guard let url = URL(string: APIClient.shared.baseURL + "cakes/cake-per-store/?store_name=\(targetStore.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")") else { return }
             

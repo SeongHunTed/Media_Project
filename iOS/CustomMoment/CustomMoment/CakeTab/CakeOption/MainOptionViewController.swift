@@ -186,7 +186,7 @@ class MainOptionViewController: UIViewController {
         var titleNumber = 1
         for basicOptionTitle in basicOptionTitles {
             if let optionArray = cakeOptions[keyPath: basicOptionTitle.key], !optionArray.isEmpty {
-                let numberedTitle = "\(titleNumber). " + basicOptionTitle.title
+                let numberedTitle = "  \(titleNumber). " + basicOptionTitle.title
                 basicDropDownButtonTitle.append(numberedTitle)
                 basicDropDownDataSource.append(optionArray.map { CakeOption(optionName: $0.optionName, price: $0.price) })
                 titleNumber += 1
@@ -196,7 +196,7 @@ class MainOptionViewController: UIViewController {
         titleNumber = 1
         for additionalOptionTitle in additionalOptionTitles {
             if let optionArray = cakeOptions[keyPath: additionalOptionTitle.key], !optionArray.isEmpty {
-                let numberedTitle = "\(titleNumber). " + additionalOptionTitle.title
+                let numberedTitle = "  \(titleNumber). " + additionalOptionTitle.title
                 addtionalDropDownButtonTitle.append(numberedTitle)
                 additionalDropDownDataSource.append(optionArray.map { CakeOption(optionName: $0.optionName, price: $0.price) })
                 titleNumber += 1
@@ -530,9 +530,10 @@ extension MainOptionViewController: UICollectionViewDataSource {
             }
             cell.optionButton.setTitle(basicDropDownButtonTitle[indexPath.item], for: .normal)
             cell.category = basicDropDownButtonTitle[indexPath.item]
-            cell.dropDown.dataSource = basicDropDownDataSource[indexPath.item].map { "\($0.optionName) + \($0.price)원" }
+            cell.dropDown.dataSource = basicDropDownDataSource[indexPath.item].map { "  \($0.optionName) + \($0.price)원" }
             cell.onOptionSelected = { [weak self] index, title in
                 cell.optionButton.setTitle(title, for: .normal)
+                cell.optionButton.setTitleColor(.white, for: .normal)
                 cell.optionButton.titleLabel?.font = UIFont.myFontB.withSize(14)
                 cell.optionButton.backgroundColor = .systemRed.withAlphaComponent(0.8)
                 cell.optionButton.tintColor = .white
@@ -547,9 +548,10 @@ extension MainOptionViewController: UICollectionViewDataSource {
             }
             cell.optionButton.setTitle(addtionalDropDownButtonTitle[indexPath.item], for: .normal)
             cell.category = addtionalDropDownButtonTitle[indexPath.item]
-            cell.dropDown.dataSource = additionalDropDownDataSource[indexPath.item].map { "\($0.optionName) + \($0.price)원" }
+            cell.dropDown.dataSource = additionalDropDownDataSource[indexPath.item].map { "  \($0.optionName) + \($0.price)원" }
             cell.onOptionSelected = { [weak self] index, title in
                 cell.optionButton.setTitle(title, for: .normal)
+                cell.optionButton.setTitleColor(.white, for: .normal)
                 cell.optionButton.titleLabel?.font = UIFont.myFontB.withSize(14)
                 cell.optionButton.backgroundColor = .systemRed.withAlphaComponent(0.8)
                 cell.optionButton.tintColor = .white
@@ -557,7 +559,8 @@ extension MainOptionViewController: UICollectionViewDataSource {
                 cell.selectedOptionTitle = title
                 cell.selectedOption = self?.additionalDropDownDataSource[indexPath.item][index]
                 
-                if (cell.category == "레터링" || cell.category == "하판레터링") && (title != "선택 안함 + 0원" && title != "선택안함 + 0원" ){
+                if (cell.category?.contains("레터링") ?? false) && (!title.contains("안함")) {
+                    print("레터링부분")
                     let alertController = UIAlertController(title: "레터링 입력", message: "레터링 내용을 입력하세요.", preferredStyle: .alert)
                     
                     alertController.addTextField { textField in
@@ -568,7 +571,7 @@ extension MainOptionViewController: UICollectionViewDataSource {
                         if let inputText = alertController.textFields?.first?.text {
                             // 사용자가 입력한 레터링 내용을 처리합니다.
                             cell.selectedOptionTitle = inputText
-                            cell.optionButton.setTitle("레터링 : " + inputText, for: .normal)
+                            cell.optionButton.setTitle("  레터링 : " + inputText, for: .normal)
                         }
                     }
                     alertController.addAction(submitAction)
@@ -579,7 +582,7 @@ extension MainOptionViewController: UICollectionViewDataSource {
                     self?.present(alertController, animated: true, completion: nil)
                 }
                 
-                if cell.category == "디자인첨부" {
+                if cell.category?.contains("첨부") ?? false {
                     self?.selectedCell = cell
                     let imagePickerController = UIImagePickerController()
                     imagePickerController.delegate = self

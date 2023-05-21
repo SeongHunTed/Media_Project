@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol DrawCollectionViewCellDelegate: AnyObject {
+    func buttonTapped(cell: DrawCollectionViewCell)
+}
+
 class DrawCollectionViewCell: UICollectionViewCell {
+    
+    weak var delegate: DrawCollectionViewCellDelegate?
     
     var isSelectedCell: Bool = false {
         didSet {
@@ -16,13 +22,14 @@ class DrawCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    private let button: UIButton = {
+    lazy var button: UIButton = {
         let button = UIButton(type: .roundedRect)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = UIFont.myFontM.withSize(14.0)
         button.setTitleColor(.systemRed, for: .normal)
         button.setTitleColor(.white, for: .selected)
-        button.isUserInteractionEnabled = false
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+//        button.isUserInteractionEnabled = false
         return button
     }()
     
@@ -43,5 +50,9 @@ class DrawCollectionViewCell: UICollectionViewCell {
     
     func configure(with title: String) {
         button.setTitle(title, for: .normal)
+    }
+    
+    @objc func buttonTapped() {
+        delegate?.buttonTapped(cell: self)
     }
 }

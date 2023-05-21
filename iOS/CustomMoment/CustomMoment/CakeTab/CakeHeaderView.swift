@@ -11,6 +11,7 @@ import FSCalendar
 
 protocol CakeHeaderViewDelegate: AnyObject {
     func calendarButtonTapped()
+    func filterButtonTapped()
 }
 
 public class CakeHeaderView: UICollectionReusableView {
@@ -90,6 +91,7 @@ public class CakeHeaderView: UICollectionReusableView {
     @objc func filterButtonTapped(_ sender: UIButton) {
         print("CakeVC :     Filter Option Tapped")
         filterDropDown.show()
+        delegate?.filterButtonTapped()
     }
     
     @objc func calendarButtonTapped() {

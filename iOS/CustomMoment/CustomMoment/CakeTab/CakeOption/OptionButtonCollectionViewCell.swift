@@ -44,7 +44,8 @@ class OptionButtonCollectionViewCell: UICollectionViewCell {
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 4
         button.translatesAutoresizingMaskIntoConstraints = false
-        return button    }()
+        return button
+    }()
     
     let dropDown: DropDown = {
         let dropDown = DropDown()

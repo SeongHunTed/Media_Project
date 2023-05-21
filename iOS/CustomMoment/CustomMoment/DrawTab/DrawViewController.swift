@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DrawViewController: UIViewController {
+class DrawViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +26,7 @@ class DrawViewController: UIViewController {
     
     // MARK: - Variable
     
-    private let buttonTitles = ["빈센트 반 고흐", "클로드 모네", "폴 고갱", "파블로 피카소", "마르쉘 뒤샹", "램브란트", "키스 해링", "앤디 워홀", "직접 입력"]
+    private let buttonTitles = ["빈센트 반 고흐", "클로드 모네", "앤디 워홀", "사진 커스텀", "파블로 피카소", "마르쉘 뒤샹", "램브란트", "키스 해링", "앤디 워홀", "직접 입력"]
     
     // MARK: - Components
     private lazy var collectionView: UICollectionView = {
@@ -93,6 +93,19 @@ class DrawViewController: UIViewController {
         return button
     }()
     
+    private lazy var imageTransButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .systemGray2
+        button.tintColor = .white
+        button.setTitle("변환하기", for: .normal)
+        button.titleLabel?.font = UIFont.myFontM.withSize(16)
+        button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        button.layer.cornerRadius = 5
+        button.isHidden = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private lazy var saveButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .systemGray2
@@ -144,6 +157,7 @@ class DrawViewController: UIViewController {
         
         self.view.addSubview(sendButton)
         self.view.addSubview(saveButton)
+        self.view.addSubview(imageTransButton)
         self.view.addSubview(dallePrompt)
         self.view.addSubview(collectionView)
         self.view.addSubview(dalleImageView)
@@ -158,6 +172,11 @@ class DrawViewController: UIViewController {
         saveButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
         saveButton.topAnchor.constraint(equalTo: dalleImageView.bottomAnchor, constant: 10).isActive = true
         saveButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        imageTransButton.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -10).isActive = true
+        imageTransButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
+        imageTransButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
+        imageTransButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         dallePrompt.topAnchor.constraint(equalTo: bottomBoarder.bottomAnchor, constant: 10).isActive = true
         dallePrompt.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
@@ -308,7 +327,35 @@ extension DrawViewController: UITextFieldDelegate {
 }
 
 
-extension DrawViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension DrawViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, DrawCollectionViewCellDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            dalleImageView.image = pickedImage // imageView는 이미지를 표시할 UIImageView의 인스턴스입니다.
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func buttonTapped(cell: DrawCollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell),
+            let buttonTitle = cell.button.title(for: .normal) else {
+            return
+        }
+
+        if buttonTitle == "사진 커스텀" {
+            imageTransButton.isHidden = false
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = .photoLibrary
+
+            self.present(imagePickerController, animated: true, completion: nil)
+        }
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return buttonTitles.count
@@ -317,10 +364,12 @@ extension DrawViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DrawCollectionViewCell", for: indexPath) as! DrawCollectionViewCell
         cell.configure(with: buttonTitles[indexPath.item])
+        cell.delegate = self
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         let cell = collectionView.cellForItem(at: indexPath) as! DrawCollectionViewCell
         cell.isSelectedCell.toggle()
         for index in 0..<buttonTitles.count {

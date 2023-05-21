@@ -41,6 +41,23 @@ class CakeViewController: UIViewController {
             }
         }
     }
+    
+    private func filterApiCall() {
+        APIClient.shared.cake.fetchFilterCake(0) { [weak self] result in
+            switch result {
+            case .success(let cakes):
+                self?.cakes = cakes
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                    if cakes.count < 10 {
+                        self?.hasMoreData = false
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
 
     
     // MARK: - Top View : Logo
@@ -228,6 +245,10 @@ extension CakeViewController: CalendarPopUpDelegate {
 }
 
 extension CakeViewController: CakeHeaderViewDelegate {
+    func filterButtonTapped() {
+        filterApiCall()
+    }
+    
     
     func showCalendarPopUp() {
         let calendarPopUpVC = CalendarPopUpViewController()
