@@ -28,6 +28,8 @@ class DrawViewController: UIViewController, UIImagePickerControllerDelegate & UI
     
     private let buttonTitles = ["빈센트 반 고흐", "클로드 모네", "앤디 워홀", "사진 커스텀", "파블로 피카소", "마르쉘 뒤샹", "램브란트", "키스 해링", "앤디 워홀", "직접 입력"]
     
+    var selectedCellIndexPath: IndexPath?
+    
     // MARK: - Components
     private lazy var collectionView: UICollectionView = {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
@@ -329,30 +331,30 @@ extension DrawViewController: UITextFieldDelegate {
 
 extension DrawViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, DrawCollectionViewCellDelegate {
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            dalleImageView.image = pickedImage // imageView는 이미지를 표시할 UIImageView의 인스턴스입니다.
-        }
-        picker.dismiss(animated: true, completion: nil)
-    }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
     func buttonTapped(cell: DrawCollectionViewCell) {
         guard let indexPath = collectionView.indexPath(for: cell),
             let buttonTitle = cell.button.title(for: .normal) else {
             return
         }
+        
+        if let selectedCellIndexPath = selectedCellIndexPath,
+            let selectedCell = collectionView.cellForItem(at: selectedCellIndexPath) as? DrawCollectionViewCell {
+            selectedCell.isSelectedCell = false
+        }
+        
+        cell.isSelectedCell = true
+        
+        selectedCellIndexPath = indexPath
 
         if buttonTitle == "사진 커스텀" {
-            imageTransButton.isHidden = false
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
             imagePickerController.sourceType = .photoLibrary
 
             self.present(imagePickerController, animated: true, completion: nil)
+            imageTransButton.isHidden = false
+        } else {
+            imageTransButton.isHidden = true
         }
     }
     
@@ -366,19 +368,6 @@ extension DrawViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.configure(with: buttonTitles[indexPath.item])
         cell.delegate = self
         return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        let cell = collectionView.cellForItem(at: indexPath) as! DrawCollectionViewCell
-        cell.isSelectedCell.toggle()
-        for index in 0..<buttonTitles.count {
-            if index != indexPath.item {
-                if let otherCell = collectionView.cellForItem(at: IndexPath(item: index, section: indexPath.section)) as? DrawCollectionViewCell {
-                    otherCell.isSelectedCell = false
-                }
-            }
-        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -403,5 +392,19 @@ extension DrawViewController: UICollectionViewDelegate, UICollectionViewDataSour
             }
         }
         return nil
+    }
+}
+
+extension DrawViewController {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            dalleImageView.image = pickedImage
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
 }

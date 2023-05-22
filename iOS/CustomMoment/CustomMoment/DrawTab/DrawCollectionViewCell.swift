@@ -29,7 +29,6 @@ class DrawCollectionViewCell: UICollectionViewCell {
         button.setTitleColor(.systemRed, for: .normal)
         button.setTitleColor(.white, for: .selected)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-//        button.isUserInteractionEnabled = false
         return button
     }()
     
@@ -53,6 +52,7 @@ class DrawCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func buttonTapped() {
+        isSelectedCell.toggle()
         delegate?.buttonTapped(cell: self)
     }
 }
