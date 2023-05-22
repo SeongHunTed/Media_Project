@@ -11,6 +11,28 @@ import DropDown
 
 class MainOptionViewController: UIViewController {
     
+    // MARK: - Var
+    
+    enum OptionType: Int, CaseIterable {
+        case calenderType = 0
+        case timeType
+        case basicOptionType
+        case additionalOptionType
+        
+        var rawValue: String {
+            switch self {
+            case .calenderType:
+                return "📅 날짜 선택"
+            case .timeType:
+                return "⏱️ 픽업 시간"
+            case .basicOptionType:
+                return "🍰 기본 옵션"
+            case .additionalOptionType:
+                return "🍴 추가 옵션"
+            }
+        }
+    }
+    
     // MARK: - Models Var
     
     // cake option Reqeust, Response Model
@@ -599,15 +621,10 @@ extension MainOptionViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderView
-            if indexPath.section == 0 {
-                header.prepare(text: "📅 날짜 선택")
-            } else if indexPath.section == 1 {
-                header.prepare(text: "⏱️ 픽업 시간")
-            } else if indexPath.section == 2 {
-                header.prepare(text: "🍰 기본 옵션")
-            } else {
-                header.prepare(text: "🍴 추가 옵션")
-            }
+            
+            let optionType = OptionType(rawValue: indexPath.section) ?? .additionalOptionType
+            header.prepare(text: optionType.rawValue)
+            
             let borderLayer = CALayer()
             borderLayer.frame = CGRect(x: 100, y: header.frame.size.height/2, width: header.frame.size.width - 120, height: 0.5)
             borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.5).cgColor

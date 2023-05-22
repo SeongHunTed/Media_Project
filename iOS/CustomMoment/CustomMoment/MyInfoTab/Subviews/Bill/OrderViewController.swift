@@ -124,7 +124,7 @@ extension OrderViewController: UICollectionViewDataSource {
         cell.orderLayout()
         cell.layer.cornerRadius = 8
         cell.layer.borderWidth = 0.5
-        cell.contentView.layer.borderColor = UIColor.red.withAlphaComponent(0.8).cgColor
+        cell.layer.borderColor = UIColor.gray.withAlphaComponent(0.5).cgColor
 
         return cell
     }
@@ -137,7 +137,8 @@ extension OrderViewController: UICollectionViewDataSource {
             header.prepare(text: " 🍰 구매내역")
             let borderLayer = CALayer()
             borderLayer.frame = CGRect(x: 0, y: header.frame.size.height - 1, width: header.frame.size.width, height: 1)
-            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.5).cgColor
+            borderLayer.borderColor = UIColor.gray.withAlphaComponent(0.5).cgColor
             header.layer.addSublayer(borderLayer)
                     
             return header

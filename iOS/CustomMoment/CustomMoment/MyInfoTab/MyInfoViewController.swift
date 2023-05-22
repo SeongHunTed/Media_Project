@@ -461,8 +461,8 @@ extension MyInfoViewController: UICollectionViewDataSource {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderView
             header.prepare(text: " 🍰 장바구니")
             let borderLayer = CALayer()
-            borderLayer.frame = CGRect(x: 0, y: header.frame.size.height - 1, width: header.frame.size.width, height: 1)
-            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+            borderLayer.frame = CGRect(x: 110, y: header.frame.size.height/2, width: header.frame.size.width - 130, height: 0.5)
+            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.5).cgColor
             header.layer.addSublayer(borderLayer)
                     
             return header
