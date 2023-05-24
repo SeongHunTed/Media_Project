@@ -11,7 +11,7 @@ import UIKit
 class CakeViewController: UIViewController {
     
     private var hasMoreData = true
-    
+    private var filter: String?
     private var cakes: [MainCakeRequest] = []
     
     override func viewDidLoad() {
@@ -44,6 +44,40 @@ class CakeViewController: UIViewController {
     
     private func filterApiCall() {
         APIClient.shared.cake.fetchFilterCake(0) { [weak self] result in
+            switch result {
+            case .success(let cakes):
+                self?.cakes = cakes
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                    if cakes.count < 10 {
+                        self?.hasMoreData = false
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func highFilterApiCall() {
+        APIClient.shared.cake.fetchHighFilterCake(0) { [weak self] result in
+            switch result {
+            case .success(let cakes):
+                self?.cakes = cakes
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                    if cakes.count < 10 {
+                        self?.hasMoreData = false
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func lowFilterApiCall() {
+        APIClient.shared.cake.fetchLowFilterCake(0) { [weak self] result in
             switch result {
             case .success(let cakes):
                 self?.cakes = cakes
@@ -240,13 +274,25 @@ extension CakeViewController: CalendarPopUpDelegate {
         let dateString = dateFormatter.string(from: data)
         if let headerView = collectionView.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionHeader).first as? CakeHeaderView {
             headerView.calendarButton.setTitle(dateString, for: .normal)
+            filterApiCall()
         }
     }
 }
 
 extension CakeViewController: CakeHeaderViewDelegate {
-    func filterButtonTapped() {
-        filterApiCall()
+    func filterButtonTapped(_ title: String) {
+        
+        self.filter = title
+        
+        if title == "인기순" {
+            firstApiCall()
+        } else if title == "최신순" {
+            filterApiCall()
+        } else if title == "높은가격순" {
+            highFilterApiCall()
+        } else {
+            lowFilterApiCall()
+        }
     }
     
     
@@ -270,31 +316,67 @@ extension CakeViewController: UIScrollViewDelegate {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let scrollViewHeight = scrollView.frame.height
-        
-        print(offsetY)
-        print(contentHeight)
-        print(scrollViewHeight)
-        
         if offsetY > contentHeight - scrollViewHeight {
-            loadMoreData()
+            loadMoreData(self.filter ?? "")
         }
     }
     
-    private func loadMoreData() {
-        print("scrolled : ", hasMoreData)
+    private func loadMoreData(_ filter: String) {
         guard hasMoreData else { return }
         loadingIndicator.startAnimating()
         
         let nextPage = (collectionView.numberOfItems(inSection: 0) / 10)
-        APIClient.shared.cake.fetchCakeTapCake(nextPage) { [weak self] result in
-            DispatchQueue.main.async {
-                self?.loadingIndicator.stopAnimating()
-                switch result {
-                case . success(let newCakes):
-                    self?.cakes.append(contentsOf: newCakes)
-                    self?.collectionView.reloadData()
-                case .failure(let error):
-                    print("Error: \(error.localizedDescription)")
+        
+        if filter == "인기순" {
+            APIClient.shared.cake.fetchCakeTapCake(nextPage) { [weak self] result in
+                DispatchQueue.main.async {
+                    self?.loadingIndicator.stopAnimating()
+                    switch result {
+                    case . success(let newCakes):
+                        self?.cakes.append(contentsOf: newCakes)
+                        self?.collectionView.reloadData()
+                    case .failure(let error):
+                        print("Error: \(error.localizedDescription)")
+                    }
+                }
+            }
+        } else if filter == "최신순" {
+            APIClient.shared.cake.fetchFilterCake(nextPage) { [weak self] result in
+                DispatchQueue.main.async {
+                    self?.loadingIndicator.stopAnimating()
+                    switch result {
+                    case . success(let newCakes):
+                        self?.cakes.append(contentsOf: newCakes)
+                        self?.collectionView.reloadData()
+                    case .failure(let error):
+                        print("Error: \(error.localizedDescription)")
+                    }
+                }
+            }
+        } else if filter == "높은가격순" {
+            APIClient.shared.cake.fetchHighFilterCake(nextPage) { [weak self] result in
+                DispatchQueue.main.async {
+                    self?.loadingIndicator.stopAnimating()
+                    switch result {
+                    case . success(let newCakes):
+                        self?.cakes.append(contentsOf: newCakes)
+                        self?.collectionView.reloadData()
+                    case .failure(let error):
+                        print("Error: \(error.localizedDescription)")
+                    }
+                }
+            }
+        } else {
+            APIClient.shared.cake.fetchLowFilterCake(nextPage) { [weak self] result in
+                DispatchQueue.main.async {
+                    self?.loadingIndicator.stopAnimating()
+                    switch result {
+                    case . success(let newCakes):
+                        self?.cakes.append(contentsOf: newCakes)
+                        self?.collectionView.reloadData()
+                    case .failure(let error):
+                        print("Error: \(error.localizedDescription)")
+                    }
                 }
             }
         }

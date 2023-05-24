@@ -11,7 +11,7 @@ import FSCalendar
 
 protocol CakeHeaderViewDelegate: AnyObject {
     func calendarButtonTapped()
-    func filterButtonTapped()
+    func filterButtonTapped(_ title: String)
 }
 
 public class CakeHeaderView: UICollectionReusableView {
@@ -75,6 +75,8 @@ public class CakeHeaderView: UICollectionReusableView {
         filterDropDown.bottomOffset = CGPoint(x: 0, y: filterButton.bounds.height+30)
         filterDropDown.selectionAction = { [weak self] (index, item) in
             self!.filterButton.setTitle(item, for: .normal)
+            let title = item
+            self?.delegate?.filterButtonTapped(title)
         }
         
         filterButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
@@ -91,13 +93,10 @@ public class CakeHeaderView: UICollectionReusableView {
     @objc func filterButtonTapped(_ sender: UIButton) {
         print("CakeVC :     Filter Option Tapped")
         filterDropDown.show()
-        delegate?.filterButtonTapped()
     }
     
     @objc func calendarButtonTapped() {
         print("CakeVC :     Calendar Button Tapped")
         delegate?.calendarButtonTapped()
     }
-    
-    
 }
