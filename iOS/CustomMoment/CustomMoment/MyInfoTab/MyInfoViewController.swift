@@ -128,7 +128,7 @@ class MyInfoViewController: UIViewController {
 
     private lazy var profileView: UIView = {
         let view = UIView()
-        view.backgroundColor = .systemGray5
+        view.backgroundColor = .systemRed.withAlphaComponent(0.1)
         view.layer.borderColor = UIColor.systemRed.withAlphaComponent(0.8).cgColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -247,7 +247,6 @@ class MyInfoViewController: UIViewController {
         
         if let loginSuccess = isLoginned {
             if loginSuccess == true {
-                print("Here")
                 loginSucessConfigure()
                 infoApiCall()
                 loginButton.isHidden = true
@@ -255,7 +254,6 @@ class MyInfoViewController: UIViewController {
                 print("What?")
             }
         } else {
-            print("this is error point")
             loginFailedConfigure()
         }
     }

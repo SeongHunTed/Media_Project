@@ -252,7 +252,23 @@ extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("item at \(indexPath.section)/\(indexPath.item) tapped")
         
-        if indexPath.section == 1 {
+        if indexPath.section == 0 {
+            guard let cell = collectionView.cellForItem(at: indexPath) as?
+                    BannerCollectionViewCell else { return }
+            if indexPath.item == 0 {
+                let cakeName = "긴밤케이크"
+                let storeName = "푸실"
+                cakeTapped(cakeName, storeName)
+            } else if indexPath.item == 1 {
+                let cakeName = "알스트로메리아플라워케이크"
+                let storeName = "멜로드도산"
+                cakeTapped(cakeName, storeName)
+            } else {
+                let cakeName = "시그니처생화케이크"
+                let storeName = "보헤브"
+                cakeTapped(cakeName, storeName)
+            }
+        } else if indexPath.section == 1 {
             guard let cell = collectionView.cellForItem(at: indexPath) as? MainCakeCollectionViewCell else { return }
             let cakeName = cell.cakeLabel.text ?? ""
             let storeName = cell.storeLabel.text ?? ""
