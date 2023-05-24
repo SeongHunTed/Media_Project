@@ -72,47 +72,7 @@ final class DalleAPIService: ObservableObject {
         return urlRequest
     }
     
-    func imageTransFetch(_ image: UIImage, completion: @escaping(Result<UIImage>) -> Void) {
-        
-        guard let url = URL(string: "https://master-white-box-cartoonization-psi1104.endpoint.ainize.ai/predict") else { return }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        let boundary = "Boundary-\(UUID().uuidString)"
-        let contentType = "multipart/form-data; boundary=\(boundary)"
-        request.addValue(contentType, forHTTPHeaderField: "Content-Type")
-        
-        var body = Data()
-
-        // 필드 데이터를 추가합니다.
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"file_type\"\r\n\r\n".data(using: .utf8)!)
-        body.append("image".data(using: .utf8)!)
-        body.append("\r\n".data(using: .utf8)!)
-
-        // 파일 데이터를 추가합니다.
-        
-        let imageData = image.jpegData(compressionQuality: 1.0)
-        
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"source\"\r\n\r\n".data(using: .utf8)!)
-        body.append(imageData!) // 이미지 데이터
-        body.append("\r\n".data(using: .utf8)!)
-        
-        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-
-        request.httpBody = body
-        
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            
-            if let error = error {
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
-            }
-        }
-
-    }
+    
 }
 
 

@@ -791,8 +791,61 @@ class APIClient {
         }
     }
     
+    class AI {
+        let requestMaker = RequestMaker()
+        var jsonParser = JsonParser()
+        let dispatcher = Dispatcher(session: URLSession.shared)
+        
+        func imageTransFetch(_ image: Data, completion: @escaping(Result<Data>) -> Void) {
+            
+            guard let url = URL(string: "http://222.101.35.91:8080/predict") else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            
+            let boundary = "Boundary-\(UUID().uuidString)"
+            let contentType = "multipart/form-data; boundary=\(boundary)"
+            request.addValue(contentType, forHTTPHeaderField: "Content-Type")
+            
+            var body = Data()
+
+            // 필드 데이터를 추가합니다.
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"file_type\"\r\n\r\n".data(using: .utf8)!)
+            body.append("image\r\n".data(using: .utf8)!) // 'file_type' 필드 값
+
+            // 파일 데이터를 추가합니다.
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"source\"; filename=\"image.png\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
+            body.append(image) // 'source' 필드 값 (이미지 데이터)
+            body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+
+            request.httpBody = body
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                }
+                
+                if let data = data {
+                    completion(.success(data))
+                } else {
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(domain: "", code: -1, userInfo: nil)))
+                    }
+                    return
+                }
+            }
+            task.resume()
+        }
+    }
+    
     let auth = Auth()
     let main = Main()
     let cake = Cake()
     let order = Order()
+    let ai = AI()
 }

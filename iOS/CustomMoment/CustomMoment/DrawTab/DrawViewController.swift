@@ -101,7 +101,7 @@ class DrawViewController: UIViewController, UIImagePickerControllerDelegate & UI
         button.tintColor = .white
         button.setTitle("변환하기", for: .normal)
         button.titleLabel?.font = UIFont.myFontM.withSize(16)
-        button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(transButtonTapped), for: .touchUpInside)
         button.layer.cornerRadius = 5
         button.isHidden = true
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -304,6 +304,10 @@ extension DrawViewController: UITextFieldDelegate {
         }
     }
     
+    @objc func transButtonTapped() {
+        transApiCall()
+    }
+    
     @objc func saveButtonTapped() {
         saveImage()
     }
@@ -406,5 +410,22 @@ extension DrawViewController {
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func transApiCall() {
+        
+        guard let targetImage = dalleImageView.image else { return }
+        guard let imageData = targetImage.jpegData(compressionQuality: 1.0) else { return }
+        APIClient.shared.ai.imageTransFetch(imageData) { [weak self] result in
+            switch result {
+            case .success(let image):
+                DispatchQueue.main.async {
+                    let transImage = UIImage(data: image)
+                    self?.dalleImageView.image = transImage
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }
