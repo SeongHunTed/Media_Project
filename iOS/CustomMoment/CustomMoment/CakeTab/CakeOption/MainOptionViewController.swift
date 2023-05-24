@@ -348,6 +348,14 @@ class MainOptionViewController: UIViewController {
         }
     }
     
+    private let dismissIndicator: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.systemGray
+        view.layer.cornerRadius = 2.5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     //MARK: - Configure
     
     private func configure() {
@@ -356,6 +364,12 @@ class MainOptionViewController: UIViewController {
         buttonView.addSubview(cartButton)
         buttonView.addSubview(orderButton)
         view.addSubview(collectionView)
+        view.addSubview(dismissIndicator)
+        
+        dismissIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        dismissIndicator.topAnchor.constraint(equalTo: view.topAnchor, constant: 8).isActive = true
+        dismissIndicator.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        dismissIndicator.heightAnchor.constraint(equalToConstant: 5).isActive = true
         
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         

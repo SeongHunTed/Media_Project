@@ -348,10 +348,6 @@ extension HomeViewController: UICollectionViewDataSource {
             } else if indexPath.section == 2 {
                 header.prepare(text: "지금 HOT한 스토어")
             }
-//            let borderLayer = CALayer()
-//            borderLayer.frame = CGRect(x: 0, y: header.frame.size.height - 1, width: header.frame.size.width, height: 0.7)
-//            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
-//            header.layer.addSublayer(borderLayer)
             return header
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyFooterView

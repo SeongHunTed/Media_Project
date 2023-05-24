@@ -70,6 +70,14 @@ class StorePopUpViewController: UIViewController {
     
     // MARK: - Layout Components
     
+    private let dismissIndicator: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.systemGray
+        view.layer.cornerRadius = 2.5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     // collectionview
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: getLayout())
@@ -88,13 +96,18 @@ class StorePopUpViewController: UIViewController {
     // MARK: - Set Up Layout
     
     private func configure() {
-        
         self.view.addSubview(collectionView)
         
         collectionView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        self.view.addSubview(dismissIndicator)
+        dismissIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        dismissIndicator.topAnchor.constraint(equalTo: view.topAnchor, constant: 8).isActive = true
+        dismissIndicator.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        dismissIndicator.heightAnchor.constraint(equalToConstant: 5).isActive = true
     }
     
     // MARK: - CollectionView Layout

@@ -73,11 +73,6 @@ class MainCakeViewController: UIViewController {
         super.viewDidLayoutSubviews()
         setupContentSize()
         
-//        let storeBottomLayer = CALayer()
-//        storeBottomLayer.frame = CGRect(x: 0, y: 39, width: self.view.frame.size.width, height: 1)
-//        storeBottomLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
-//        storeLabel.layer.addSublayer(storeBottomLayer)
-        
         lazy var cakeTopLayer = CALayer()
         if pageControl.frame.height !=  0.0 {
             cakeTopLayer.frame = CGRect(x:0, y: pageControl.frame.height+15, width: view.frame.size.width, height: 1)
@@ -258,7 +253,7 @@ class MainCakeViewController: UIViewController {
         
         dismissIndicator.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         dismissIndicator.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 8).isActive = true
-        dismissIndicator.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        dismissIndicator.widthAnchor.constraint(equalToConstant: 60).isActive = true
         dismissIndicator.heightAnchor.constraint(equalToConstant: 5).isActive = true
         
 //        storeLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 5).isActive = true
