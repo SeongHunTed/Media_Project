@@ -26,7 +26,7 @@ class DrawViewController: UIViewController, UIImagePickerControllerDelegate & UI
     
     // MARK: - Variable
     
-    private let buttonTitles = ["빈센트 반 고흐", "클로드 모네", "앤디 워홀", "사진 커스텀", "파블로 피카소", "마르쉘 뒤샹", "램브란트", "키스 해링", "앤디 워홀", "직접 입력"]
+    private let buttonTitles = ["빈센트 반 고흐", "클로드 모네", "앤디 워홀", "파블로 피카소", "마르쉘 뒤샹", "램브란트", "키스 해링", "앤디 워홀", "직접 입력", "사진 커스텀"]
     
     var selectedCellIndexPath: IndexPath?
     
@@ -95,19 +95,6 @@ class DrawViewController: UIViewController, UIImagePickerControllerDelegate & UI
         return button
     }()
     
-    private lazy var imageTransButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .systemGray2
-        button.tintColor = .white
-        button.setTitle("변환하기", for: .normal)
-        button.titleLabel?.font = UIFont.myFontM.withSize(16)
-        button.addTarget(self, action: #selector(transButtonTapped), for: .touchUpInside)
-        button.layer.cornerRadius = 5
-        button.isHidden = true
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
     private lazy var saveButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .systemGray2
@@ -159,7 +146,6 @@ class DrawViewController: UIViewController, UIImagePickerControllerDelegate & UI
         
         self.view.addSubview(sendButton)
         self.view.addSubview(saveButton)
-        self.view.addSubview(imageTransButton)
         self.view.addSubview(dallePrompt)
         self.view.addSubview(collectionView)
         self.view.addSubview(dalleImageView)
@@ -174,11 +160,6 @@ class DrawViewController: UIViewController, UIImagePickerControllerDelegate & UI
         saveButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
         saveButton.topAnchor.constraint(equalTo: dalleImageView.bottomAnchor, constant: 10).isActive = true
         saveButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        imageTransButton.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -10).isActive = true
-        imageTransButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
-        imageTransButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
-        imageTransButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         dallePrompt.topAnchor.constraint(equalTo: bottomBoarder.bottomAnchor, constant: 10).isActive = true
         dallePrompt.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
@@ -305,7 +286,7 @@ extension DrawViewController: UITextFieldDelegate {
     }
     
     @objc func transButtonTapped() {
-        transApiCall()
+        
     }
     
     @objc func saveButtonTapped() {
@@ -356,9 +337,6 @@ extension DrawViewController: UICollectionViewDelegate, UICollectionViewDataSour
             imagePickerController.sourceType = .photoLibrary
 
             self.present(imagePickerController, animated: true, completion: nil)
-            imageTransButton.isHidden = false
-        } else {
-            imageTransButton.isHidden = true
         }
     }
     
@@ -406,6 +384,7 @@ extension DrawViewController {
             dalleImageView.image = pickedImage
         }
         picker.dismiss(animated: true, completion: nil)
+        transApiCall()
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
