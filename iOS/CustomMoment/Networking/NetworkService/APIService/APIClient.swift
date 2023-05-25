@@ -69,18 +69,34 @@ class APIClient {
                 return
             }
             
-            dispatcher.dispatch(request: request) { (result, response) in
-                switch result {
-                case .failure(let error):
-                    completion(.failure(error))
-                case .success(let data):
-                    guard let responseData = self.jsonParser.extractDecodedJsonData(decodeType: LoginResponse.self, binaryData: data) else {
-                        completion(.failure(APIError.jsonParsingFailure))
-                        return
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
                     }
-                    completion(.success(responseData))
+                    return
+                }
+                
+                guard let data = data else {
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(domain: "", code: -1, userInfo: nil)))
+                    }
+                    return
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let loginResponse = try decoder.decode(LoginResponse.self, from: data)
+                    DispatchQueue.main.async {
+                        completion(.success(loginResponse))
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
                 }
             }
+            task.resume()
         }
         
         func fetchInfo(completion: @escaping (Result<MyInfoResponse>) -> Void) {
