@@ -26,7 +26,7 @@ class DrawViewController: UIViewController, UIImagePickerControllerDelegate & UI
     
     // MARK: - Variable
     
-    private let buttonTitles = ["빈센트 반 고흐", "클로드 모네", "앤디 워홀", "파블로 피카소", "마르쉘 뒤샹", "램브란트", "키스 해링", "앤디 워홀", "직접 입력", "사진 커스텀"]
+    private let buttonTitles = ["빈센트 반 고흐", "클로드 모네", "앤디 워홀", "파블로 피카소", "마르쉘 뒤샹", "램브란트", "키스 해링", "직접 입력", "사진 커스텀"]
     
     var selectedCellIndexPath: IndexPath?
     

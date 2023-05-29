@@ -693,7 +693,7 @@ extension MainOptionViewController {
             if let selectedOption = optionCell.selectedOption {
                 
                 if let selectedOptionTitle = optionCell.selectedOptionTitle {
-                    if optionCell.category == "레터링" || optionCell.category == "하판레터링" {
+                    if ((optionCell.category?.contains("레터링")) != nil) {
                         orderDetails.append("\(optionCell.category ?? "") : \(selectedOptionTitle) + \(selectedOption.price)원")
                     }
                 } else {

@@ -25,7 +25,9 @@ final class DalleAPIService: ObservableObject {
     }
     
 //    let apiKey = Bundle.main.object(forInfoDictionaryKey: "OPENAI_API_KEY") as! String
-    let apiKey = "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"
+    // 재현
+    // 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
+    let apiKey = "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"
     
     func fetchImageForPrompt(_ prompt: String) async throws -> UIImage {
         let fetchImageURL = "https://api.openai.com/v1/images/generations"

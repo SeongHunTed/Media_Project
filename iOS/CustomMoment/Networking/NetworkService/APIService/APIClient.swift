@@ -864,7 +864,7 @@ class APIClient {
         
         func imageTransFetch(_ image: Data, completion: @escaping(Result<Data>) -> Void) {
             
-            guard let url = URL(string: "http://172.30.1.77:80/predict") else { return }
+            guard let url = URL(string: "http://192.168.51.36:80/predict") else { return }
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             
