@@ -9,7 +9,7 @@
 
 ## ❓왜 만들었나요?
 
-- **기존 커스텀 케이크 주문시스템 (인스타 DM, 카카오톡 메세지)의 불편함을 해결하고자 하였습니다.
+- 기존 커스텀 케이크 주문시스템 (인스타 DM, 카카오톡 메세지)의 불편함을 해결하고자 하였습니다.
 
     **[기존 사용자]**
     
@@ -31,5 +31,24 @@
 
 ### * 이러한 불편함과 수요를 해결하기위해 CustomMoment가 시작되었습니다.
     
- 
+## 🎂 주요 기능
 
+- **케이크별 옵션 확인 가능
+    - 기존 인스타에 "글"로 설명되어 있던 옵션 가시화
+    - 사용자는 케이크 옵션을 이해한 상태에서 주문 가능
+    
+- **날짜, 시간대별 주문 기능
+    - 인스타에서 예약 가능한 날을 찾을 필요없이 날짜 선택
+    - 원하는 픽업 시간 선택
+    - 원하는 옵션 선택
+    
+- **AI 케이크 디자인 가능
+    - 일반 사용자도 케이크 디자인 시안 가능
+    - 이미지 생성 모델과, 일러스트화 해주는 두개의 모델 사용
+
+
+## 앱 기능 스크린샷
+
+<img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/78a17763-ff9b-4f52-8cd8-f8a6d9b50429" width="40%" height="40%">          <img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/4e401fad-982e-43bc-9261-c96d595f89e7" width="40%" height="40%">
+<img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/3ef4d050-5d97-4740-a766-41ac68491a52" width="40%" height="40%">          <img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/a3575e9a-e22b-4f90-9361-2cd789ca4d1f" width="40%" height="40%">
+<img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/bd2a8f4d-0b30-45ac-a0ff-b9d1a3827ab1" width="40%" height="40%">          <img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/7f46ea63-3881-4bc2-8fe8-596a610c96e6" width="40%" height="40%">
