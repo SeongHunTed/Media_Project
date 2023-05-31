@@ -9,7 +9,7 @@
 
 ## ❓왜 만들었나요?
 
-- ** 기존 커스텀 케이크 주문시스템 (인스타 DM, 카카오톡 메세지)의 불편함을 해결하고자 하였습니다.
+- **기존 커스텀 케이크 주문시스템 (인스타 DM, 카카오톡 메세지)의 불편함을 해결하고자 하였습니다.
 
     **[기존 사용자]**
     
@@ -20,10 +20,8 @@
     
     - 모든 주문에 관하여 옵션을 다시 체크하고 상담을 진행해야 합니다.
     - 주문을 가시적으로 관리하기 힘듭니다. 
-
-![insta](https://github.com/SeongHunTed/Media_Project/assets/42074365/a004aca8-6ae8-4581-835c-66ba43b9063e)
-
-![insta2](https://github.com/SeongHunTed/Media_Project/assets/42074365/cf50651f-e3c4-4592-906d-99d6cfd25623)
+    
+<img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/a004aca8-6ae8-4581-835c-66ba43b9063e" width="40%" height="40%">          <img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/cf50651f-e3c4-4592-906d-99d6cfd25623" width="40%" height="40%">
     
 - 기존에는 커스텀 케이크를 주문하기 위해서는 온전한 케이크에 대한 이해가 없이는 주문이 힘듭니다!
 
