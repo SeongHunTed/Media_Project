@@ -24,11 +24,6 @@ final class DalleAPIService: ObservableObject {
         case unableToConvertDataIntoImage
     }
     
-//    let apiKey = Bundle.main.object(forInfoDictionaryKey: "OPENAI_API_KEY") as! String
-    // 재현
-    // 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
-    let apiKey = "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"
-    
     func fetchImageForPrompt(_ prompt: String) async throws -> UIImage {
         let fetchImageURL = "https://api.openai.com/v1/images/generations"
         let urlRequest = try createURLRequestFor(httpMethod: "POST", url: fetchImageURL, prompt: prompt)
