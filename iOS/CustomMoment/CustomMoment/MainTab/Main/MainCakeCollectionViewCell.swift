@@ -48,7 +48,7 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.text = "28,000원 ~"
-        label.font = UIFont.myFontB.withSize(14.0)
+        label.font = UIFont.myFontB.withSize(12.0)
         label.textColor = .black
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -72,30 +72,20 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         self.contentView.backgroundColor = .clear
         cakeLayout()
         
-        // 그림자 추가
-        self.containerView.layer.shadowColor = UIColor.gray.cgColor
-        self.containerView.layer.shadowRadius = 2.0
-        self.containerView.layer.shadowOpacity = 0.6
-        self.containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
-        self.containerView.layer.cornerRadius = 12.0
-        self.containerView.clipsToBounds = true
-        self.containerView.layer.masksToBounds = false
-        self.containerView.layer.shadowPath = nil
+        // 그림자 적용한 Stack View Version
+//        self.containerView.layer.shadowColor = UIColor.gray.cgColor
+//        self.containerView.layer.shadowRadius = 2.0
+//        self.containerView.layer.shadowOpacity = 0.6
+//        self.containerView.layer.shadowOffset = CGSize(width: 0, height: 2)
+//        self.containerView.layer.cornerRadius = 12.0
+//        self.containerView.clipsToBounds = true
+//        self.containerView.layer.masksToBounds = false
+//        self.containerView.layer.shadowPath = nil
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-//        self.prepare()
-//    }
-//
-//    private func prepare() {
-//        // 아마도 케이크 정보를 받는 text 들을 초기화 해주어야할 것 같음
-////        print("Main-CakeCell :      prepareForReuse(), prepare() called")
-//    }
 
     func cakeLayout() {
         self.contentView.addSubview(self.containerView)
@@ -131,19 +121,22 @@ class MainCakeCollectionViewCell: UICollectionViewCell {
         cellImage.leadingAnchor.constraint(equalTo: self.stackView.leadingAnchor).isActive = true
         cellImage.trailingAnchor.constraint(equalTo: self.stackView.trailingAnchor).isActive = true
         
-        storeLabel.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 2).isActive = true
-        storeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 8).isActive = true
-        storeLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
+        storeLabel.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 7).isActive = true
+//        storeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 8).isActive = true
+        storeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 2).isActive = true
+        storeLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -2).isActive = true
         
-        reviewLabel.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 2).isActive = true
+        reviewLabel.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 7).isActive = true
         reviewLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -5).isActive = true
         
-        cakeLabel.topAnchor.constraint(equalTo: storeLabel.bottomAnchor, constant: -2).isActive = true
-        cakeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 8).isActive = true
+        cakeLabel.topAnchor.constraint(equalTo: storeLabel.bottomAnchor, constant: 1).isActive = true
+//        cakeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 8).isActive = true
+        cakeLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 2).isActive = true
         cakeLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         
-        priceLabel.topAnchor.constraint(equalTo: cakeLabel.bottomAnchor, constant: 4).isActive = true
-        priceLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 8).isActive = true
+        priceLabel.topAnchor.constraint(equalTo: cakeLabel.bottomAnchor, constant: 1).isActive = true
+//        priceLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 8).isActive = true
+        priceLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 2).isActive = true
         priceLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -3).isActive = true
         
     }

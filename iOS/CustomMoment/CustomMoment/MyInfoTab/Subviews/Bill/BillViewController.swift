@@ -52,6 +52,14 @@ class BillViewController: UIViewController {
         return tableView
     }()
     
+    private let dismissIndicator: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.systemGray
+        view.layer.cornerRadius = 2.5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private func configure() {
         self.view.addSubview(optionView)
         self.optionView.addSubview(tableView)
@@ -68,6 +76,12 @@ class BillViewController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: optionView.bottomAnchor).isActive = true
         tableView.leadingAnchor.constraint(equalTo: optionView.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: optionView.trailingAnchor).isActive = true
+        
+        self.view.addSubview(dismissIndicator)
+        dismissIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        dismissIndicator.topAnchor.constraint(equalTo: view.topAnchor, constant: 8).isActive = true
+        dismissIndicator.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        dismissIndicator.heightAnchor.constraint(equalToConstant: 5).isActive = true
     }
 
 }

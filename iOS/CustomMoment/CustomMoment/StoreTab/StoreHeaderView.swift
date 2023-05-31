@@ -10,7 +10,7 @@ import DropDown
 
 class StoreHeaderView: UICollectionReusableView {
     
-    private let dropDownDataSource = ["인기순", "최신순", "가나다순"]
+    private let dropDownDataSource = ["인기순", "최신순"]
     
     let filterButton: UIButton = {
         let button = UIButton(type: .roundedRect)

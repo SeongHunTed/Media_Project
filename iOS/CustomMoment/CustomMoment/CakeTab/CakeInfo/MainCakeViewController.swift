@@ -73,11 +73,6 @@ class MainCakeViewController: UIViewController {
         super.viewDidLayoutSubviews()
         setupContentSize()
         
-//        let storeBottomLayer = CALayer()
-//        storeBottomLayer.frame = CGRect(x: 0, y: 39, width: self.view.frame.size.width, height: 1)
-//        storeBottomLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
-//        storeLabel.layer.addSublayer(storeBottomLayer)
-        
         lazy var cakeTopLayer = CALayer()
         if pageControl.frame.height !=  0.0 {
             cakeTopLayer.frame = CGRect(x:0, y: pageControl.frame.height+15, width: view.frame.size.width, height: 1)
@@ -97,7 +92,7 @@ class MainCakeViewController: UIViewController {
         let aspectRatio = image.size.height / image.size.width
         let contentHeight = (scrollView.frame.width-40) * aspectRatio
         scrollView.contentSize = CGSize(width: scrollView.frame.width-40, height: contentHeight)
-        infoImage.widthAnchor.constraint(equalToConstant: 350).isActive = true
+        infoImage.widthAnchor.constraint(equalToConstant: scrollView.frame.width-40).isActive = true
         infoImage.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
     }
     
@@ -258,7 +253,7 @@ class MainCakeViewController: UIViewController {
         
         dismissIndicator.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         dismissIndicator.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 8).isActive = true
-        dismissIndicator.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        dismissIndicator.widthAnchor.constraint(equalToConstant: 60).isActive = true
         dismissIndicator.heightAnchor.constraint(equalToConstant: 5).isActive = true
         
 //        storeLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 5).isActive = true
@@ -323,13 +318,18 @@ class MainCakeViewController: UIViewController {
         orderView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         orderView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         orderView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        orderView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.08).isActive = true
+        orderView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        let buttonLayer = CALayer()
+        buttonLayer.frame = CGRect(x: 0, y: orderView.frame.origin.y, width: view.frame.width, height: 0.7)
+        buttonLayer.backgroundColor = UIColor.systemGray.cgColor
+        orderView.layer.addSublayer(buttonLayer)
         
         // OrderButton
         orderButton.leadingAnchor.constraint(equalTo: orderView.leadingAnchor, constant: 20).isActive = true
         orderButton.trailingAnchor.constraint(equalTo: orderView.trailingAnchor, constant: -20).isActive = true
-        orderButton.centerXAnchor.constraint(equalTo: orderView.centerXAnchor).isActive = true
-        orderButton.centerYAnchor.constraint(equalTo: orderView.centerYAnchor).isActive = true
+        orderButton.topAnchor.constraint(equalTo: orderView.topAnchor, constant: 10).isActive = true
+        orderButton.bottomAnchor.constraint(equalTo: orderView.bottomAnchor, constant: -20).isActive = true
         
         // Button Tapped
         infoButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)

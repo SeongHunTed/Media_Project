@@ -1,187 +1,54 @@
-# Momment
-
-## Environment
-
-### Language
-
-- Python 3.9.12
-
-### FE
-
-- React
-
-### BE
-
-- Django 3.2.13
-
-## Reule
-### Commit Type
-
-- feat : 새로운 기능 추가, 기존의 기능을 요구 사항에 맞추어 수정
-- fix : 기능에 대한 버그 수정
-- build : 빌드 관련 수정
-- chore : 패키지 매니저 수정, 그 외 기타 수정 ex) .gitignore
-- ci : CI 관련 설정 수정
-- docs : 문서(주석) 수정
-- style : 코드 스타일, 포맷팅에 대한 수정
-- refactor : 기능의 변화가 아닌 코드 리팩터링 ex) 변수 이름 변경
-- test : 테스트 코드 추가/수정
-- release : 버전 릴리즈
-
-## REST API
-
-### URI 
-
-#### 1. 마지막에 `/` 를포함하지 않는다.
-
-**Bad**
-
-```
-http://api.test.com/users/
-```
-
-**Good**
-
-```
-http://api.test.com/users
-```
-
-#### 2. _(underbar) 대신 -(dash)를 사용한다.
-
--(dash)의 사용도 최소한으로 설계한다. 정확한 의미나 표현을 위해 단어의 결합이 불가피한 경우 반드시 -(dash) 사용한다.
-
-**Bad**
-
-```
-http://api.test.com/users/post_commnets
-```
-
-**Good**
-
-```
-http://api.test.com/users/post-commnets
-```
-
-#### 3. 소문자를 사용한다.
-
-**Bad**
-
-```
-http://api.test.com/users/postCommnets
-```
-
-**Good**
-
-```
-http://api.test.com/users/post-commnets
-```
-
-#### 4. 행위(method)는 URI 에 포함하지 않는다.
-
-**Bad**
-
-```
-POST http://api.test.com/users/1/delete-post/1
-```
-
-**Good**
-
-```
-DELETE http://api.test.com/users/1/posts/1
-```
-
-#### 5. 컨트롤 자원을 의미하는 URI 는 예외적으로 동사를 허용한다.
-
-함수처럼, 컨트롤 리소스를 나타내는 URL은 동작을 포함하는 이름을 짓는다.
-
-**Bad**
-
-```
-http://api.test.com/posts/duplicating
-```
-
-**Good**
-
-```
-http://api.test.com/posts/duplicate
-```
-
-### Use HTTP status
-
-#### 1. 의미에 맞는 HTTP status 를 리턴한다.
-
-**Bad**
-
-```http
-HTTP/1.1 200 OK
-
-{
-    "result" : false
-    "status" : 400
-}
-```
-
-- status는 `200`으로 성공인데 body 내용엔 실패에 관한 내용을 리턴하고 있다.
-  - 모든 응답을 `200`으로 처리하고 body 내용으로 `성공|실패`를 판단하는 구조에서 사용된다. 잘못된 설계다.
-
-**Good**
-
-```http
-HTTP/1.1 400 Bad Request
-
-{
-    "msg" : "check your parameter"
-}
-```
-
-#### 2. HTTP status 만으로 상태 에러를 나타낸다.
-
-세부 에러 사항은 응답 객체에 표시하거나, 해당 에러를 확인할 수 있는 link를 표시한다.
-
-**http 상태 코드를 응답 객체에 중복으로 표시할 필요 없다.**
-
-**Bad**
-
-```http
-HTTP/1.1 404 Not Found
-
-{
-    "code" : 404,
-    "error_code": -765
-}
-```
-
-**Good**
-
-```http
-HTTP/1.1 404 Not Found
-
-{
-    "code" : -765,
-    "more_info" : "https://api.test.com/errors/-765"
-}
-```
-
-### HTTP status code
-
-#### 2XX Success
-
-- 200 OK
-- 201 Created
-- 202  Accepted
-- 204 No Content
-
-#### 4XX Client errors
-
-- 400 Bad Request
-
-- 401 Unauthorized
-- 403 Forbidden
-- 404 Not Found
-- 405 Method Not Allowd
-- 409 Conflict
-- 429 Too many Requests
-
-#### 5XX Server errors
-
-### `5XX` 에러는 사용자에게 나타내지 않는다.
+# Momment (커스텀 케이크 구매 플랫폼)
+
+![Cumo](https://github.com/SeongHunTed/Media_Project/assets/42074365/ceaf3c05-ab29-4023-bd32-2de5d97e1363)
+
+## 🍰 뭐하는 앱인가요?
+
+- **커스템 케이크 구매 플랫폼**
+- 일일히 인스타에서 커스텀 케이크를 찾을 필요 없이, 주문서를 작성할 필요없이, 가격을 확인하며 **케이크를 주문할 수 있는 서비스**
+
+## ❓왜 만들었나요?
+
+- 기존 커스텀 케이크 주문시스템 (인스타 DM, 카카오톡 메세지)의 불편함을 해결하고자 하였습니다.
+
+    **[기존 사용자]**
+    
+    - 사용자가 "직접" 인스타 게시글을 보고 주문서를 작성!
+    - 사용자가 견적서를 전달해야 케이크 가격을 알 수 있음!
+    
+    **[기존 판매자]**
+    
+    - 모든 주문에 관하여 옵션을 다시 체크하고 상담을 진행해야 합니다.
+    - 주문을 가시적으로 관리하기 힘듭니다. 
+    
+<img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/a004aca8-6ae8-4581-835c-66ba43b9063e" width="40%" height="40%">          <img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/cf50651f-e3c4-4592-906d-99d6cfd25623" width="40%" height="40%">
+    
+- 기존에는 커스텀 케이크를 주문하기 위해서는 온전한 케이크에 대한 이해가 없이는 주문이 힘듭니다!
+
+- 옵션을 가시적으로 만들고, 가격을 공개하면 소비자들이 좀 더 쉽게 주문할 수 있을 것이라 생각했습니다.
+
+- 원하는 날짜, 시간 별로 주문할 수 있으면 기존 주문서 작성보다 훨씬 편해질 거라 생각했습니다.
+
+### * 이러한 불편함과 수요를 해결하기위해 CustomMoment가 시작되었습니다.
+    
+## 🎂 주요 기능
+
+- **케이크별 옵션 확인 가능
+    - 기존 인스타에 "글"로 설명되어 있던 옵션 가시화
+    - 사용자는 케이크 옵션을 이해한 상태에서 주문 가능
+    
+- **날짜, 시간대별 주문 기능
+    - 인스타에서 예약 가능한 날을 찾을 필요없이 날짜 선택
+    - 원하는 픽업 시간 선택
+    - 원하는 옵션 선택
+    
+- **AI 케이크 디자인 가능
+    - 일반 사용자도 케이크 디자인 시안 가능
+    - 이미지 생성 모델과, 일러스트화 해주는 두개의 모델 사용
+
+
+## 앱 기능 스크린샷
+
+<img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/78a17763-ff9b-4f52-8cd8-f8a6d9b50429" width="40%" height="40%">          <img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/4e401fad-982e-43bc-9261-c96d595f89e7" width="40%" height="40%">
+<img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/3ef4d050-5d97-4740-a766-41ac68491a52" width="40%" height="40%">          <img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/a3575e9a-e22b-4f90-9361-2cd789ca4d1f" width="40%" height="40%">
+<img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/bd2a8f4d-0b30-45ac-a0ff-b9d1a3827ab1" width="40%" height="40%">          <img src = "https://github.com/SeongHunTed/Media_Project/assets/42074365/7f46ea63-3881-4bc2-8fe8-596a610c96e6" width="40%" height="40%">

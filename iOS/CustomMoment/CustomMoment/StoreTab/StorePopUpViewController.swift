@@ -55,7 +55,7 @@ class StorePopUpViewController: UIViewController {
             }
         }
         
-        APIClient.shared.cake.fetchCakeTapCake(0) { [weak self] result in
+        APIClient.shared.cake.fetchCakePerStore(self.storeName) { [weak self] result in
             switch result {
             case .success(let cakes):
                 self?.cakes = cakes
@@ -69,6 +69,14 @@ class StorePopUpViewController: UIViewController {
     }
     
     // MARK: - Layout Components
+    
+    private let dismissIndicator: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.systemGray
+        view.layer.cornerRadius = 2.5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     // collectionview
     private lazy var collectionView: UICollectionView = {
@@ -88,13 +96,18 @@ class StorePopUpViewController: UIViewController {
     // MARK: - Set Up Layout
     
     private func configure() {
-        
         self.view.addSubview(collectionView)
         
         collectionView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        self.view.addSubview(dismissIndicator)
+        dismissIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        dismissIndicator.topAnchor.constraint(equalTo: view.topAnchor, constant: 8).isActive = true
+        dismissIndicator.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        dismissIndicator.heightAnchor.constraint(equalToConstant: 5).isActive = true
     }
     
     // MARK: - CollectionView Layout
@@ -243,8 +256,8 @@ extension StorePopUpViewController: UICollectionViewDataSource {
             cell.configure(with: cake)
             cell.cellImage.contentMode = .scaleAspectFill
             cell.layer.cornerRadius = 8
-            cell.layer.borderWidth = 0.1
-            cell.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
+//            cell.layer.borderWidth = 0.1
+//            cell.contentView.layer.borderColor = CGColor(red: 0.0, green: 0, blue: 0, alpha: 0.1)
             
             return cell
         }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DrawViewController: UIViewController {
+class DrawViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,29 +26,47 @@ class DrawViewController: UIViewController {
     
     // MARK: - Variable
     
-    private let buttonTitles = ["빈센트 반 고흐", "파블로 피카소", "클로드 모네", "폴 고갱","마르쉘 뒤샹", "램브란트", "키스 해링", "장 미셸 바스키아", "앤디 워홀", "직접 입력"]
+    private let buttonTitles = ["빈센트 반 고흐", "클로드 모네", "앤디 워홀", "파블로 피카소", "마르쉘 뒤샹", "램브란트", "키스 해링", "직접 입력", "사진 커스텀"]
+    
+    var selectedCellIndexPath: IndexPath?
     
     // MARK: - Components
     private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 10
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(90), heightDimension: .absolute(50))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(2)
+
+        let sectionSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(200))
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 2
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 5)
         
+        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30.0))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        
+        section.boundarySupplementaryItems = [header]
+        section.orthogonalScrollingBehavior = .continuous
+
+
+        let layout = UICollectionViewCompositionalLayout(section: section)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
         collectionView.register(DrawCollectionViewCell.self, forCellWithReuseIdentifier: "DrawCollectionViewCell")
+        collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
         return collectionView
     }()
     
     private let dalleImageView: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "gogh")
+        image.image = UIImage(named: "gogh2")
         image.contentMode = .scaleAspectFill
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
@@ -89,6 +107,38 @@ class DrawViewController: UIViewController {
         return button
     }()
     
+    func showLoadingIndicator() {
+        let overlayView = UIView()
+        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        overlayView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(overlayView)
+        view.bringSubviewToFront(overlayView)
+        
+        NSLayoutConstraint.activate([
+            overlayView.topAnchor.constraint(equalTo: view.topAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            overlayView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.color = .white
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.startAnimating()
+        overlayView.addSubview(activityIndicator)
+        
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+
+
+    func hideLoadingIndicator() {
+        view.subviews.first(where: { $0.backgroundColor == UIColor.black.withAlphaComponent(0.5) })?.removeFromSuperview()
+    }
+
+    
     private func configure() {
         dallePrompt.delegate = self
         
@@ -116,24 +166,15 @@ class DrawViewController: UIViewController {
         dallePrompt.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -10).isActive = true
         dallePrompt.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        collectionView.topAnchor.constraint(equalTo: dallePrompt.bottomAnchor, constant: 20).isActive = true
+        collectionView.topAnchor.constraint(equalTo: dallePrompt.bottomAnchor, constant: 10).isActive = true
         collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         collectionView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         collectionView.heightAnchor.constraint(equalToConstant: 160).isActive = true
-        
-////        dalleImageView.topAnchor.constraint(greaterThanOrEqualTo: dallePrompt.bottomAnchor, constant: 10).isActive = true
-////        dalleImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-//        dalleImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
-//        dalleImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
-////        dalleImageView.widthAnchor.constraint(lessThanOrEqualTo: self.view.widthAnchor, multiplier: 0.9).isActive = true
-//        dalleImageView.heightAnchor.constraint(equalTo: dalleImageView.widthAnchor).isActive = true
-////        dalleImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-////        dalleImageView.bottomAnchor.constraint(lessThanOrEqualTo: self.saveButton.topAnchor, constant: -10).isActive = true
   
         dalleImageView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
         dalleImageView.heightAnchor.constraint(equalTo: dalleImageView.widthAnchor, multiplier: 1.0).isActive = true
         dalleImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        dalleImageView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -40).isActive = true
+        dalleImageView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -70).isActive = true
     }
     
     // MARK: - Logo Layout
@@ -201,12 +242,13 @@ extension DrawViewController: UITextFieldDelegate {
         let words = inputText.split(separator: " ")
         
         if words.count < 2 {
-            let alertController = UIAlertController(title: "경고", message: "정확한 케이크 이미지 생성을 위해 7글자 이상 입력하세요!", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "경고", message: "정확한 케이크 이미지 생성을 위해 2글자 이상 입력하세요!", preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
             alertController.addAction(cancelAction)
             self.present(alertController, animated: true)
             
         } else {
+            self.dallePrompt.resignFirstResponder()
             let alertController = UIAlertController(title: "확인!", message: "해당 문장으로 진행하시겠습니까?", preferredStyle: .alert)
             
             alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak self] _ in
@@ -215,6 +257,7 @@ extension DrawViewController: UITextFieldDelegate {
                 guard let clientID = Bundle.main.object(forInfoDictionaryKey: "PAPAGO_API_ID") as? String else { return }
                 guard let clientKey = Bundle.main.object(forInfoDictionaryKey: "PAPAGO_API_PW") as? String else { return  }
                 
+                self?.showLoadingIndicator()
                 let tranlator = NaverTranslator(clientId: clientID, clientSecret: clientKey)
 
                 Task {
@@ -224,11 +267,13 @@ extension DrawViewController: UITextFieldDelegate {
 
                            let image = try await DalleAPIService().fetchImageForPrompt(translatedText)
                            await MainActor.run {
+                               self?.hideLoadingIndicator()
                                self?.dalleImageView.image = image
                            }
                        
                        } catch {
                            print(error)
+                           self?.hideLoadingIndicator()
                        }
                    }
                  
@@ -238,6 +283,10 @@ extension DrawViewController: UITextFieldDelegate {
             
             present(alertController, animated: true, completion: nil)
         }
+    }
+    
+    @objc func transButtonTapped() {
+        
     }
     
     @objc func saveButtonTapped() {
@@ -265,7 +314,32 @@ extension DrawViewController: UITextFieldDelegate {
 }
 
 
-extension DrawViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension DrawViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, DrawCollectionViewCellDelegate {
+    
+    func buttonTapped(cell: DrawCollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell),
+            let buttonTitle = cell.button.title(for: .normal) else {
+            return
+        }
+        
+        if let selectedCellIndexPath = selectedCellIndexPath,
+            let selectedCell = collectionView.cellForItem(at: selectedCellIndexPath) as? DrawCollectionViewCell {
+            selectedCell.isSelectedCell = false
+        }
+        
+        cell.isSelectedCell = true
+        
+        selectedCellIndexPath = indexPath
+
+        if buttonTitle == "사진 커스텀" {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = .photoLibrary
+
+            self.present(imagePickerController, animated: true, completion: nil)
+        }
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return buttonTitles.count
@@ -274,24 +348,20 @@ extension DrawViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DrawCollectionViewCell", for: indexPath) as! DrawCollectionViewCell
         cell.configure(with: buttonTitles[indexPath.item])
+        cell.delegate = self
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let buttonTitle = buttonTitles[indexPath.item]
-        let buttonSize = (buttonTitle as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: 16)])
-        return CGSize(width: buttonSize.width + 20, height: 40)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as! DrawCollectionViewCell
-        cell.isSelectedCell.toggle()
-        for index in 0..<buttonTitles.count {
-            if index != indexPath.item {
-                if let otherCell = collectionView.cellForItem(at: IndexPath(item: index, section: indexPath.section)) as? DrawCollectionViewCell {
-                    otherCell.isSelectedCell = false
-                }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as? MyHeaderView else {
+                fatalError("Invalid view type")
             }
+            headerView.prepare(text: "AI 화풍 선택")
+            return headerView
+        default:
+            assert(false, "Invalid elemeny type")
         }
     }
     
@@ -304,5 +374,37 @@ extension DrawViewController: UICollectionViewDelegate, UICollectionViewDataSour
             }
         }
         return nil
+    }
+}
+
+extension DrawViewController {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            dalleImageView.image = pickedImage
+        }
+        picker.dismiss(animated: true, completion: nil)
+        transApiCall()
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func transApiCall() {
+        
+        guard let targetImage = dalleImageView.image else { return }
+        guard let imageData = targetImage.jpegData(compressionQuality: 1.0) else { return }
+        APIClient.shared.ai.imageTransFetch(imageData) { [weak self] result in
+            switch result {
+            case .success(let image):
+                DispatchQueue.main.async {
+                    let transImage = UIImage(data: image)
+                    self?.dalleImageView.image = transImage
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }

@@ -19,7 +19,7 @@ class MyInfoCollectionViewCell: UICollectionViewCell {
     let cellImage: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
-        imageView.tintColor = .systemBlue
+        imageView.tintColor = .systemRed.withAlphaComponent(0.8)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()

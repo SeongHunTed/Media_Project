@@ -191,20 +191,21 @@ extension HomeViewController {
         collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
         
         // item size - absolute : 고정값, estimated : 추측, fraction : 퍼센트
-        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .fractionalHeight(0.85))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(140), heightDimension: .fractionalHeight(0.9))
         
         // making item with above size
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 2, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 2, trailing: 0)
         
         // group size
         let groupSize = NSCollectionLayoutSize(widthDimension: itemSize.widthDimension, heightDimension: .fractionalHeight(0.3))
         
         // making group
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+//        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(15), top: nil, trailing: nil, bottom: nil)
         
         let section = NSCollectionLayoutSection(group: group)
-        
+        section.interGroupSpacing = 1
         let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(40.0))
         
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
@@ -251,7 +252,23 @@ extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("item at \(indexPath.section)/\(indexPath.item) tapped")
         
-        if indexPath.section == 1 {
+        if indexPath.section == 0 {
+            guard let cell = collectionView.cellForItem(at: indexPath) as?
+                    BannerCollectionViewCell else { return }
+            if indexPath.item == 0 {
+                let cakeName = "긴밤케이크"
+                let storeName = "푸실"
+                cakeTapped(cakeName, storeName)
+            } else if indexPath.item == 1 {
+                let cakeName = "알스트로메리아플라워케이크"
+                let storeName = "멜로드도산"
+                cakeTapped(cakeName, storeName)
+            } else {
+                let cakeName = "시그니처생화케이크"
+                let storeName = "보헤브"
+                cakeTapped(cakeName, storeName)
+            }
+        } else if indexPath.section == 1 {
             guard let cell = collectionView.cellForItem(at: indexPath) as? MainCakeCollectionViewCell else { return }
             let cakeName = cell.cakeLabel.text ?? ""
             let storeName = cell.storeLabel.text ?? ""
@@ -347,10 +364,6 @@ extension HomeViewController: UICollectionViewDataSource {
             } else if indexPath.section == 2 {
                 header.prepare(text: "지금 HOT한 스토어")
             }
-//            let borderLayer = CALayer()
-//            borderLayer.frame = CGRect(x: 0, y: header.frame.size.height - 1, width: header.frame.size.width, height: 0.7)
-//            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
-//            header.layer.addSublayer(borderLayer)
             return header
         case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyFooterView", for: indexPath) as! MyFooterView

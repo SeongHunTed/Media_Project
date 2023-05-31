@@ -11,6 +11,28 @@ import DropDown
 
 class MainOptionViewController: UIViewController {
     
+    // MARK: - Var
+    
+    enum OptionType: Int, CaseIterable {
+        case calenderType = 0
+        case timeType
+        case basicOptionType
+        case additionalOptionType
+        
+        var rawValue: String {
+            switch self {
+            case .calenderType:
+                return "📅 날짜 선택"
+            case .timeType:
+                return "⏱️ 픽업 시간"
+            case .basicOptionType:
+                return "🍰 기본 옵션"
+            case .additionalOptionType:
+                return "🍴 추가 옵션"
+            }
+        }
+    }
+    
     // MARK: - Models Var
     
     // cake option Reqeust, Response Model
@@ -43,16 +65,16 @@ class MainOptionViewController: UIViewController {
         super.viewDidLoad()
         apiCall()
         configure()
-        setCalendarUI()
+//        setCalendarUI()
         setCollectionView()
     }
     
-    override func viewDidLayoutSubviews() {
-        let borderLayer = CALayer()
-        borderLayer.frame = CGRect(x: 0, y: calendarLabel.frame.size.height - 1, width: calendarLabel.frame.size.width - 10, height: 1)
-        borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
-        calendarLabel.layer.addSublayer(borderLayer)
-    }
+//    override func viewDidLayoutSubviews() {
+//        let borderLayer = CALayer()
+//        borderLayer.frame = CGRect(x: 0, y: calendarLabel.frame.size.height - 1, width: calendarLabel.frame.size.width - 10, height: 1)
+//        borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
+//        calendarLabel.layer.addSublayer(borderLayer)
+//    }
     
     // MARK: - API Call
     
@@ -80,6 +102,9 @@ class MainOptionViewController: UIViewController {
             case .success(let calendarResponses):
                 for calendarResponse in calendarResponses {
                     self?.availableCalendar.append((String(calendarResponse.date), calendarResponse.closed))
+                    DispatchQueue.main.async {
+                        self?.collectionView.reloadSections(IndexSet(integer: 0))
+                    }
                 }
             case .failure(let error):
                 print("Error: \(error.localizedDescription)")
@@ -90,9 +115,11 @@ class MainOptionViewController: UIViewController {
         APIClient.shared.cake.fetchCakeOption(cakeOptionRequest) { [weak self] result in
             switch result {
             case .success(let cakeOptions):
-                self?.cakeOptionResponse = cakeOptions
-                self?.updateView()
-                self?.collectionView.reloadData()
+                DispatchQueue.main.async {
+                    self?.cakeOptionResponse = cakeOptions
+                    self?.updateView()
+                    self?.collectionView.reloadData()
+                }
             case .failure(let error):
                 print("Error: \(error.localizedDescription)")
             }
@@ -141,8 +168,9 @@ class MainOptionViewController: UIViewController {
                     for time in group.time {
                         let timeString = time.pickupTime.prefix(5) // "10:00:00"을 "10:00"으로 변환
                         self?.timeDataSource.append((String(timeString), time.isAvailable))
+                        let indexSet = IndexSet(1...3)
                         DispatchQueue.main.async {
-                            self?.collectionView.reloadData()
+                            self?.collectionView.reloadSections(indexSet)
                         }
                     }
                 }
@@ -176,46 +204,33 @@ class MainOptionViewController: UIViewController {
             (key: \CakeOptionResponse.picture, title: "디자인첨부"),
             (key: \CakeOptionResponse.design, title: "초")
         ]
-        // 예제: 각 옵션의 개수를 출력합니다.
+        
+        var titleNumber = 1
         for basicOptionTitle in basicOptionTitles {
             if let optionArray = cakeOptions[keyPath: basicOptionTitle.key], !optionArray.isEmpty {
-                basicDropDownButtonTitle.append(basicOptionTitle.title)
+                let numberedTitle = "  \(titleNumber). " + basicOptionTitle.title
+                basicDropDownButtonTitle.append(numberedTitle)
                 basicDropDownDataSource.append(optionArray.map { CakeOption(optionName: $0.optionName, price: $0.price) })
+                titleNumber += 1
             }
         }
         
+        titleNumber = 1
         for additionalOptionTitle in additionalOptionTitles {
             if let optionArray = cakeOptions[keyPath: additionalOptionTitle.key], !optionArray.isEmpty {
-                addtionalDropDownButtonTitle.append(additionalOptionTitle.title)
+                let numberedTitle = "  \(titleNumber). " + additionalOptionTitle.title
+                addtionalDropDownButtonTitle.append(numberedTitle)
                 additionalDropDownDataSource.append(optionArray.map { CakeOption(optionName: $0.optionName, price: $0.price) })
+                titleNumber += 1
             }
         }
     }
     
     //MARK: - Components
-    lazy var today = calendar.today!
     // timebutton
     var selectedButton: UIButton?
-    
-    private let calendarLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.myFontB.withSize(15.5)
-        label.text = "📅 날짜 선택"
-        label.textColor = .black.withAlphaComponent(0.8)
-        label.adjustsFontSizeToFitWidth = true
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    lazy var calendar: FSCalendar = {
-        let calendar = FSCalendar()
-        calendar.placeholderType = .none
-        calendar.appearance.titleFont = UIFont.myFontR.withSize(12)
-        calendar.appearance.weekdayFont = UIFont.myFontM.withSize(14)
-        calendar.appearance.headerTitleFont = UIFont.myFontM
-        calendar.translatesAutoresizingMaskIntoConstraints = false
-        return calendar
-    }()
+    var selectedDate: Date?
+    var today: Date!
     
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: getLayout())
@@ -224,6 +239,7 @@ class MainOptionViewController: UIViewController {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.clipsToBounds = true
         collectionView.backgroundColor = .white
+        collectionView.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: CalendarCollectionViewCell.self))
         collectionView.register(TimeButtonCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: TimeButtonCollectionViewCell.self))
         collectionView.register(OptionButtonCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: OptionButtonCollectionViewCell.self))
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -259,7 +275,7 @@ class MainOptionViewController: UIViewController {
         let storeName = cakeOptionRequest?.storeName ?? ""
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let pickUpDate = dateFormatter.string(from: calendar.selectedDate ?? today)
+        let pickUpDate = dateFormatter.string(from: selectedDate ?? today)
         let option = getOrderDetails().0.joined(separator: "\n") + "\n"
         
         let orderRequest = OrderRequest(storeName: storeName, cakeName: cakeName, cakePrice: cakePrice, pickupDate: pickUpDate, pickupTime: pickUpTime, option: option)
@@ -317,7 +333,7 @@ class MainOptionViewController: UIViewController {
             let store = cakeOptionRequest?.storeName ?? ""
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
-            let date = dateFormatter.string(from: calendar.selectedDate ?? today)
+            let date = dateFormatter.string(from: selectedDate ?? today)
             let rootOption: [String] = [cake, store, date, selectedTime]
             
             let orderDetails = getOrderDetails()
@@ -332,130 +348,60 @@ class MainOptionViewController: UIViewController {
         }
     }
     
+    private let dismissIndicator: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.systemGray
+        view.layer.cornerRadius = 2.5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     //MARK: - Configure
     
     private func configure() {
         view.backgroundColor = .white
-        view.addSubview(calendarLabel)
-        view.addSubview(calendar)
         view.addSubview(buttonView)
         buttonView.addSubview(cartButton)
         buttonView.addSubview(orderButton)
         view.addSubview(collectionView)
+        view.addSubview(dismissIndicator)
         
-        calendarLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        calendarLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
-        calendarLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        calendarLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        dismissIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        dismissIndicator.topAnchor.constraint(equalTo: view.topAnchor, constant: 8).isActive = true
+        dismissIndicator.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        dismissIndicator.heightAnchor.constraint(equalToConstant: 5).isActive = true
         
-        calendar.topAnchor.constraint(equalTo: calendarLabel.bottomAnchor).isActive = true
-        calendar.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        calendar.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4).isActive = true
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        buttonView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        collectionView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: self.buttonView.topAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        
+        buttonView.heightAnchor.constraint(equalToConstant: 80).isActive = true
         buttonView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         buttonView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         buttonView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         let buttonLayer = CALayer()
         buttonLayer.frame = CGRect(x: 0, y: buttonView.frame.origin.y, width: view.frame.width, height: 0.7)
-        buttonLayer.backgroundColor = UIColor.black.cgColor
+        buttonLayer.backgroundColor = UIColor.systemGray.cgColor
         buttonView.layer.addSublayer(buttonLayer)
         
         cartButton.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: 15).isActive = true
-        cartButton.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 15).isActive = true
-        cartButton.bottomAnchor.constraint(equalTo: buttonView.bottomAnchor, constant: -15).isActive = true
+        cartButton.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 10).isActive = true
+        cartButton.bottomAnchor.constraint(equalTo: buttonView.bottomAnchor, constant: -20).isActive = true
         cartButton.widthAnchor.constraint(equalTo: buttonView.widthAnchor, multiplier: 0.45).isActive = true
         
         orderButton.trailingAnchor.constraint(equalTo: buttonView.trailingAnchor, constant: -15).isActive = true
-        orderButton.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 15).isActive = true
-        orderButton.bottomAnchor.constraint(equalTo: buttonView.bottomAnchor, constant: -15).isActive = true
+        orderButton.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 10).isActive = true
+        orderButton.bottomAnchor.constraint(equalTo: buttonView.bottomAnchor, constant: -20).isActive = true
         orderButton.widthAnchor.constraint(equalTo: buttonView.widthAnchor, multiplier: 0.45).isActive = true
         
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        collectionView.topAnchor.constraint(equalTo: self.calendar.bottomAnchor, constant: 20).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: self.buttonView.topAnchor).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
     }
 
 }
-
-
-// MARK: - Calendar UI/Action SetUp
-extension MainOptionViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
-    
-    func setCalendarUI() {
-        self.calendar.delegate = self
-        self.calendar.dataSource = self
-        
-        self.calendar.appearance.headerDateFormat = "M월"
-        self.calendar.appearance.headerTitleColor = UIColor.systemRed
-        self.calendar.appearance.weekdayTextColor = UIColor.systemRed
-        
-        self.calendar.select(today)
-    }
-    
-    // 선택 가능여부 처리
-    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        if date < today {
-            return false
-        }
-        
-        let dateString = dateFormatter.string(from: date)
-        if let index = availableCalendar.firstIndex(where: { $0.0 == dateString}) {
-            return !availableCalendar[index].1
-        }
-        return false
-    }
-    
-    // 가능한 날짜는
-    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let dateString = dateFormatter.string(from: date)
-        
-        if date == today {
-            return UIColor.systemRed.withAlphaComponent(0.7)
-        } else if date < today {
-            return UIColor.systemGray5
-        } else if let index = availableCalendar.firstIndex(where: { $0.0 == dateString}) {
-            if availableCalendar[index].1 {
-                return UIColor.systemGray5
-            } else {
-                return UIColor.white
-            }
-        } else {
-            return UIColor.systemGray5
-        }
-        
-    }
-    
-    // 선택 날짜 처리
-    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
-        return UIColor.systemRed.withAlphaComponent(0.95)
-    }
-    
-    // 날짜 선택할 때 api 호출 하도록
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        
-        let currentDate = date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let formattedDate = dateFormatter.string(from: currentDate)
-        let storeName = self.cakeOptionRequest?.storeName ?? ""
-        
-        let orderRequest = TimeInfoRequest(storeName: storeName, date: formattedDate)
-        calendarApiCall(orderRequest)
-    }
-}
-
 
 //MARK: - CollectioView SetUp, Action
 
@@ -469,25 +415,50 @@ extension MainOptionViewController {
     private func getLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, layoutenvironment -> NSCollectionLayoutSection? in
             if sectionIndex == 0 {
-                return self.pickUpTimeLayout()
+                return self.calendarLayout()
             } else if sectionIndex == 1 {
+                return self.pickUpTimeLayout()
+            } else if sectionIndex == 2 {
                 return self.basicOptionLayout()
             } else {
                 return self.addtionalOptionLayout()
             }
         }
     }
+    
+    private func calendarLayout() -> NSCollectionLayoutSection {
+        collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(300))
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: itemSize.widthDimension, heightDimension: .absolute(300))
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30.0))
+        
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [header]
+        section.orthogonalScrollingBehavior = .continuous
+        
+        return section
+    }
 
     private func pickUpTimeLayout() -> NSCollectionLayoutSection {
         
         collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
         
-        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(90), heightDimension: .fractionalHeight(0.8))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(90), heightDimension: .absolute(60))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 0)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: itemSize.widthDimension, heightDimension: .fractionalHeight(0.2))
+        let groupSize = NSCollectionLayoutSize(widthDimension: itemSize.widthDimension, heightDimension: .absolute(80))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
@@ -506,12 +477,12 @@ extension MainOptionViewController {
         
         collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
         
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(45))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 0, trailing: 10)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.2))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(45))
         
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
@@ -528,12 +499,12 @@ extension MainOptionViewController {
     private func addtionalOptionLayout() -> NSCollectionLayoutSection {
         collectionView.register(MyHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MyHeaderView")
         
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(45))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 0, trailing: 10)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.2))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(45))
         
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
@@ -556,13 +527,15 @@ extension MainOptionViewController: UICollectionViewDelegate {
 extension MainOptionViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return timeDataSource.count
+            return 1
         } else if section == 1 {
+            return timeDataSource.count
+        } else if section == 2 {
             return basicDropDownButtonTitle.count
         } else {
             return addtionalDropDownButtonTitle.count
@@ -571,6 +544,13 @@ extension MainOptionViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CalendarCollectionViewCell.self), for: indexPath) as? CalendarCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.delegate = self
+            cell.setCalendarUI()
+            return cell
+        } else if indexPath.section == 1 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: TimeButtonCollectionViewCell.self), for: indexPath) as? TimeButtonCollectionViewCell else {
                 return UICollectionViewCell()
             }
@@ -580,15 +560,16 @@ extension MainOptionViewController: UICollectionViewDataSource {
             cell.timeButton.setTitle(timeDataSource[indexPath.item].0, for: .normal)
             cell.prepare(timeDataSource[indexPath.item].1)
             return cell
-        } else if indexPath.section == 1 {
+        } else if indexPath.section == 2 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: OptionButtonCollectionViewCell.self), for: indexPath) as? OptionButtonCollectionViewCell else {
                 return UICollectionViewCell()
             }
             cell.optionButton.setTitle(basicDropDownButtonTitle[indexPath.item], for: .normal)
             cell.category = basicDropDownButtonTitle[indexPath.item]
-            cell.dropDown.dataSource = basicDropDownDataSource[indexPath.item].map { "\($0.optionName) + \($0.price)원" }
+            cell.dropDown.dataSource = basicDropDownDataSource[indexPath.item].map { "  \($0.optionName) + \($0.price)원" }
             cell.onOptionSelected = { [weak self] index, title in
                 cell.optionButton.setTitle(title, for: .normal)
+                cell.optionButton.setTitleColor(.white, for: .normal)
                 cell.optionButton.titleLabel?.font = UIFont.myFontB.withSize(14)
                 cell.optionButton.backgroundColor = .systemRed.withAlphaComponent(0.8)
                 cell.optionButton.tintColor = .white
@@ -603,9 +584,10 @@ extension MainOptionViewController: UICollectionViewDataSource {
             }
             cell.optionButton.setTitle(addtionalDropDownButtonTitle[indexPath.item], for: .normal)
             cell.category = addtionalDropDownButtonTitle[indexPath.item]
-            cell.dropDown.dataSource = additionalDropDownDataSource[indexPath.item].map { "\($0.optionName) + \($0.price)원" }
+            cell.dropDown.dataSource = additionalDropDownDataSource[indexPath.item].map { "  \($0.optionName) + \($0.price)원" }
             cell.onOptionSelected = { [weak self] index, title in
                 cell.optionButton.setTitle(title, for: .normal)
+                cell.optionButton.setTitleColor(.white, for: .normal)
                 cell.optionButton.titleLabel?.font = UIFont.myFontB.withSize(14)
                 cell.optionButton.backgroundColor = .systemRed.withAlphaComponent(0.8)
                 cell.optionButton.tintColor = .white
@@ -613,7 +595,8 @@ extension MainOptionViewController: UICollectionViewDataSource {
                 cell.selectedOptionTitle = title
                 cell.selectedOption = self?.additionalDropDownDataSource[indexPath.item][index]
                 
-                if (cell.category == "레터링" || cell.category == "하판레터링") && (title != "선택 안함 + 0원" && title != "선택안함 + 0원" ){
+                if (cell.category?.contains("레터링") ?? false) && (!title.contains("안함")) {
+                    print("레터링부분")
                     let alertController = UIAlertController(title: "레터링 입력", message: "레터링 내용을 입력하세요.", preferredStyle: .alert)
                     
                     alertController.addTextField { textField in
@@ -624,7 +607,7 @@ extension MainOptionViewController: UICollectionViewDataSource {
                         if let inputText = alertController.textFields?.first?.text {
                             // 사용자가 입력한 레터링 내용을 처리합니다.
                             cell.selectedOptionTitle = inputText
-                            cell.optionButton.setTitle("레터링 : " + inputText, for: .normal)
+                            cell.optionButton.setTitle("  레터링 : " + inputText, for: .normal)
                         }
                     }
                     alertController.addAction(submitAction)
@@ -635,7 +618,7 @@ extension MainOptionViewController: UICollectionViewDataSource {
                     self?.present(alertController, animated: true, completion: nil)
                 }
                 
-                if cell.category == "디자인첨부" {
+                if cell.category?.contains("첨부") ?? false {
                     self?.selectedCell = cell
                     let imagePickerController = UIImagePickerController()
                     imagePickerController.delegate = self
@@ -652,18 +635,15 @@ extension MainOptionViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyHeaderView", for: indexPath) as! MyHeaderView
-            if indexPath.section == 0 {
-                header.prepare(text: "⏱️ 픽업 시간")
-            } else if indexPath.section == 1 {
-                header.prepare(text: "🍰 기본 옵션")
-            } else {
-                header.prepare(text: "🍴 추가 옵션")
-            }
-            let borderLayer = CALayer()
-            borderLayer.frame = CGRect(x: 10, y: header.frame.size.height - 1, width: header.frame.size.width - 20, height: 1)
-            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.75).cgColor
-            header.layer.addSublayer(borderLayer)
             
+            let optionType = OptionType(rawValue: indexPath.section) ?? .additionalOptionType
+            header.prepare(text: optionType.rawValue)
+            
+            let borderLayer = CALayer()
+            borderLayer.frame = CGRect(x: 100, y: header.frame.size.height/2, width: header.frame.size.width - 120, height: 0.5)
+            borderLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.5).cgColor
+            header.layer.addSublayer(borderLayer)
+
             return header
         }
         return UICollectionReusableView()
@@ -713,7 +693,7 @@ extension MainOptionViewController {
             if let selectedOption = optionCell.selectedOption {
                 
                 if let selectedOptionTitle = optionCell.selectedOptionTitle {
-                    if optionCell.category == "레터링" || optionCell.category == "하판레터링" {
+                    if ((optionCell.category?.contains("레터링")) != nil) {
                         orderDetails.append("\(optionCell.category ?? "") : \(selectedOptionTitle) + \(selectedOption.price)원")
                     }
                 } else {
@@ -741,3 +721,79 @@ extension MainOptionViewController {
     }
 }
 
+
+
+protocol CalendarCellDelegate: AnyObject {
+    func calendarCell(_ cell: CalendarCollectionViewCell, didSelect date: Date)
+    
+    func calendarCell(_ cell : CalendarCollectionViewCell, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool
+    
+    func calendarCell(_ cell: CalendarCollectionViewCell, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor?
+    
+    func calendarCellToday(_ cell: CalendarCollectionViewCell, getToday today: Date)
+
+}
+
+extension MainOptionViewController: CalendarCellDelegate {
+    func calendarCellToday(_ cell: CalendarCollectionViewCell, getToday today: Date) {
+        self.today = today
+    }
+    
+    
+    func calendarCell(_ cell: CalendarCollectionViewCell, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        if date < today {
+            return false
+        }
+        
+        let dateString = dateFormatter.string(from: date)
+        if let index = availableCalendar.firstIndex(where: { $0.0 == dateString}) {
+            return !availableCalendar[index].1
+        }
+        return false
+    }
+    
+    func calendarCell(_ cell: CalendarCollectionViewCell, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: date)
+        
+        if date == today {
+            return UIColor.systemRed.withAlphaComponent(0.7)
+        }
+        
+        if date < today {
+            return UIColor.systemGray5
+        }
+
+        if let index = availableCalendar.firstIndex(where: { $0.0 == dateString}) {
+            
+            if availableCalendar[index].1 {
+                return UIColor.systemGray5
+            } else {
+                return UIColor.white
+            }
+        } else {
+            return UIColor.systemGray5
+        }
+    }
+    
+    func calendarCell(_ cell: CalendarCollectionViewCell, didSelect date: Date) {
+        
+        self.selectedDate = date
+        let currentDate = date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let formattedDate = dateFormatter.string(from: currentDate)
+        let storeName = self.cakeOptionRequest?.storeName ?? ""
+        
+        let orderRequest = TimeInfoRequest(storeName: storeName, date: formattedDate)
+        calendarApiCall(orderRequest)
+    }
+    
+    
+}

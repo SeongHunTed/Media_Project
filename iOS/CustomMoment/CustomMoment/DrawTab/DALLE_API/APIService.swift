@@ -24,13 +24,11 @@ final class DalleAPIService: ObservableObject {
         case unableToConvertDataIntoImage
     }
     
-    let apiKey = Bundle.main.object(forInfoDictionaryKey: "OPENAI_API_KEY") as! String
-    
     func fetchImageForPrompt(_ prompt: String) async throws -> UIImage {
         let fetchImageURL = "https://api.openai.com/v1/images/generations"
         let urlRequest = try createURLRequestFor(httpMethod: "POST", url: fetchImageURL, prompt: prompt)
         
-        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        let (data, _) = try await URLSession.shared.data(for: urlRequest)
         
         let decoder = JSONDecoder()
         let results = try decoder.decode(Reponse.self, from: data)
@@ -70,7 +68,10 @@ final class DalleAPIService: ObservableObject {
         
         return urlRequest
     }
+    
+    
 }
+
 
 
 class NaverTranslator {
